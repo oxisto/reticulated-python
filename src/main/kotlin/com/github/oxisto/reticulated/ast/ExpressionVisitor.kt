@@ -17,15 +17,21 @@ class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
     // TODO: can be different things
     //return super.visitAtom_expr(ctx)
 
-    // first child is the primary
-    val primary = ctx.getChild(0).accept(this) as Primary
+    return if(ctx.childCount == 1)
+    {
+      ctx.getChild(0).accept(this)
+    } else {
 
-    // create a call
-    val call = Call(primary)
+      // first child is the primary
+      val primary = ctx.getChild(0).accept(this) as Primary
 
-    // TODO: parse arguments of trailer
+      // create a call
+      val call = Call(primary)
 
-    return call
+      // TODO: parse arguments of trailer
+
+      call
+    }
   }
 
   override fun visitAtom(ctx: Python3Parser.AtomContext?): Expression {

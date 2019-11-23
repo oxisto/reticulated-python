@@ -24,10 +24,7 @@ class ParameterListVisitor(val scope: Scope) : Python3BaseVisitor<List<Parameter
         continue;
       }
 
-      val id = tree.accept(IdentifierVisitor(this.scope))
-
-      // create parameter
-      val parameter = Parameter(id)
+      val parameter = tree.accept(ParameterVisitor(this.scope))
 
       list.add(parameter)
     }

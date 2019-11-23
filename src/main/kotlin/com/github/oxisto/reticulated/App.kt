@@ -3,34 +3,34 @@
  */
 package com.github.oxisto.reticulated
 
+import com.github.oxisto.reticulated.ast.FileInput
 import com.github.oxisto.reticulated.ast.Scope
 import com.github.oxisto.reticulated.ast.Visitor
 import org.antlr.v4.runtime.CharStreams
 import com.github.oxisto.reticulated.grammar.Python3Lexer
 import com.github.oxisto.reticulated.grammar.Python3Parser
 import org.antlr.v4.runtime.CommonTokenStream
+import java.io.InputStream
 
 class App {
   val greeting: String
     get() {
       return "Hello world."
     }
+
+  fun parse(path: String): FileInput
+  {
+    val inputStream = CharStreams.fromFileName(path)
+    val lexer = Python3Lexer(inputStream);
+    val tokenStream = CommonTokenStream(lexer);
+    val parser = Python3Parser(tokenStream);
+
+    val ctx = parser.file_input();
+
+    // new global scope
+    val global = Scope();
+
+    return ctx.accept(Visitor(global)) as FileInput;
+  }
 }
 
-fun main(args: Array<String>) {
-  val inputStream = CharStreams.fromStream(App::class.java.getResourceAsStream("/main.py"));
-  val lexer = Python3Lexer(inputStream);
-  val tokenStream = CommonTokenStream(lexer);
-  val parser = Python3Parser(tokenStream);
-
-  val ctx = parser.file_input();
-
-  // new global scope
-  val global = Scope();
-
-  val fileInput = ctx.accept(Visitor(global));
-
-  System.out.println(fileInput);
-
-  println(App().greeting)
-}

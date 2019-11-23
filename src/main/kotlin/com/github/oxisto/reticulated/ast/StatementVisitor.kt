@@ -52,8 +52,10 @@ class StatementVisitor(val scope: Scope) : Python3BaseVisitor<Statement>() {
 
     // forth is ':'
 
-    // fifth is the suite
-    val suite = ctx.getChild(4).accept(Visitor(functionScope)) as Suite;
+    // TODO: parse optional return type hint
+
+    // last is the suite
+    val suite = ctx.getChild(ctx.childCount-1).accept(Visitor(functionScope)) as Suite;
 
     // create a new function definition
     val def = FunctionDefinition(id, parameterList, Suite())

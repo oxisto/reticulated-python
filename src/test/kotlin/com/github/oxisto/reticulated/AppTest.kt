@@ -3,12 +3,29 @@
  */
 package com.github.oxisto.reticulated
 
+import java.io.File
 import kotlin.test.Test
 import kotlin.test.assertNotNull
 
+
 class AppTest {
-    @Test fun testAppHasAGreeting() {
+    @Test fun testMain() {
         val classUnderTest = App()
-        assertNotNull(classUnderTest.greeting, "app should have a greeting")
+        val classLoader = javaClass.classLoader
+        val file = File(classLoader.getResource("main.py").file)
+
+        val input = classUnderTest.parse(file.path)
+
+        assertNotNull(input)
+    }
+
+    @Test fun testTypeHintFunction() {
+        val classUnderTest = App()
+        val classLoader = javaClass.classLoader
+        val file = File(classLoader.getResource("hint.py").file)
+
+        val input = classUnderTest.parse(file.path)
+
+        assertNotNull(input)
     }
 }
