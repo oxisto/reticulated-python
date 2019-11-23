@@ -48,6 +48,6 @@ tasks.generateGrammarSource {
     arguments = arguments + listOf("-visitor", "-package", "com.github.oxisto.reticulated.grammar")
 }
 
-tasks.named<JavaCompile>("compileJava") {
+tasks.named("compileKotlin") {
     dependsOn(":generateGrammarSource")
 }
