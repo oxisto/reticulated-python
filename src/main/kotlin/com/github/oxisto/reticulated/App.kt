@@ -3,6 +3,7 @@
  */
 package com.github.oxisto.reticulated
 
+import com.github.oxisto.reticulated.ast.Scope
 import com.github.oxisto.reticulated.ast.Visitor
 import org.antlr.v4.runtime.CharStreams
 import com.github.oxisto.reticulated.grammar.Python3Lexer
@@ -24,7 +25,10 @@ fun main(args: Array<String>) {
 
   val ctx = parser.file_input();
 
-  val fileInput = ctx.accept(Visitor());
+  // new global scope
+  val global = Scope();
+
+  val fileInput = ctx.accept(Visitor(global));
 
   System.out.println(fileInput);
 

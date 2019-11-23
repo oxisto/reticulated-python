@@ -2,9 +2,13 @@ package com.github.oxisto.reticulated.ast;
 
 import java.util.ArrayList;
 
-class FileInput : Node() {
+class FileInput(val statements: ArrayList<Statement> = ArrayList()) : Node() {
 
-  val statements = ArrayList<Statement>();
+  init {
+    for(stmt in statements) {
+      stmt.parent = this
+    }
+  }
 
   override fun toString(): String {
     return "FileInput(statements=$statements)"

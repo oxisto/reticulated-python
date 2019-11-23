@@ -1,13 +1,19 @@
 package com.github.oxisto.reticulated.ast
 
-class FunctionDefinition(val id: Identifier) : CompoundStatement() {
+import javax.swing.plaf.nimbus.State
+
+class FunctionDefinition(val id: Identifier,
+                         val parameterList: ParameterList = ParameterList(), suite: Suite) : CompoundStatement(suite) {
+
+  init {
+    id.parent = this
+    parameterList.parent = this
+  }
 
   // TODO: decorators
 
-  var parameters: ArrayList<String> = ArrayList();
-
   override fun toString(): String {
-    return "FunctionDefinition(id=$id, parameters=$parameters)"
+    return "FunctionDefinition(id=$id, parameters=$parameterList)"
   }
 
 }
