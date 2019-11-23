@@ -1,5 +1,7 @@
 package com.github.oxisto.reticulated.ast
 
+import com.github.oxisto.reticulated.ast.expression.Identifier
+
 enum class ScopeType
 {
   GLOBAL,

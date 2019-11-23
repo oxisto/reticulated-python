@@ -1,5 +1,6 @@
 package com.github.oxisto.reticulated.ast;
 
+import com.github.oxisto.reticulated.ast.statement.Statement
 import java.util.ArrayList;
 
 class FileInput(val statements: ArrayList<Statement> = ArrayList()) : Node() {

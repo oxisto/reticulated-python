@@ -1,5 +1,12 @@
 package com.github.oxisto.reticulated.ast
 
+import com.github.oxisto.reticulated.ast.expression.Call
+import com.github.oxisto.reticulated.ast.expression.Expression
+import com.github.oxisto.reticulated.ast.expression.Identifier
+import com.github.oxisto.reticulated.ast.expression.Primary
+import com.github.oxisto.reticulated.ast.simple.ExpressionStatement
+import com.github.oxisto.reticulated.ast.simple.SimpleStatement
+import com.github.oxisto.reticulated.ast.statement.*
 import com.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import com.github.oxisto.reticulated.grammar.Python3Parser
 import org.antlr.v4.runtime.tree.TerminalNode
@@ -34,12 +41,23 @@ class Visitor(val scope: Scope) : Python3BaseVisitor<Node>() {
       throw EmptyContextException()
     }
 
-    val node = super.visitStmt(ctx)
+    if(ctx.childCount == 1 && ctx.getChild(0) is Python3Parser.Compound_stmtContext)
+    {
+      // its a compound statement
+      return ctx.getChild(0).accept(this) as CompoundStatement
+    }
+    else
+    {
+      // create a statement list
+      val list = ArrayList<SimpleStatement>()
 
-    if (node !is Statement) {
-      throw Exception()
-    } else {
-      return node
+      // loop through children
+      for(tree in ctx.children)
+      {
+        list.add(tree.accept(this) as SimpleStatement)
+      }
+
+      return StatementList(list)
     }
   }
 
@@ -95,7 +113,7 @@ class Visitor(val scope: Scope) : Python3BaseVisitor<Node>() {
     }
 
     // second parameter is the list of (typed) arguments
-    var list = ctx.getChild(1).accept(ListVisitor(this.scope))
+    var list = ctx.getChild(1).accept(ParameterListVisitor(this.scope))
 
     return ParameterList(list);
   }
@@ -123,20 +141,44 @@ class Visitor(val scope: Scope) : Python3BaseVisitor<Node>() {
   }
 
 
-  override fun visitSimple_stmt(ctx: Python3Parser.Simple_stmtContext?): Node {
+  override fun visitSimple_stmt(ctx: Python3Parser.Simple_stmtContext?): SimpleStatement {
     if (ctx == null) {
       throw EmptyContextException()
     }
 
     // not sure how to handle this
-    return ctx.getChild(0).accept(this) as Statement
+    val expression = ctx.getChild(0).accept(this) as Expression
+
+    return ExpressionStatement(expression)
   }
 
   override fun visitAtom_expr(ctx: Python3Parser.Atom_exprContext?): Node {
+    if (ctx == null) {
+      throw EmptyContextException()
+    }
+
     // TODO: can be different things
     //return super.visitAtom_expr(ctx)
-    val expression = AtomExpression(Object(), listOf())
 
-    return expression
+    // first child is the primary
+    val primary = ctx.getChild(0).accept(this) as Primary
+
+    // create a call
+    val call = Call(primary)
+
+    // TODO: parse arguments of trailer
+
+    return call
+  }
+
+  override fun visitAtom(ctx: Python3Parser.AtomContext?): Node {
+    if (ctx == null) {
+      throw EmptyContextException()
+    }
+
+    // lets just return an identifier for now
+    val id = Identifier(ctx.text)
+
+    return id
   }
 }
