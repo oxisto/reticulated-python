@@ -1,5 +1,6 @@
 package com.github.oxisto.reticulated.ast.statement
 
+import com.github.oxisto.reticulated.ast.Container
 import com.github.oxisto.reticulated.ast.simple.SimpleStatement
 
 /**
@@ -7,7 +8,7 @@ import com.github.oxisto.reticulated.ast.simple.SimpleStatement
  *
  * Reference: https://docs.python.org/3/reference/compound_stmts.html#grammar-token-stmt-list
  */
-class StatementList(val statements: List<SimpleStatement>) : Statement() {
+class StatementList(val statements: List<SimpleStatement>) : Statement(), Container<SimpleStatement> {
 
   override fun isCompoundStatement(): Boolean {
     return false
@@ -16,5 +17,7 @@ class StatementList(val statements: List<SimpleStatement>) : Statement() {
   override fun isStatementList(): Boolean {
     return true
   }
+
+  override val children get() = this.statements
 
 }

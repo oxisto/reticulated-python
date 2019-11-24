@@ -1,4 +1,4 @@
 package com.github.oxisto.reticulated.ast.expression
 
-class StringLiteral : Literal() {
+class StringLiteral(value: String) : Literal<String>(value) {
 }

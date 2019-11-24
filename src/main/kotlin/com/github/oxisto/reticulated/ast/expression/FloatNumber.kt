@@ -1,4 +1,4 @@
 package com.github.oxisto.reticulated.ast.expression
 
-class FloatNumber : Literal() {
+class FloatNumber(value: Float) : Literal<Float>(value) {
 }

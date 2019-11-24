@@ -11,16 +11,22 @@ import com.github.oxisto.reticulated.solver.ResolvedVariable
  */
 class Name(name: String) : Identifier(name), Identifiable {
 
-  /**
-   * Tries to resolve the name to an object (or rather a variable holding the object) in the specified scope.
-   */
-  fun resolve(scope: Scope): ResolvedVariable? {
-    return scope.resolveByIdentifier(this)
+  companion object {
+    fun fromIdentifier(id: Identifier): Name {
+      return Name(id.name)
+    }
   }
 
   override val id: Identifier
     get() {
       return this
     }
+
+  /**
+   * Tries to resolve the name to an object (or rather a variable holding the object) in the specified scope.
+   */
+  fun resolve(scope: Scope): ResolvedVariable? {
+    return scope.resolveByIdentifier(this)
+  }
 
 }

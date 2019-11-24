@@ -1,9 +1,6 @@
 package com.github.oxisto.reticulated.ast
 
-import com.github.oxisto.reticulated.ast.expression.Call
-import com.github.oxisto.reticulated.ast.expression.Expression
-import com.github.oxisto.reticulated.ast.expression.Identifier
-import com.github.oxisto.reticulated.ast.expression.Primary
+import com.github.oxisto.reticulated.ast.expression.*
 import com.github.oxisto.reticulated.ast.simple.ExpressionStatement
 import com.github.oxisto.reticulated.ast.simple.SimpleStatement
 import com.github.oxisto.reticulated.ast.statement.*

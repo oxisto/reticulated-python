@@ -3,29 +3,85 @@
  */
 package com.github.oxisto.reticulated
 
+import com.github.oxisto.reticulated.ast.expression.Call
+import com.github.oxisto.reticulated.ast.expression.Name
+import com.github.oxisto.reticulated.ast.simple.ExpressionStatement
+import com.github.oxisto.reticulated.ast.statement.FunctionDefinition
 import java.io.File
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 
 
 class AppTest {
-    @Test fun testMain() {
-        val classUnderTest = App()
-        val classLoader = javaClass.classLoader
-        val file = File(classLoader.getResource("main.py").file)
+  @Test
+  fun testMain() {
+    val classUnderTest = App()
+    val classLoader = javaClass.classLoader
+    val file = File(classLoader.getResource("main.py").file)
 
-        val input = classUnderTest.parse(file.path)
+    val input = classUnderTest.parse(file.path)
+    assertNotNull(input)
 
-        assertNotNull(input)
-    }
+    // first function without arguments
+    var func = input.statements[0]
+    assertTrue(func is FunctionDefinition)
+    assertEquals("func_no_arguments", func.id.name)
+    assertEquals(0, func.parameterList.count)
 
-    @Test fun testTypeHintFunction() {
-        val classUnderTest = App()
-        val classLoader = javaClass.classLoader
-        val file = File(classLoader.getResource("hint.py").file)
+    // first function without arguments
+    func = input.statements[1]
+    assertTrue(func is FunctionDefinition)
+    assertEquals("func_one_argument", func.id.name)
+    assertEquals(1, func.parameterList.count)
 
-        val input = classUnderTest.parse(file.path)
+    // first function without arguments
+    func = input.statements[2]
+    assertTrue(func is FunctionDefinition)
+    assertEquals("func_two_arguments", func.id.name)
+    assertEquals(2, func.parameterList.count)
+  }
 
-        assertNotNull(input)
-    }
+  @Test
+  fun testTypeHintFunction() {
+    val classUnderTest = App()
+    val classLoader = javaClass.classLoader
+    val file = File(classLoader.getResource("hint.py").file)
+
+    val input = classUnderTest.parse(file.path)
+
+    assertNotNull(input)
+  }
+
+  @Test
+  fun testTypeSolve() {
+    val classUnderTest = App()
+    val classLoader = javaClass.classLoader
+    val file = File(classLoader.getResource("solve.py").file)
+
+    val input = classUnderTest.parse(file.path)
+
+    val func = input.statements[0]
+    assertTrue(func is FunctionDefinition)
+
+    // get the first statement of the suite
+    val stmt = func.suite.statements[0].asStatementList().statements[0]
+    assertTrue(stmt is ExpressionStatement)
+
+    val call = stmt.expression
+    assertTrue(call is Call)
+
+    // get first argument
+    val arg0 = call.argumentList[0]
+    assertNotNull(arg0)
+
+    val name = arg0.expression
+    assertTrue(name is Name)
+    assertEquals("i", name.name)
+
+    var resolved = name.resolve()
+
+    assertNotNull(input)
+  }
 }
