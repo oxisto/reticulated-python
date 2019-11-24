@@ -63,6 +63,9 @@ class StatementVisitor(val scope: Scope) : Python3BaseVisitor<Statement>() {
     // create a new function definition
     val def = FunctionDefinition(id, parameterList, suite, expression)
 
+    // add it to the function scope
+    functionScope.handleParameterList(parameterList)
+
     return def;
   }
 

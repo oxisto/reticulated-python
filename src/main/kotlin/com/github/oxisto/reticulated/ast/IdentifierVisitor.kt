@@ -17,9 +17,6 @@ class IdentifierVisitor(val scope: Scope) : Python3BaseVisitor<Identifier>() {
 
     val id = Identifier(node.text)
 
-    // TODO: check, where a good place to add variables to a scope is
-    this.scope.addVariable(id)
-
     return id
   }
 
