@@ -2,6 +2,7 @@ package com.github.oxisto.reticulated.ast.statement
 
 import com.github.oxisto.reticulated.ast.expression.Identifier
 import com.github.oxisto.reticulated.ast.Suite
+import com.github.oxisto.reticulated.ast.expression.Expression
 
 /**
  * A function definition
@@ -9,7 +10,8 @@ import com.github.oxisto.reticulated.ast.Suite
  * Reference: https://docs.python.org/3/reference/compound_stmts.html#grammar-token-funcdef
  */
 class FunctionDefinition(val id: Identifier,
-                         val parameterList: ParameterList = ParameterList(), suite: Suite) : CompoundStatement(suite) {
+                         val parameterList: ParameterList = ParameterList(), suite: Suite,
+                         val expression: Expression?) : CompoundStatement(suite) {
 
   // TODO: decorators
 
