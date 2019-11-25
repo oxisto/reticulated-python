@@ -47,8 +47,8 @@ dependencies {
 }
 
 tasks.generateGrammarSource {
-    outputDirectory = file("${project.buildDir}/generated-src/antlr/main/com/github/oxisto/reticulated/grammar")
-    arguments = arguments + listOf("-visitor", "-package", "com.github.oxisto.reticulated.grammar")
+    outputDirectory = file("${project.buildDir}/generated-src/antlr/main/io/github/oxisto/reticulated/grammar")
+    arguments = arguments + listOf("-visitor", "-package", "io.github.oxisto.reticulated.grammar")
 }
 
 tasks.named("compileKotlin") {

@@ -6,30 +6,25 @@ package io.github.oxisto.reticulated
 import io.github.oxisto.reticulated.ast.FileInput
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.Visitor
-import org.antlr.v4.runtime.CharStreams
 import io.github.oxisto.reticulated.grammar.Python3Lexer
 import io.github.oxisto.reticulated.grammar.Python3Parser
+import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
 
-class App {
-  val greeting: String
-    get() {
-      return "Hello world."
-    }
+class PythonParser {
 
-  fun parse(path: String): FileInput
-  {
+  fun parse(path: String): FileInput {
     val inputStream = CharStreams.fromFileName(path)
-    val lexer = Python3Lexer(inputStream);
-    val tokenStream = CommonTokenStream(lexer);
-    val parser = Python3Parser(tokenStream);
+    val lexer = Python3Lexer(inputStream)
+    val tokenStream = CommonTokenStream(lexer)
+    val parser = Python3Parser(tokenStream)
 
-    val ctx = parser.file_input();
+    val ctx = parser.file_input()
 
     // new global scope
-    val global = Scope();
+    val global = Scope()
 
-    return ctx.accept(Visitor(global)) as FileInput;
+    return ctx.accept(Visitor(global)) as FileInput
   }
 }
 

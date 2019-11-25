@@ -14,10 +14,10 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 
-class AppTest {
+class PythonParserTest {
   @Test
   fun testMain() {
-    val classUnderTest = App()
+    val classUnderTest = PythonParser()
     val classLoader = javaClass.classLoader
     val file = File(classLoader.getResource("main.py").file)
 
@@ -45,7 +45,7 @@ class AppTest {
 
   @Test
   fun testTypeHintFunction() {
-    val classUnderTest = App()
+    val classUnderTest = PythonParser()
     val classLoader = javaClass.classLoader
     val file = File(classLoader.getResource("hint.py").file)
 
@@ -56,7 +56,7 @@ class AppTest {
 
   @Test
   fun testTypeSolve() {
-    val classUnderTest = App()
+    val classUnderTest = PythonParser()
     val classLoader = javaClass.classLoader
     val file = File(classLoader.getResource("solve.py").file)
 
