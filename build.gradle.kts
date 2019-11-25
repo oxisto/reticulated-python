@@ -21,7 +21,7 @@ idea {
     }
 }
 
-group = "com.github.oxisto"
+group = "io.github.oxisto"
 version = "0.1-SNAPSHOT"
 
 repositories {
