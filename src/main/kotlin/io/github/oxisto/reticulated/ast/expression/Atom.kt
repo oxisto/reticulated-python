@@ -1,5 +1,5 @@
 package io.github.oxisto.reticulated.ast.expression
 
-open class Atom : Primary() {
+abstract class Atom : Primary() {
 
 }

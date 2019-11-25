@@ -7,4 +7,8 @@ class Call(val primary: Primary, val argumentList: ArgumentList = ArgumentList()
     argumentList.parent = this
   }
 
+  override fun isCall(): Boolean {
+    return true
+  }
+
 }

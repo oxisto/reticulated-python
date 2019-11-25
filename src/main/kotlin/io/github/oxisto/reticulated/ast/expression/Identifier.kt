@@ -1,8 +1,5 @@
 package io.github.oxisto.reticulated.ast.expression
 
-import io.github.oxisto.reticulated.ast.expression.Atom
-import io.github.oxisto.reticulated.ast.expression.Primary
-
 open class Identifier(val name: String) : Atom() {
 
   override fun toString(): String {
@@ -18,6 +15,10 @@ open class Identifier(val name: String) : Atom() {
     if (name != other.name) return false
 
     return true
+  }
+
+  override fun isCall(): Boolean {
+    return false
   }
 
   override fun hashCode(): Int {
