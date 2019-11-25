@@ -79,9 +79,7 @@ class AppTest {
     val name = arg0.expression
     assertTrue(name is Name)
     assertEquals("i", name.name)
-
-    var resolved = name.resolve()
-
+    
     assertNotNull(input)
   }
 }
