@@ -13,4 +13,4 @@ jobs:
       with:
         java-version: '11'
     - name: Build
-      run: ./gradlew build
+      run: ./gradlew -PGITHUB_USERNAME=$GITHUB_ACTOR -PGITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} publish

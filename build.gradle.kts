@@ -4,13 +4,13 @@
  * This generated file contains a sample Kotlin library project to get you started.
  */
 
-
 plugins {
     // Apply the Kotlin JVM plugin to add support for Kotlin.
     id("org.jetbrains.kotlin.jvm") version "1.3.41"
 
     // Apply the java-library plugin for API and implementation separation.
     `java-library`
+    `maven-publish`
     antlr
     idea
 }
@@ -20,6 +20,9 @@ idea {
         generatedSourceDirs.add(file("${project.buildDir}/generated-src/antlr/main"))
     }
 }
+
+group = "com.github.oxisto"
+version = "0.1-SNAPSHOT"
 
 repositories {
     // Use jcenter for resolving dependencies.
@@ -50,4 +53,23 @@ tasks.generateGrammarSource {
 
 tasks.named("compileKotlin") {
     dependsOn(":generateGrammarSource")
+}
+
+publishing {
+    repositories {
+        maven {
+            url = uri("https://maven.pkg.github.com/oxisto/reticulated-python")
+
+            credentials {
+                username = findProperty("GITHUB_USERNAME") as String?
+                password = findProperty("GITHUB_TOKEN") as String?
+            }
+        }
+    }
+
+    publications {
+        create<MavenPublication>("maven") {
+            from(components["java"])
+        }
+    }
 }
