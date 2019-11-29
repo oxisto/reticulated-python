@@ -1,6 +1,7 @@
-package io.github.oxisto.reticulated.ast
+package io.github.oxisto.reticulated.ast.expression
 
-import io.github.oxisto.reticulated.ast.expression.Argument
+import io.github.oxisto.reticulated.ast.EmptyContextException
+import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 
@@ -11,7 +12,11 @@ class ArgumentVisitor(val scope: Scope) : Python3BaseVisitor<Argument>() {
       throw EmptyContextException()
     }
 
-    val expression = ctx.getChild(0).accept(ExpressionVisitor(this.scope))
+    val expression = ctx.getChild(0).accept(
+      ExpressionVisitor(
+        this.scope
+      )
+    )
 
     return Argument(expression)
   }

@@ -1,6 +1,7 @@
-package io.github.oxisto.reticulated.ast
+package io.github.oxisto.reticulated.ast.statement
 
-import io.github.oxisto.reticulated.ast.statement.Parameter
+import io.github.oxisto.reticulated.ast.EmptyContextException
+import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 import org.antlr.v4.runtime.tree.TerminalNode
@@ -15,11 +16,9 @@ class ParameterListVisitor(val scope: Scope) : Python3BaseVisitor<List<Parameter
     val list = ArrayList<Parameter>()
 
     // loop through the children
-    for(tree in ctx.children)
-    {
+    for (tree in ctx.children) {
       // skip commas, etc.
-      if(tree is TerminalNode)
-      {
+      if (tree is TerminalNode) {
         continue;
       }
 

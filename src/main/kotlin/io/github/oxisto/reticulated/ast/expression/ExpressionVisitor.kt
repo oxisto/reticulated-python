@@ -1,7 +1,7 @@
-package io.github.oxisto.reticulated.ast
+package io.github.oxisto.reticulated.ast.expression
 
-import io.github.oxisto.reticulated.ast.expression.*
-import io.github.oxisto.reticulated.ast.expression.*
+import io.github.oxisto.reticulated.ast.EmptyContextException
+import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 import org.antlr.v4.runtime.tree.TerminalNode
@@ -23,7 +23,12 @@ class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
       val primary = ctx.getChild(0).accept(this) as Primary
 
       // parse the trailer
-      val argumentList = ctx.getChild(Python3Parser.TrailerContext::class.java, 0).accept(ArgumentListVisitor(this.scope))
+      val argumentList =
+        ctx.getChild(Python3Parser.TrailerContext::class.java, 0).accept(
+          ArgumentListVisitor(
+            this.scope
+          )
+        )
 
       // create a call
       val call = Call(primary, argumentList)
@@ -61,6 +66,12 @@ class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
 
     if (text.startsWith("\"")) {
       return StringLiteral(text.replace("\"", ""))
+    }
+
+    // check if it is a number
+    val i = text.toIntOrNull()
+    if (i != null) {
+      return Integer(i)
     }
 
     // lets just return an identifier for now

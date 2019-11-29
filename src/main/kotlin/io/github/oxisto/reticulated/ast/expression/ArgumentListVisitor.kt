@@ -1,7 +1,7 @@
-package io.github.oxisto.reticulated.ast
+package io.github.oxisto.reticulated.ast.expression
 
-import io.github.oxisto.reticulated.ast.expression.Argument
-import io.github.oxisto.reticulated.ast.expression.ArgumentList
+import io.github.oxisto.reticulated.ast.EmptyContextException
+import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 

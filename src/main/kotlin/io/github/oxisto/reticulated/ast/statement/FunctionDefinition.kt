@@ -9,9 +9,11 @@ import io.github.oxisto.reticulated.ast.expression.Identifier
  *
  * Reference: https://docs.python.org/3/reference/compound_stmts.html#grammar-token-funcdef
  */
-class FunctionDefinition(val id: Identifier,
-                         val parameterList: ParameterList = ParameterList(), suite: Suite,
-                         val expression: Expression?) : Definition(suite) {
+class FunctionDefinition(
+  val id: Identifier,
+  val parameterList: ParameterList = ParameterList(), suite: Suite,
+  val expression: Expression?
+) : Definition(suite) {
   // TODO: decorators
 
   init {

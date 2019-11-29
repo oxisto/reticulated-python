@@ -1,7 +1,9 @@
 package io.github.oxisto.reticulated.ast
 
 import io.github.oxisto.reticulated.ast.statement.ParameterList
+import io.github.oxisto.reticulated.ast.statement.ParameterListVisitor
 import io.github.oxisto.reticulated.ast.statement.Statement
+import io.github.oxisto.reticulated.ast.statement.StatementVisitor
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 import org.antlr.v4.runtime.tree.TerminalNode
@@ -40,7 +42,11 @@ class Visitor(val scope: Scope) : Python3BaseVisitor<Node>() {
     }
 
     // second parameter is the list of (typed) arguments
-    var list = ctx.getChild(1).accept(ParameterListVisitor(this.scope))
+    var list = ctx.getChild(1).accept(
+      ParameterListVisitor(
+        this.scope
+      )
+    )
 
     return ParameterList(list);
   }
