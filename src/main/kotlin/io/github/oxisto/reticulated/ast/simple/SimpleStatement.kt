@@ -8,6 +8,16 @@ abstract class SimpleStatement : Node() {
     return this as ExpressionStatement
   }
 
+  fun asAssignmentStatement(): AssignmentExpression {
+    return this as AssignmentExpression
+  }
+
+  fun asImportStatement(): ImportStatement {
+    return this as ImportStatement
+  }
+
   abstract fun isExpressionStatement(): Boolean
+  abstract fun isAssignmentStatement(): Boolean
+  abstract fun isImportStatement(): Boolean
 
 }

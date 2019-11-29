@@ -3,6 +3,7 @@ package io.github.oxisto.reticulated.ast.simple
 import io.github.oxisto.reticulated.ast.EmptyContextException
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
+import io.github.oxisto.reticulated.ast.expression.IdentifierVisitor
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 
@@ -17,6 +18,22 @@ class SimpleStatementVisitor(val scope: Scope) : Python3BaseVisitor<SimpleStatem
     return ctx.getChild(0).accept(this)
   }
 
+  override fun visitImport_stmt(ctx: Python3Parser.Import_stmtContext?): ImportStatement {
+    // TODO: Define a name in the local namespace for the import statement
+    return super.visitImport_stmt(ctx) as ImportStatement
+  }
+
+  override fun visitImport_name(ctx: Python3Parser.Import_nameContext?): ImportStatement {
+    if (ctx == null) {
+      throw EmptyContextException()
+    }
+
+    // TODO: Support dotted modules
+    val module = ctx.getChild(1).accept(IdentifierVisitor(this.scope))
+
+    return ImportStatement(module)
+  }
+
   override fun visitExpr_stmt(ctx: Python3Parser.Expr_stmtContext?): SimpleStatement {
     if (ctx == null) {
       throw EmptyContextException()
@@ -25,9 +42,7 @@ class SimpleStatementVisitor(val scope: Scope) : Python3BaseVisitor<SimpleStatem
     // need some kind of logic here how to decide what exactly this is
     if (ctx.childCount == 1) {
       val expression = ctx.getChild(0).accept(
-        ExpressionVisitor(
-          this.scope
-        )
+        ExpressionVisitor(this.scope)
       )
 
       return ExpressionStatement(expression)

@@ -1,8 +1,8 @@
 package io.github.oxisto.reticulated.ast.simple
 
-import io.github.oxisto.reticulated.ast.expression.Expression
+import io.github.oxisto.reticulated.ast.expression.Identifier
 
-class AssignmentExpression(val target: Target, val expression: Expression) : SimpleStatement() {
+class ImportStatement(val module: Identifier) : SimpleStatement() {
 
   override fun isExpressionStatement(): Boolean {
     return false
@@ -13,7 +13,7 @@ class AssignmentExpression(val target: Target, val expression: Expression) : Sim
   }
 
   override fun isImportStatement(): Boolean {
-    return false
+    return true
   }
 
 }

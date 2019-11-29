@@ -8,4 +8,12 @@ class ExpressionStatement(val expression: Expression) : SimpleStatement() {
     return true
   }
 
+  override fun isAssignmentStatement(): Boolean {
+    return false
+  }
+
+  override fun isImportStatement(): Boolean {
+    return false
+  }
+
 }

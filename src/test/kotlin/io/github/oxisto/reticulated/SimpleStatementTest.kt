@@ -4,6 +4,7 @@ import io.github.oxisto.reticulated.ast.expression.Call
 import io.github.oxisto.reticulated.ast.expression.Integer
 import io.github.oxisto.reticulated.ast.simple.AssignmentExpression
 import io.github.oxisto.reticulated.ast.simple.ExpressionStatement
+import io.github.oxisto.reticulated.ast.simple.ImportStatement
 import io.github.oxisto.reticulated.ast.statement.StatementList
 import org.junit.Test
 import java.io.File
@@ -37,5 +38,18 @@ class SimpleStatementTest {
     val call = exprStatement.expression
     assertTrue(call is Call)
     assertEquals("print", call.primary.asIdentifier().name)
+  }
+
+  @Test
+  fun testImport() {
+    val file = File(javaClass.classLoader.getResource("import.py").file)
+
+    val input = PythonParser().parse(file.path)
+    assertNotNull(input)
+
+    val s0 = input.statements[0] as StatementList
+    val import = s0.first()
+    assertTrue(import is ImportStatement)
+    assertEquals("os", import.module.name)
   }
 }
