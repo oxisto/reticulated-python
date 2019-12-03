@@ -21,7 +21,7 @@ class PythonParserTest {
     val classLoader = javaClass.classLoader
     val file = File(classLoader.getResource("main.py").file)
 
-    val input = classUnderTest.parse(file.path)
+    val input = classUnderTest.parse(file.path).root
     assertNotNull(input)
 
     // first function without arguments
@@ -60,7 +60,7 @@ class PythonParserTest {
     val classLoader = javaClass.classLoader
     val file = File(classLoader.getResource("solve.py").file)
 
-    val input = classUnderTest.parse(file.path)
+    val input = classUnderTest.parse(file.path).root
 
     val func = input.statements[0]
     assertTrue(func is FunctionDefinition)

@@ -25,7 +25,7 @@ idea {
 }
 
 group = "io.github.oxisto"
-version = "0.1-SNAPSHOT"
+version = "0.2-SNAPSHOT"
 
 repositories {
   // Use jcenter for resolving dependencies.

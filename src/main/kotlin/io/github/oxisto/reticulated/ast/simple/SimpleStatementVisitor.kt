@@ -4,6 +4,7 @@ import io.github.oxisto.reticulated.ast.EmptyContextException
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
 import io.github.oxisto.reticulated.ast.expression.IdentifierVisitor
+import io.github.oxisto.reticulated.ast.expression.Name
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 
@@ -30,6 +31,12 @@ class SimpleStatementVisitor(val scope: Scope) : Python3BaseVisitor<SimpleStatem
 
     // TODO: Support dotted modules
     val module = ctx.getChild(1).accept(IdentifierVisitor(this.scope))
+
+    // build a name
+    var name = Name(module.name)
+
+    // bind to scope
+    name.bind(this.scope)
 
     return ImportStatement(module)
   }

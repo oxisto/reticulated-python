@@ -1,5 +1,7 @@
 package io.github.oxisto.reticulated.ast.expression
 
+import io.github.oxisto.reticulated.ast.Scope
+
 open class Identifier(val name: String) : Atom() {
 
   override fun toString(): String {

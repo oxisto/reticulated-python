@@ -17,7 +17,7 @@ class SimpleStatementTest {
   fun testParse() {
     val file = File(javaClass.classLoader.getResource("simple_stmt.py").file)
 
-    val input = PythonParser().parse(file.path)
+    val input = PythonParser().parse(file.path).root
     assertNotNull(input)
 
     assertEquals(2, input.statements.size)
@@ -44,7 +44,7 @@ class SimpleStatementTest {
   fun testImport() {
     val file = File(javaClass.classLoader.getResource("import.py").file)
 
-    val input = PythonParser().parse(file.path)
+    val input = PythonParser().parse(file.path).root
     assertNotNull(input)
 
     val s0 = input.statements[0] as StatementList

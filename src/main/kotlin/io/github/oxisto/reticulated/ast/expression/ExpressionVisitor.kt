@@ -22,18 +22,34 @@ class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
       // first child is the primary
       val primary = ctx.getChild(0).accept(this) as Primary
 
-      // parse the trailer
-      val argumentList =
-        ctx.getChild(Python3Parser.TrailerContext::class.java, 0).accept(
-          ArgumentListVisitor(
-            this.scope
+      // check the trailer and decide what it is
+      var trailer = ctx.getChild(Python3Parser.TrailerContext::class.java, 0)
+
+      if (trailer.childCount == 3 && trailer.getChild(TerminalNode::class.java, 0).text == "(") {
+        // it is a call
+
+        // parse the trailer
+        val argumentList =
+          trailer.accept(
+            ArgumentListVisitor(
+              this.scope
+            )
           )
-        )
 
-      // create a call
-      val call = Call(primary, argumentList)
+        // create a call
+        val call = Call(primary, argumentList)
 
-      call
+        call
+      } else if (trailer.childCount == 2 && trailer.getChild(TerminalNode::class.java, 0).text == ".") {
+        // it is an attribute ref, parse the identifier
+        val id = trailer.getChild(1).accept(IdentifierVisitor(this.scope))
+
+        val attributeRef = AttributeRef(primary, id)
+
+        attributeRef
+      } else {
+        throw Exception("could not parse")
+      }
     }
   }
 

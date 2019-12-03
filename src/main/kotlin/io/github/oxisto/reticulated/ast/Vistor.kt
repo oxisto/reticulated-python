@@ -27,9 +27,7 @@ class Visitor(val scope: Scope) : Python3BaseVisitor<Node>() {
       statements.add(stmt)
     }
 
-    val fileInput = FileInput(statements)
-
-    return fileInput
+    return FileInput(statements)
   }
 
   override fun visitParameters(ctx: Python3Parser.ParametersContext?): Node {
@@ -38,17 +36,17 @@ class Visitor(val scope: Scope) : Python3BaseVisitor<Node>() {
     }
 
     if (ctx.childCount == 2) {
-      return ParameterList();
+      return ParameterList()
     }
 
     // second parameter is the list of (typed) arguments
-    var list = ctx.getChild(1).accept(
+    val list = ctx.getChild(1).accept(
       ParameterListVisitor(
         this.scope
       )
     )
 
-    return ParameterList(list);
+    return ParameterList(list)
   }
 
   override fun visitSuite(ctx: Python3Parser.SuiteContext?): Node {
@@ -61,10 +59,10 @@ class Visitor(val scope: Scope) : Python3BaseVisitor<Node>() {
     for (tree in ctx.children) {
       // skip commas, etc.
       if (tree is TerminalNode) {
-        continue;
+        continue
       }
 
-      var stmt = tree.accept(StatementVisitor(this.scope)) as Statement
+      val stmt = tree.accept(StatementVisitor(this.scope)) as Statement
       list.add(stmt)
     }
 
