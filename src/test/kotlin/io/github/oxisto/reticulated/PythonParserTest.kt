@@ -9,6 +9,7 @@ import io.github.oxisto.reticulated.ast.simple.ExpressionStatement
 import io.github.oxisto.reticulated.ast.statement.FunctionDefinition
 import java.io.File
 import kotlin.test.Test
+import kotlin.test.Ignore
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
@@ -44,6 +45,7 @@ class PythonParserTest {
   }
 
   @Test
+  @Ignore
   fun testTypeHintFunction() {
     val classUnderTest = PythonParser()
     val classLoader = javaClass.classLoader
