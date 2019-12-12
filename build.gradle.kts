@@ -15,6 +15,7 @@ plugins {
   `maven-publish`
   antlr
   signing
+  jacoco
   idea
 
   id("org.sonarqube") version "2.8"
