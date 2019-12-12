@@ -61,6 +61,12 @@ tasks.named("compileKotlin") {
   dependsOn(":generateGrammarSource")
 }
 
+tasks.jacocoTestReport {
+  reports {
+    xml.isEnabled = true
+  }
+}
+
 val mavenCentralUri: String
   get() {
     val releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
