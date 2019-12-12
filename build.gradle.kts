@@ -15,6 +15,7 @@ plugins {
   `maven-publish`
   antlr
   signing
+  jacoco
   idea
 
   id("org.sonarqube") version "2.8"
@@ -58,6 +59,12 @@ tasks.generateGrammarSource {
 
 tasks.named("compileKotlin") {
   dependsOn(":generateGrammarSource")
+}
+
+tasks.jacocoTestReport {
+  reports {
+    xml.isEnabled = true
+  }
 }
 
 val mavenCentralUri: String
