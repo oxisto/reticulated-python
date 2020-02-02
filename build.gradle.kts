@@ -19,6 +19,7 @@ plugins {
   idea
 
   id("org.sonarqube") version "2.8"
+  id("net.researchgate.release") version "2.6.0"
 }
 
 idea {
@@ -28,7 +29,6 @@ idea {
 }
 
 group = "io.github.oxisto"
-version = "0.2-SNAPSHOT"
 
 repositories {
   // Use jcenter for resolving dependencies.
