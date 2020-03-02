@@ -14,6 +14,7 @@ import org.antlr.v4.runtime.CommonTokenStream
 class PythonParser {
 
   fun parse(path: String): ParserResult {
+
     val inputStream = CharStreams.fromFileName(path)
     val lexer = Python3Lexer(inputStream)
     val tokenStream = CommonTokenStream(lexer)
@@ -29,4 +30,3 @@ class PythonParser {
     return ParserResult(fileInput, global)
   }
 }
-

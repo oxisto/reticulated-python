@@ -7,6 +7,9 @@ import io.github.oxisto.reticulated.grammar.Python3Parser
 
 class ArgumentListVisitor(val scope: Scope) : Python3BaseVisitor<ArgumentList>() {
 
+  /**
+   * It is the trailer form the call in the form of: "(" [ argument_list [","] | comprehension ] ")"
+   */
   override fun visitTrailer(ctx: Python3Parser.TrailerContext?): ArgumentList {
     if (ctx == null) {
       throw EmptyContextException()
@@ -16,7 +19,7 @@ class ArgumentListVisitor(val scope: Scope) : Python3BaseVisitor<ArgumentList>()
       // TODO: Handle comprehension
 
       // second child should be the argument list
-      return ctx.getChild(1).accept(this)
+      ctx.getChild(1).accept(this)
     } else {
       ArgumentList()
     }
