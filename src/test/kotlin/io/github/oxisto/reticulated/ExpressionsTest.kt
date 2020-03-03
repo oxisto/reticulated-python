@@ -2,6 +2,7 @@ package io.github.oxisto.reticulated
 
 import io.github.oxisto.reticulated.ast.expression.Call
 import io.github.oxisto.reticulated.ast.simple.ExpressionStatement
+import io.github.oxisto.reticulated.ast.statement.FunctionDefinition
 import io.github.oxisto.reticulated.ast.statement.StatementList
 import org.junit.Test
 import java.io.File
@@ -44,24 +45,45 @@ class ExpressionsTest {
 
     assertNotNull(input)
 
-    val s1 = input.statements[0] as StatementList
-    val expr = s1.statements[0] as ExpressionStatement
+    val functionDefinition = input.statements[1] as FunctionDefinition
+    assertNotNull(functionDefinition)
+    val parameterList = functionDefinition.parameterList
+    assertNotNull(parameterList)
+    val param1 = parameterList.parameters[0]
+    assertNotNull(param1)
+    // TODO: parameter expression is null
+    // val param1Expression = param1.expression as Expression
+    // assertNotNull(param1Expression)
+    val param2 = parameterList.parameters[1]
+    assertNotNull(param2)
+    // val param2Expression = param2.expression as Expression
+    // assertNotNull(param2Expression)
+
+    val statementList = input.statements[2] as StatementList
+    assertNotNull(statementList)
+    val expr = statementList.statements[0] as ExpressionStatement
+    assertNotNull(expr)
     val call = expr.expression as Call
+    assertNotNull(call)
     val primary = call.primary
-    val argList = call.argumentList
-    val kwarg1 = argList[8];
-    val kwarg2 = argList[10]
     assertNotNull(primary)
+    val argList = call.argumentList
+    assertNotNull(argList)
+    val kwarg1 = argList[4]
     assertNotNull(kwarg1)
+    val kwarg2 = argList[6]
     assertNotNull(kwarg2)
+
+    assertNotNull(primary)
   }
 
-  @Test // (timeout = 1_000)
-  fun testListComprehension() {
+  @Test
+  fun testComprehensionArgument() {
+    // booms because it is not implemented
     val file = File(
             javaClass
                 .classLoader
-                .getResource("list_comprehension.py")!!
+                .getResource("comprehension_argument.py")!!
                 .file
     )
 
@@ -71,15 +93,6 @@ class ExpressionsTest {
 
     assertNotNull(input)
 
-    val s1 = input.statements[0] as StatementList
-    val expr = s1.statements[0] as ExpressionStatement
-    val call = expr.expression as Call
-    val primary = call.primary
-    val argList = call.argumentList
-    val kwarg1 = argList[8];
-    val kwarg2 = argList[10]
-    assertNotNull(primary)
-    assertNotNull(kwarg1)
-    assertNotNull(kwarg2)
+    // TODO: further assertinons
   }
 }

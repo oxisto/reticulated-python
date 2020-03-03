@@ -2,6 +2,7 @@ package io.github.oxisto.reticulated.ast.expression
 
 import io.github.oxisto.reticulated.ast.EmptyContextException
 import io.github.oxisto.reticulated.ast.Scope
+import io.github.oxisto.reticulated.ast.expression.argument.ArgumentListVisitor
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 import org.antlr.v4.runtime.tree.TerminalNode
@@ -21,7 +22,7 @@ class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
       throw EmptyContextException()
     }
 
-    // TODO: can be different things: elems from primary
+    // TODO: can be different things: atom | attributeref | subscription | slicing | call
     // return super.visitAtom_expr(ctx)
 
     return if (ctx.childCount == 1) {

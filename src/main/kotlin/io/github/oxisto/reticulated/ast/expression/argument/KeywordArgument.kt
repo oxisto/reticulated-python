@@ -1,4 +1,6 @@
-package io.github.oxisto.reticulated.ast.expression
+package io.github.oxisto.reticulated.ast.expression.argument
+
+import io.github.oxisto.reticulated.ast.expression.Expression
 
 /**
  * This class represents a keyword_argument (It is not explicit part of the lang spec).
@@ -7,10 +9,10 @@ package io.github.oxisto.reticulated.ast.expression
  *      keyword_argument  ::= keyword_item | kwarg
  *      keyword_item      ::= identifier "=" expression
  *      kwarg             ::= "**" expression
- * [see: https://docs.python.org/3/reference/expressions.html#calls]
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#calls}]
  */
 abstract class KeywordArgument(expression: Expression) : Argument(expression) {
     init {
-        expression.parent = this
+        super.expression.parent = this
     }
 }

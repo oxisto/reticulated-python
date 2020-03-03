@@ -18,7 +18,7 @@ class IdentifierVisitor(val scope: Scope) : Python3BaseVisitor<Identifier>() {
     // TODO: literals and stuff
     // TODO: functions without "primary." identifier are not included
 
-    //return super.visitTerm(ctx)
+    // return super.visitTerm(ctx)
 
     val id = Identifier(node.text)
 
