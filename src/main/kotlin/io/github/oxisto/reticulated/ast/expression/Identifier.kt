@@ -3,12 +3,6 @@ package io.github.oxisto.reticulated.ast.expression
 import io.github.oxisto.reticulated.ast.Scope
 
 open class Identifier(val name: String) : Atom() {
-  /*
-      // Is it necessary to set a parent??
-  init {
-    parent = this
-  }
-   */
 
   override fun toString(): String {
     return "Identifier(name='$name')"

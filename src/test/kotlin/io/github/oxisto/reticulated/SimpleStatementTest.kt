@@ -15,7 +15,7 @@ import kotlin.test.assertTrue
 class SimpleStatementTest {
   @Test
   fun testParse() {
-    val file = File(javaClass.classLoader.getResource("simple_stmt.py")!!.file)
+    val file = File(javaClass.classLoader.getResource("simple_stmt.py").file)
 
     val input = PythonParser().parse(file.path).root
     assertNotNull(input)
@@ -42,7 +42,7 @@ class SimpleStatementTest {
 
   @Test
   fun testImport() {
-    val file = File(javaClass.classLoader.getResource("import.py")!!.file)
+    val file = File(javaClass.classLoader.getResource("import.py").file)
 
     val input = PythonParser().parse(file.path).root
     assertNotNull(input)
