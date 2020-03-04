@@ -33,7 +33,7 @@ class SimpleStatementVisitor(val scope: Scope) : Python3BaseVisitor<SimpleStatem
     val module = ctx.getChild(1).accept(IdentifierVisitor(this.scope))
 
     // build a name
-    var name = Name(module.name)
+    val name = Name(module.name)
 
     // bind to scope
     name.bind(this.scope)
@@ -43,8 +43,11 @@ class SimpleStatementVisitor(val scope: Scope) : Python3BaseVisitor<SimpleStatem
 
   override fun visitExpr_stmt(ctx: Python3Parser.Expr_stmtContext?): SimpleStatement {
     if (ctx == null) {
+
       throw EmptyContextException()
     }
+
+    println("Has " + ctx.childCount + " childs")
 
     // need some kind of logic here how to decide what exactly this is
     if (ctx.childCount == 1) {
@@ -54,7 +57,8 @@ class SimpleStatementVisitor(val scope: Scope) : Python3BaseVisitor<SimpleStatem
 
       return ExpressionStatement(expression)
     } else if (ctx.childCount == 3) {
-      // probably an assignment statement, but there are cases when an assignment has more than 3 children
+
+      // probably an assignment statement, but there are cases when an assignment has more than 3 children e.g. a = b = 123
       // for now assume that child 0 = target; child 2 = expression
       //val targetList = ctx.getChild(0).accept(TargetListVisitor(this.scope))
       val target = ctx.getChild(0).accept(TargetVisitor(this.scope))

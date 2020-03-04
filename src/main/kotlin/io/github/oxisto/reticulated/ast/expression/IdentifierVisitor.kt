@@ -7,13 +7,18 @@ import org.antlr.v4.runtime.tree.TerminalNode
 
 class IdentifierVisitor(val scope: Scope) : Python3BaseVisitor<Identifier>() {
 
+  /**
+   * see visitTerminal in the ExpressionVisitor
+   */
   override fun visitTerminal(node: TerminalNode?): Identifier {
     if (node == null) {
-      throw EmptyContextException();
+      throw EmptyContextException()
     }
 
     // TODO: literals and stuff
-    //return super.visitTerm(ctx)
+    // TODO: functions without "primary." identifier are not included
+
+    // return super.visitTerm(ctx)
 
     val id = Identifier(node.text)
 
