@@ -43,4 +43,8 @@ class Name(name: String) : Identifier(name), Identifiable {
     return scope.resolveByIdentifier(this)
   }
 
+  override fun toString(): String {
+    return "Name(name=$name)"
+  }
+
 }

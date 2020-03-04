@@ -9,5 +9,6 @@ abstract class Expression : Node() {
   }
 
   abstract fun isCall(): Boolean
+  abstract override fun toString(): String
 
 }

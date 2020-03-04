@@ -11,4 +11,6 @@ abstract class Primary : Expression() {
     return this as Identifier
   }
 
+  abstract override fun toString(): String
+
 }

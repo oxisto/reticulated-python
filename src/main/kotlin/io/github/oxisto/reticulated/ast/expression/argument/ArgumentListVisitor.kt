@@ -4,51 +4,27 @@ import io.github.oxisto.reticulated.ast.EmptyContextException
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
+import org.antlr.v4.runtime.tree.TerminalNodeImpl
 
-class ArgumentListVisitor(val scope: Scope) : Python3BaseVisitor<ArgumentList>() {
+class ArgumentListVisitor(val scope: Scope): Python3BaseVisitor<ArgumentList>() {
 
-  /**
-   * It is the trailer form the call in the form of: "(" [ argument_list [","] | comprehension ] ")"
-   * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#calls }]
-   */
-  override fun visitTrailer(ctx: Python3Parser.TrailerContext?): ArgumentList {
-    if (ctx == null) {
-      throw EmptyContextException()
-    }
+    override fun visitArglist(ctx: Python3Parser.ArglistContext): ArgumentList {
 
-    return if (ctx.childCount == 3) {
+        val arguments = ArrayList<Argument>()
 
-      // second child should be the argument list
-      val trailer = ctx.getChild(1)
-      if ( trailer.childCount == 1 ){
-
-        val argumentContext = trailer.getChild(0)
-        if ( argumentContext.childCount == 2 ) {
-          // The trailer is a comprehension
-          argumentContext.accept(ComprehensionVisitor(this.scope))
+        // loop through children
+        for (tree in ctx.children) {
+            if(tree !is TerminalNodeImpl) {
+                arguments.add(
+                        tree.accept(
+                                ArgumentVisitor(
+                                        this.scope
+                                )
+                        )
+                )
+            }
         }
-      }
-      // The trailer is a argument_list
-      trailer.accept(this)
-    } else {
-      ArgumentList()
+
+        return ArgumentList(arguments)
     }
-
-  }
-
-  override fun visitArglist(ctx: Python3Parser.ArglistContext?): ArgumentList {
-    if (ctx == null) {
-      throw EmptyContextException()
-    }
-
-    val arguments = ArrayList<Argument>()
-
-    // loop through children
-    for (tree in ctx.children) {
-      arguments.add(tree.accept(ArgumentVisitor(this.scope)))
-    }
-
-    return ArgumentList(arguments)
-  }
-
 }

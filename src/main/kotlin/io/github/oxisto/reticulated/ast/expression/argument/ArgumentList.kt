@@ -2,6 +2,7 @@ package io.github.oxisto.reticulated.ast.expression.argument
 
 import io.github.oxisto.reticulated.ast.Container
 import io.github.oxisto.reticulated.ast.Node
+import io.github.oxisto.reticulated.ast.expression.CallTrailer
 
 /**
  * This class represents the argument_list.
@@ -13,8 +14,11 @@ import io.github.oxisto.reticulated.ast.Node
  *    keyword_arguments ::= keyword_argument ( "," keyword_argument )*
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#calls}]
  */
-class ArgumentList(private val arguments: List<Argument> = ArrayList()) : Node(), Container<Argument> {
+class ArgumentList(private val arguments: List<Argument> = ArrayList()) : CallTrailer(), Container<Argument> {
 
   override val children get() = this.arguments
 
+  override fun toString(): String {
+    return "ArgumentList(argument=$arguments)"
+  }
 }

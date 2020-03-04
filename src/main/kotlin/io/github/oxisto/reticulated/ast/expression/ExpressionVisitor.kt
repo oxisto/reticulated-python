@@ -1,8 +1,9 @@
 package io.github.oxisto.reticulated.ast.expression
 
-import io.github.oxisto.reticulated.ast.EmptyContextException
 import io.github.oxisto.reticulated.ast.Scope
-import io.github.oxisto.reticulated.ast.expression.argument.ArgumentListVisitor
+import io.github.oxisto.reticulated.ast.expression.argument.CallTrailerVisitor
+import io.github.oxisto.reticulated.ast.expression.literal.Integer
+import io.github.oxisto.reticulated.ast.expression.literal.StringLiteral
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 import org.antlr.v4.runtime.tree.TerminalNode
@@ -17,16 +18,13 @@ class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
    * It is probably a primary
    *
    */
-  override fun visitAtom_expr(ctx: Python3Parser.Atom_exprContext?): Expression {
-    if (ctx == null) {
-      throw EmptyContextException()
-    }
+  override fun visitAtom_expr(ctx: Python3Parser.Atom_exprContext): Expression {
 
     // TODO: can be different things: atom | attributeref | subscription | slicing | call
     // return super.visitAtom_expr(ctx)
 
     return if (ctx.childCount == 1) {
-      // check if an atom realy have in every case a childCount from 1
+      // check if an atom really have in every case a childCount from 1
       // It is an atom
       ctx.getChild(0).accept(this)
     } else {
@@ -58,7 +56,7 @@ class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
         // parse the trailer
         val argumentList =
                 trailer.accept(
-                        ArgumentListVisitor(
+                        CallTrailerVisitor(
                                 this.scope
                         )
                 )
@@ -72,10 +70,7 @@ class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
     }
   }
 
-  override fun visitAtom(ctx: Python3Parser.AtomContext?): Atom {
-    if (ctx == null) {
-      throw EmptyContextException()
-    }
+  override fun visitAtom(ctx: Python3Parser.AtomContext): Atom {
 
     val expression = ctx.getChild(0).accept(this)
 
@@ -95,13 +90,10 @@ class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
    * See visitTerminal in the IdentifierVisitor
    *
    */
-  override fun visitTerminal(node: TerminalNode?): Expression {
-    if (node == null) {
-      throw EmptyContextException()
-    }
+  override fun visitTerminal(node: TerminalNode): Expression {
 
     // check for some literals now
-    var text = node.text
+    val text = node.text
 
     if (text.startsWith("\"")) {
       return StringLiteral(text.replace("\"", ""))

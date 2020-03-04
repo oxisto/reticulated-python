@@ -2,5 +2,6 @@ package io.github.oxisto.reticulated.ast.expression
 
 import io.github.oxisto.reticulated.ast.Node
 
-class ImagNumber : Node() {
+abstract class CallTrailer: Node() {
+    abstract override fun toString(): String
 }

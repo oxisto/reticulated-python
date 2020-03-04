@@ -1,6 +1,7 @@
 package io.github.oxisto.reticulated
 
 import io.github.oxisto.reticulated.ast.expression.Call
+import io.github.oxisto.reticulated.ast.expression.argument.ArgumentList
 import io.github.oxisto.reticulated.ast.simple.ExpressionStatement
 import io.github.oxisto.reticulated.ast.statement.FunctionDefinition
 import io.github.oxisto.reticulated.ast.statement.StatementList
@@ -25,8 +26,10 @@ class ExpressionsTest {
 
     val s1 = input.statements[1] as StatementList
     val expr = s1.statements[0] as ExpressionStatement
+    println(expr)
     val call = expr.expression as Call
-    val arg0 = call.argumentList[0]
+    val arg = call.callTrailer as ArgumentList
+    val arg0 = arg[0]
     assertNotNull(arg0)
   }
 
@@ -62,16 +65,17 @@ class ExpressionsTest {
     val statementList = input.statements[2] as StatementList
     assertNotNull(statementList)
     val expr = statementList.statements[0] as ExpressionStatement
+    print(expr)
     assertNotNull(expr)
     val call = expr.expression as Call
     assertNotNull(call)
     val primary = call.primary
     assertNotNull(primary)
-    val argList = call.argumentList
+    val argList = call.callTrailer as ArgumentList
     assertNotNull(argList)
-    val kwarg1 = argList[4]
+    val kwarg1 = argList[2]
     assertNotNull(kwarg1)
-    val kwarg2 = argList[6]
+    val kwarg2 = argList[3]
     assertNotNull(kwarg2)
 
     assertNotNull(primary)

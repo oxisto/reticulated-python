@@ -1,16 +1,18 @@
 package io.github.oxisto.reticulated.ast.expression
 
-import io.github.oxisto.reticulated.ast.expression.argument.ArgumentList
-
-class Call(val primary: Primary, val argumentList: ArgumentList = ArgumentList()) : Primary() {
+class Call(val primary: Primary, val callTrailer: CallTrailer) : Primary() {
 
   init {
     primary.parent = this
-    argumentList.parent = this
+    callTrailer.parent = this
   }
 
   override fun isCall(): Boolean {
     return true
+  }
+
+  override fun toString(): String {
+    return "Call(primary=$primary callTrailer=$callTrailer)"
   }
 
 }

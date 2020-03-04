@@ -5,6 +5,7 @@ package io.github.oxisto.reticulated
 
 import io.github.oxisto.reticulated.ast.expression.Call
 import io.github.oxisto.reticulated.ast.expression.Name
+import io.github.oxisto.reticulated.ast.expression.argument.ArgumentList
 import io.github.oxisto.reticulated.ast.simple.ExpressionStatement
 import io.github.oxisto.reticulated.ast.statement.FunctionDefinition
 import java.io.File
@@ -75,7 +76,8 @@ class PythonParserTest {
     assertTrue(call is Call)
 
     // get first argument
-    val arg0 = call.argumentList[0]
+    val arg = call.callTrailer as ArgumentList
+    val arg0 = arg[0]
     assertNotNull(arg0)
 
     val name = arg0.expression

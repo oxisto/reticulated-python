@@ -10,10 +10,7 @@ class IdentifierVisitor(val scope: Scope) : Python3BaseVisitor<Identifier>() {
   /**
    * see visitTerminal in the ExpressionVisitor
    */
-  override fun visitTerminal(node: TerminalNode?): Identifier {
-    if (node == null) {
-      throw EmptyContextException()
-    }
+  override fun visitTerminal(node: TerminalNode): Identifier {
 
     // TODO: literals and stuff
     // TODO: functions without "primary." identifier are not included

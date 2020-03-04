@@ -18,11 +18,7 @@ import java.lang.Exception
  */
 class ArgumentVisitor(val scope: Scope) : Python3BaseVisitor<Argument>() {
 
-  override fun visitArgument(ctx: Python3Parser.ArgumentContext?): Argument {
-    if (ctx == null) {
-      throw EmptyContextException()
-    }
-
+  override fun visitArgument(ctx: Python3Parser.ArgumentContext): Argument {
     val getExpressionByPosition = {
       positionOfTheExpression: Int -> ctx
         .getChild(positionOfTheExpression)

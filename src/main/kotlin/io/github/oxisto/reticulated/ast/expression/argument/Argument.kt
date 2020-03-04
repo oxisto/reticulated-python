@@ -12,4 +12,7 @@ open class Argument(val expression: Expression) : Node() {
     init {
         expression.parent = this
     }
+    override fun toString(): String {
+        return "Argument(expression=$expression)"
+    }
 }

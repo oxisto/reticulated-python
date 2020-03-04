@@ -1,7 +1,8 @@
 package io.github.oxisto.reticulated
 
 import io.github.oxisto.reticulated.ast.expression.Call
-import io.github.oxisto.reticulated.ast.expression.Integer
+import io.github.oxisto.reticulated.ast.expression.Identifier
+import io.github.oxisto.reticulated.ast.expression.literal.Integer
 import io.github.oxisto.reticulated.ast.simple.AssignmentExpression
 import io.github.oxisto.reticulated.ast.simple.ExpressionStatement
 import io.github.oxisto.reticulated.ast.simple.ImportStatement
@@ -25,7 +26,8 @@ class SimpleStatementTest {
     val s0 = input.statements[0] as StatementList
     val assign = s0.first()
     assertTrue(assign is AssignmentExpression)
-    assertEquals("i", assign.target.name.name)
+    val identifier = assign.target as Identifier
+    assertEquals("i", identifier.name)
 
     val assigned = assign.expression
     assertTrue(assigned is Integer)

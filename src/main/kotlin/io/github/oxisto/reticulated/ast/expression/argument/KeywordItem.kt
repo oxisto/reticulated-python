@@ -9,8 +9,13 @@ import io.github.oxisto.reticulated.ast.expression.Identifier
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#calls}]
  */
 class KeywordItem(val identifier: Identifier, expression: Expression): KeywordArgument(expression) {
+
     init {
         identifier.parent = this
         super.expression.parent = this
+    }
+
+    override fun toString(): String{
+        return "KeywordItem(keywordItem=($identifier=$expression))"
     }
 }

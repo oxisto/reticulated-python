@@ -12,4 +12,7 @@ open class Kwarg(expression: Expression) : KeywordArgument(expression) {
         super.expression.parent = this
     }
 
+    override fun toString(): String {
+        return "Kwarg(kwarg=**$expression)"
+    }
 }

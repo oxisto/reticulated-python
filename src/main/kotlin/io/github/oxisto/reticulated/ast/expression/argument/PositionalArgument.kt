@@ -13,4 +13,7 @@ class PositionalArgument(expression: Expression) : Argument(expression) {
     init {
         super.expression.parent = this
     }
+    override fun toString(): String{
+        return "PositionalArgument(positionalArgument=*$expression)"
+    }
 }

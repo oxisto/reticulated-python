@@ -1,8 +1,8 @@
 package io.github.oxisto.reticulated.ast.expression
 
-import io.github.oxisto.reticulated.ast.Scope
+import io.github.oxisto.reticulated.ast.simple.target.Target
 
-open class Identifier(val name: String) : Atom() {
+open class Identifier(val name: String) : Target, Atom() {
   /*
       // Is it necessary to set a parent??
   init {

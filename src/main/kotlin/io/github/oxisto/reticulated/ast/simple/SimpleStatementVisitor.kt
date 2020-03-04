@@ -5,6 +5,7 @@ import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
 import io.github.oxisto.reticulated.ast.expression.IdentifierVisitor
 import io.github.oxisto.reticulated.ast.expression.Name
+import io.github.oxisto.reticulated.ast.simple.target.TargetVisitor
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 
@@ -41,13 +42,7 @@ class SimpleStatementVisitor(val scope: Scope) : Python3BaseVisitor<SimpleStatem
     return ImportStatement(module)
   }
 
-  override fun visitExpr_stmt(ctx: Python3Parser.Expr_stmtContext?): SimpleStatement {
-    if (ctx == null) {
-
-      throw EmptyContextException()
-    }
-
-    println("Has " + ctx.childCount + " childs")
+  override fun visitExpr_stmt(ctx: Python3Parser.Expr_stmtContext): SimpleStatement {
 
     // need some kind of logic here how to decide what exactly this is
     if (ctx.childCount == 1) {
