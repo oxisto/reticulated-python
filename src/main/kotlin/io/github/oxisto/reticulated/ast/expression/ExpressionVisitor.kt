@@ -1,3 +1,20 @@
+/*
+ * Copyright (c) 2019, Fraunhofer AISEC. All rights reserved.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
 package io.github.oxisto.reticulated.ast.expression
 
 import io.github.oxisto.reticulated.ast.Scope
@@ -13,7 +30,6 @@ import org.antlr.v4.runtime.tree.TerminalNode
  */
 class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
 
-
   /**
    * It is probably a primary
    *
@@ -21,6 +37,7 @@ class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
   override fun visitAtom_expr(ctx: Python3Parser.Atom_exprContext): Expression {
 
     // TODO: can be different things: atom | attributeref | subscription | slicing | call
+    // TODO: check if it is a expression no cond
     // return super.visitAtom_expr(ctx)
 
     return if (ctx.childCount == 1) {
@@ -37,16 +54,20 @@ class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
       // check the trailer and decide what it is
       val trailer = ctx.getChild(Python3Parser.TrailerContext::class.java, 0)
 
-      if (
-              trailer.childCount == 2 &&
-              trailer.getChild(TerminalNode::class.java, 0).text == "."
-      ) {
-        // it is an attribute ref, parse the identifier
-        val id = trailer.getChild(1).accept(IdentifierVisitor(this.scope))
+      if ( trailer.childCount == 2 ) {
+        if (trailer.getChild(TerminalNode::class.java, 0).text == "." ) {
+          // it is an attribute ref, parse the identifier
+          val id = trailer.getChild(1).accept(IdentifierVisitor(this.scope))
 
-        val attributeRef = AttributeRef(primary, id)
+          val attributeRef = AttributeRef(primary, id)
 
-        attributeRef
+          attributeRef
+        } else if(trailer.getChild(0).text == "await") {
+          // It is an await expression
+          AwaitExpr(trailer.getChild(1).accept(this) as Primary)
+        }else {
+          throw Exception("could not parse")
+        }
       } else if (
               trailer.childCount == 3 &&
               trailer.getChild(TerminalNode::class.java, 0).text == "("

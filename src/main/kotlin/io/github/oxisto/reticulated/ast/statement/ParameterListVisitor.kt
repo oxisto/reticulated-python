@@ -19,7 +19,7 @@ class ParameterListVisitor(val scope: Scope) : Python3BaseVisitor<List<Parameter
     for (tree in ctx.children) {
       // skip commas, etc.
       if (tree is TerminalNode) {
-        continue;
+        continue
       }
 
       val parameter = tree.accept(ParameterVisitor(this.scope))

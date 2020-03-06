@@ -1,3 +1,20 @@
+/*
+ * Copyright (c) 2019, Fraunhofer AISEC. All rights reserved.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
 package io.github.oxisto.reticulated.ast.expression.comprehension
 
 import io.github.oxisto.reticulated.ast.Scope
@@ -26,7 +43,7 @@ class ComprehensionVisitor(val scope: Scope) : Python3BaseVisitor<BaseComprehens
         val isAsync: Boolean
         val targetList: TargetList
         val orTest: OrTest
-        val compIter: CompIter?
+        val compIter: BaseComprehension?
 
         val getTargetListByPosition = {
             position:Int -> ctx
@@ -51,7 +68,7 @@ class ComprehensionVisitor(val scope: Scope) : Python3BaseVisitor<BaseComprehens
                 .getChild(position)
                 .accept(
                         this
-                ) as CompIter
+                ) as BaseComprehension
         }
         if ( ctx.childCount == 4 ) {
             isAsync = false
@@ -60,15 +77,15 @@ class ComprehensionVisitor(val scope: Scope) : Python3BaseVisitor<BaseComprehens
             compIter = null
         } else if ( ctx. childCount == 5) {
             if(ctx.getChild(0).toString() == "for") {
-                isAsync = true
-                targetList = getTargetListByPosition(2)
-                orTest = getOrTestByPosition(4)
-                compIter = null
-            } else {
                 isAsync = false
                 targetList = getTargetListByPosition(1)
                 orTest = getOrTestByPosition(3)
                 compIter = getCompIterByPosition(4)
+            } else {
+                isAsync = true
+                targetList = getTargetListByPosition(2)
+                orTest = getOrTestByPosition(4)
+                compIter = null
             }
         } else {
             assert(ctx.childCount == 6)
@@ -91,7 +108,7 @@ class ComprehensionVisitor(val scope: Scope) : Python3BaseVisitor<BaseComprehens
 
     override fun visitComp_if(ctx: Python3Parser.Comp_ifContext): BaseComprehension {
         val secondChild = ctx.getChild(1)
-        val expressionNoCond : ExpressionNoCond = if ( secondChild is Python3Parser.Or_testContext ){
+        val expressionNoCond : ExpressionNoCond = if ( secondChild is Python3Parser.Test_nocondContext ){
             ExpressionNoCond(
                     secondChild.accept(BooleanOpVisitor(this.scope)) as OrTest,
                     null
@@ -107,8 +124,8 @@ class ComprehensionVisitor(val scope: Scope) : Python3BaseVisitor<BaseComprehens
                     )
             )
         }
-        val compIter: CompIter? = if ( ctx.childCount == 3 ) {
-            ctx.getChild(2).accept(this) as CompIter
+        val compIter: BaseComprehension? = if ( ctx.childCount == 3 ) {
+            ctx.getChild(2).accept(this) as BaseComprehension
         } else { null }
 
         return CompIf(expressionNoCond, compIter)
