@@ -309,8 +309,8 @@ class ExpressionsTest {
     val integer = arguments.expression as Integer
     assertNotNull(integer)
     assertEquals(integer.value, 10)
-
     //TODO: furtherTests
+
   }
 
   fun beautifyResult(input: String): String{
