@@ -10,7 +10,6 @@ jobs:
     # only execute if this is coming from a push or from a PR from a forked repository
     # otherwise this will get executed twice for PR from internal branches
     if: github.event_name == 'push' || github.event_name == 'pull_request' && (github.event.pull_request.base.repo.full_name != github.event.pull_request.head.repo.full_name)
-
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-java@v1
@@ -25,8 +24,8 @@ jobs:
             -Dsonar.organization=oxisto \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=$SONAR_TOKEN
-            else
-            ./gradlew --parallel spotlessCheck build
+          else
+            ./gradlew --parallel build
           fi
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
