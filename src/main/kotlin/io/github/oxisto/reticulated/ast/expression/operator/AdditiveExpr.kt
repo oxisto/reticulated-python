@@ -19,6 +19,13 @@ package io.github.oxisto.reticulated.ast.expression.operator
 
 import java.lang.IllegalArgumentException
 
+/**
+ * This class represents an a_expr.
+ * It´s EBNF representations are:
+ *      a_expr ::=  m_expr | a_expr "+" m_expr | a_expr "-" m_expr
+ *
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#unary-arithmetic-and-bitwise-operations}]
+ */
 class AdditiveExpr(
         val additiveExpr: BaseOperator?,
         val binaryOperator: BinaryOperator?,

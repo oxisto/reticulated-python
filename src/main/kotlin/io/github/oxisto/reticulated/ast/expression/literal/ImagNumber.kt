@@ -17,9 +17,14 @@
 
 package io.github.oxisto.reticulated.ast.expression.literal
 
-import io.github.oxisto.reticulated.ast.Node
 import java.lang.IllegalArgumentException
 
+/**
+ * This class represents a imagnumber
+ * The EBNF representation is:
+ *      imagnumber ::=  (floatnumber | digitpart) ("j" | "J")
+ *  [see: {@linktourl https://docs.python.org/3/reference/lexical_analysis.html#literals}]
+ */
 class ImagNumber(val floatNumber:FloatNumber?, val integer:Integer?) : Literal<ImagNumber>() {
     init {
         if(floatNumber == null){

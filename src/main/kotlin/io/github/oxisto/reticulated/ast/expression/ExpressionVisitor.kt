@@ -30,6 +30,7 @@ import org.antlr.v4.runtime.tree.TerminalNode
  */
 class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
 
+
   /**
    * It is probably a primary
    *

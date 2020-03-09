@@ -21,6 +21,13 @@ import io.github.oxisto.reticulated.ast.expression.AwaitExpr
 import io.github.oxisto.reticulated.ast.expression.Primary
 import java.lang.IllegalArgumentException
 
+/**
+ * This class represents power (expression).
+ * It´s EBNF representations are:
+ *      power ::=  (await_expr | primary) ["**" u_expr]
+ *
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#unary-arithmetic-and-bitwise-operations}]
+ */
 class PowerExpr(
         val awaitExpr: AwaitExpr?,
         val primary: Primary?,

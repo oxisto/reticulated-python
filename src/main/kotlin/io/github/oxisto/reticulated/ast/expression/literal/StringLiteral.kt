@@ -17,6 +17,21 @@
 
 package io.github.oxisto.reticulated.ast.expression.literal
 
+/**
+ * This class represents a stringliteral
+ * The EBNF representation is:
+ *      stringliteral   ::=  [stringprefix] ( shortstring | longstring )
+ *      stringprefix    ::=  "r" | "u" | "R" | "U" | "f" | "F" | "fr" |
+ *              "Fr" | "fR" | "FR" | "rf" | "rF" | "Rf" | "RF"
+ *      shortstring     ::=  "'" shortstringitem* "'" | '"' shortstringitem* '"'
+ *      longstring      ::=  "'''" longstringitem* "'''" | '"""' longstringitem* '"""'
+ *      shortstringitem ::=  shortstringchar | stringescapeseq
+ *      longstringitem  ::=  longstringchar | stringescapeseq
+ *      shortstringchar ::=  <any source character except "\" or newline or the quote>
+ *      longstringchar  ::=  <any source character except "\">
+ *      stringescapeseq ::=  "\" <any source character>
+ *  [see: {@linktourl https://docs.python.org/3/reference/lexical_analysis.html#literals}]
+ */
 class StringLiteral(val value: String) : Literal<String>() {
     override fun toString(): String {
         return "StringLiteral(" + System.lineSeparator() +

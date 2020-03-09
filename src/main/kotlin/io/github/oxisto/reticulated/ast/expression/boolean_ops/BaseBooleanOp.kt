@@ -19,6 +19,10 @@ package io.github.oxisto.reticulated.ast.expression.boolean_ops
 
 import io.github.oxisto.reticulated.ast.Node
 
+/**
+ * This class is the base class for all boolean operations.
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#boolean-operations}]
+ */
 abstract class BaseBooleanOp: Node() {
     abstract override fun toString(): String
 }

@@ -20,6 +20,12 @@ package io.github.oxisto.reticulated.ast.expression.comparison
 import io.github.oxisto.reticulated.ast.Node
 import io.github.oxisto.reticulated.ast.expression.boolean_expr.OrExpr
 
+/**
+ * This class represents a comparison.
+ * It´s EBNF definition is:
+ *      comparison ::= or_expr ( comp_operator or_expr )*
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#comparisons}]
+ */
 class Comparison(val orExpr: OrExpr, val comparisons: List<Pair<CompOperator, OrExpr>>): Node() {
 
     override fun toString(): String {

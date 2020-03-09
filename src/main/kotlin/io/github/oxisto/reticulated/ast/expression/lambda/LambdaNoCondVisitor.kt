@@ -26,6 +26,12 @@ import io.github.oxisto.reticulated.ast.statement.ParameterListVisitor
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 
+/**
+ * This class offers a visitor for the lambda_expr_nocond
+ * The EBNF representation is:
+ *      lambda_expr_nocond ::= "lambda" [parameter_list] ":" expression_nocond
+ *  [see: {@linktourl https://docs.python.org/3/reference/expressions.html#lambda}]
+ */
 class LambdaNoCondVisitor(val scope: Scope): Python3BaseVisitor<LambdaNoCond>() {
     override fun visitLambdef_nocond(ctx: Python3Parser.Lambdef_nocondContext): LambdaNoCond {
         val parameterList: ParameterList?

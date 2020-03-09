@@ -24,7 +24,7 @@ enum class CompOperator(val symbol:String) {
 
     companion object {
         fun getCompOperatorBySymbol(symbolToFind: String): CompOperator? {
-            val compOperators = CompOperator.values()
+            val compOperators = values()
             var result: CompOperator? = null
             for (compOperator in compOperators) {
                 if (compOperator.symbol == symbolToFind) {

@@ -19,6 +19,9 @@ package io.github.oxisto.reticulated.ast.expression.boolean_expr
 
 import io.github.oxisto.reticulated.ast.Node
 
+/**
+ * The base class for all boolean expressions and all operators.
+ */
 abstract class BaseBooleanExpr: Node() {
      abstract override fun toString(): String
 }

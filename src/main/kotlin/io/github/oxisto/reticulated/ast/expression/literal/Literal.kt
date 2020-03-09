@@ -19,6 +19,9 @@ package io.github.oxisto.reticulated.ast.expression.literal
 
 import io.github.oxisto.reticulated.ast.expression.Atom
 
+/**
+ * This class is the base for all literals
+ */
 abstract class Literal<T>() : Atom() {
 
   override fun isCall(): Boolean {

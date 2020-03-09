@@ -17,11 +17,16 @@
 
 package io.github.oxisto.reticulated.ast.expression.comprehension
 
-import io.github.oxisto.reticulated.ast.expression.boolean_expr.BaseBooleanExpr
 import io.github.oxisto.reticulated.ast.expression.boolean_ops.OrTest
 import io.github.oxisto.reticulated.ast.simple.target.TargetList
 
-
+/**
+ * This class represents a comp_for.
+ * It´s EBNF definition is:
+ *      comp_for :: ["async"] "for" target_list "in" or_test [comp_iter]
+ *
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#displays-for-lists-sets-and-dictionaries}]
+ */
 class CompFor(val isAsync: Boolean, val targetList: TargetList, val orTest: OrTest, val compIter: BaseComprehension?) : BaseComprehension() {
 
     override fun toString(): String {

@@ -17,6 +17,12 @@
 
 package io.github.oxisto.reticulated.ast.expression.boolean_ops
 
+/**
+ * This class represents an and_test.
+ * It´s EBNF definition is:
+ *      and_test ::= not_test | and_test "and" not_test
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#boolean-operations}]
+ */
 class AndTest(val andTest:AndTest?, val notTest:NotTest): BaseBooleanOp() {
 
     override fun toString(): String {

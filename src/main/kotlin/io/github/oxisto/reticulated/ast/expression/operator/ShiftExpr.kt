@@ -19,6 +19,13 @@ package io.github.oxisto.reticulated.ast.expression.operator
 
 import java.lang.IllegalArgumentException
 
+/**
+ * This class represents a shift_expr.
+ * It´s EBNF representations are:
+ *      shift_expr ::=  a_expr | shift_expr ("<<" | ">>") a_expr
+ *
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#unary-arithmetic-and-bitwise-operations}]
+ */
 class ShiftExpr(
         val shiftExpr: ShiftExpr?,
         val binaryOperator: BinaryOperator?,

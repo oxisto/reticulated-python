@@ -17,7 +17,22 @@
 
 package io.github.oxisto.reticulated.ast.expression.boolean_expr
 
+import java.lang.IllegalArgumentException
+
+/**
+ * The visitor for an xor_expr.
+ * It´s EBNF representation is:
+ *      xor_expr ::= and_expr | xor_expr "^" and_expr
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#binary-bitwise-operations}]
+ */
 class XorExpr(val xorExpr: BaseBooleanExpr?, val andExpr: AndExpr): BaseBooleanExpr() {
+
+    init {
+        if(xorExpr != null && xorExpr !is XorExpr && xorExpr !is AndExpr) {
+            throw IllegalArgumentException()
+        }
+    }
+
     override fun toString(): String {
         var result = "XorExpr(" + System.lineSeparator() + "\t"
         if (xorExpr != null) {

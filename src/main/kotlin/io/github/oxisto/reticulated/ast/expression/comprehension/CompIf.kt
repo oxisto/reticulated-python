@@ -19,6 +19,12 @@ package io.github.oxisto.reticulated.ast.expression.comprehension
 
 import io.github.oxisto.reticulated.ast.expression.ExpressionNoCond
 
+/**
+ * This class represents a comp_if.
+ * It´s EBNF definition is:
+ *      comp_if ::= "if" expression_nocond [comp_iter]
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#displays-for-lists-sets-and-dictionaries}]
+ */
 class CompIf(val expressionNoCond: ExpressionNoCond, val compIter: BaseComprehension? = null) : BaseComprehension() {
     override fun toString(): String {
         var result = "if expressionNoCond=$expressionNoCond"

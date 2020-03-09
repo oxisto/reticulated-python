@@ -24,7 +24,12 @@ import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 
 class BooleanExprVisitor(val scope: Scope):  Python3BaseVisitor<BaseBooleanExpr>() {
-
+    /**
+     * The visitor for an or_expr.
+     * It´s EBNF representation is:
+     *      or_expr ::= xor_expr | or_expr "|" xor_expr
+     * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#binary-bitwise-operations}]
+     */
     override fun visitExpr(ctx: Python3Parser.ExprContext): BaseBooleanExpr {
         val orExpr: BaseBooleanExpr?
         val xorExpr: XorExpr
@@ -45,6 +50,12 @@ class BooleanExprVisitor(val scope: Scope):  Python3BaseVisitor<BaseBooleanExpr>
         return OrExpr(orExpr, xorExpr)
     }
 
+    /**
+     * The visitor for an xor_expr.
+     * It´s EBNF representation is:
+     *      xor_expr ::= and_expr | xor_expr "^" and_expr
+     * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#binary-bitwise-operations}]
+     */
     override fun visitXor_expr(ctx: Python3Parser.Xor_exprContext): BaseBooleanExpr {
         val xorExpr:  BaseBooleanExpr?
         val andExpr: AndExpr
@@ -65,6 +76,12 @@ class BooleanExprVisitor(val scope: Scope):  Python3BaseVisitor<BaseBooleanExpr>
         return XorExpr(xorExpr, andExpr)
     }
 
+    /**
+     * The visitor for an and_expr.
+     * It´s EBNF representation is:
+     *      and_expr ::= shift_expr | and_expr "&" shift_expr
+     * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#binary-bitwise-operations}]
+     */
     override fun visitAnd_expr(ctx: Python3Parser.And_exprContext): BaseBooleanExpr {
         val andExpr: BaseBooleanExpr?
         val shiftExpr: ShiftExpr

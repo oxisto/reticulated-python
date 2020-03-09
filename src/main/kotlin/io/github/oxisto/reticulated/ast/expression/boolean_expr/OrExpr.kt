@@ -17,7 +17,21 @@
 
 package io.github.oxisto.reticulated.ast.expression.boolean_expr
 
+import java.lang.IllegalArgumentException
+
+/**
+ * The class represents an or_expr.
+ * It´s EBNF representation is:
+ *      or_expr ::= xor_expr | or_expr "|" xor_expr
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#binary-bitwise-operations}]
+ */
 class OrExpr(val orExpr: BaseBooleanExpr?, val xorExpr: XorExpr): BaseBooleanExpr() {
+
+    init {
+        if(orExpr != null && orExpr !is OrExpr && orExpr !is XorExpr) {
+            throw IllegalArgumentException()
+        }
+    }
 
     override fun toString(): String {
         var result = "OrExpr(" + System.lineSeparator() + "\t"

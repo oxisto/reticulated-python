@@ -17,6 +17,20 @@
 
 package io.github.oxisto.reticulated.ast.expression.literal
 
+/**
+ * This class represents a bytesliteral
+ * The EBNF representation is:
+ *      bytesliteral   ::=  bytesprefix ( shortbytes | longbytes )
+ *      bytesprefix    ::=  "b" | "B" | "br" | "Br" | "bR" | "BR" | "rb" | "rB" | "Rb" | "RB
+ *      shortbytes     ::=  "'" shortbytesitem* "'" | '"' shortbytesitem* '"'
+ *      longbytes      ::=  "'''" longbytesitem* "'''" | '"""' longbytesitem* '"""'
+ *      shortbytesitem ::=  shortbyteschar | bytesescapeseq
+ *      longbytesitem  ::=  longbyteschar | bytesescapeseq
+ *      shortbyteschar ::=  <any ASCII character except "\" or newline or the quote>
+ *      longbyteschar  ::=  <any ASCII character except "\">
+ *      bytesescapeseq ::=  "\" <any ASCII character>
+ *  [see: {@linktourl https://docs.python.org/3/reference/lexical_analysis.html#literals}]
+ */
 class BytesLiteral(val value: Array<Byte>) : Literal<Array<Byte>>() {
     override fun toString(): String {
         return "BytesLiteral(" + System.lineSeparator() +

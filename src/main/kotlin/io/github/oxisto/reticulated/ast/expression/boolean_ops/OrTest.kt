@@ -17,6 +17,12 @@
 
 package io.github.oxisto.reticulated.ast.expression.boolean_ops
 
+/**
+ * This class represents an or_test.
+ * It´s EBNF definition is:
+ *      or_test ::= and_test | or_test "or" and_test
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#boolean-operations}]
+ */
 class OrTest(val orTest: OrTest?, val andTest:AndTest): BaseBooleanOp() {
 
     override fun toString():String {

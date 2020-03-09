@@ -24,6 +24,12 @@ import io.github.oxisto.reticulated.grammar.Python3Parser
 import java.lang.Exception
 import java.lang.IllegalArgumentException
 
+/**
+ * This visitor is called for a comparison
+ * It´s EBNF representations is:
+ *      comparison ::= or_expr ( comp_operator or_expr )*
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#comparisons}]
+ */
 class ComparisonVisitor(val scope: io.github.oxisto.reticulated.ast.Scope): Python3BaseVisitor<Comparison>() {
 
     override fun visitComparison(ctx: Python3Parser.ComparisonContext): Comparison {

@@ -20,6 +20,12 @@ package io.github.oxisto.reticulated.ast.expression.boolean_ops
 import io.github.oxisto.reticulated.ast.expression.comparison.Comparison
 import java.lang.IllegalArgumentException
 
+/**
+ * This class represents a not_test.
+ * It´s EBNF definition is:
+ *      not_test ::= comparison | "not" not_test
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#boolean-operations}]
+ */
 class NotTest(val comparison: Comparison?, val notTest:NotTest? ): BaseBooleanOp() {
 
     init {
@@ -44,5 +50,4 @@ class NotTest(val comparison: Comparison?, val notTest:NotTest? ): BaseBooleanOp
         result += System.lineSeparator() + ")"
         return result
     }
-
 }

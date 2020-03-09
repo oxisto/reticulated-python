@@ -22,6 +22,17 @@ import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 import org.antlr.v4.runtime.tree.TerminalNodeImpl
 
+/**
+ * This visitor is called for an argument_list.
+ * The EBNF notation is:
+ *      argument_list ::=
+ *          positional_arguments [ "," starred_and_keywords ] [ "," keyword_arguments ] |
+ *          starred_and_keywords [ "," keyword_arguments ] |
+ *          keyword_arguments
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#calls}]
+ *
+ *
+ */
 class ArgumentListVisitor(val scope: Scope): Python3BaseVisitor<ArgumentList>() {
 
     override fun visitArglist(ctx: Python3Parser.ArglistContext): ArgumentList {

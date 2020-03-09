@@ -19,6 +19,12 @@ package io.github.oxisto.reticulated.ast.expression.comprehension
 
 import java.lang.IllegalArgumentException
 
+/**
+ * This class represents a comp_iter.
+ * It´s EBNF definition is:
+ *      comp_iter ::= comp_for | comp_if
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#displays-for-lists-sets-and-dictionaries}]
+ */
 class CompIter(val compFor: CompFor?, val compIf: CompIf?) : BaseComprehension() {
     init {
         if(compFor == null){
@@ -31,10 +37,6 @@ class CompIter(val compFor: CompFor?, val compIf: CompIf?) : BaseComprehension()
             }
         }
     }
-
-    constructor(compFor: CompFor) : this(compFor, null)
-
-    constructor(compIf: CompIf) : this(null, compIf)
 
     override fun toString(): String {
         val result:String

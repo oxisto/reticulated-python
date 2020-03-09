@@ -21,6 +21,12 @@ import io.github.oxisto.reticulated.ast.Node
 import io.github.oxisto.reticulated.ast.expression.ExpressionNoCond
 import io.github.oxisto.reticulated.ast.statement.ParameterList
 
+/**
+ * This class represents a lambda_expr_nocond
+ * The EBNF representation is:
+ *      lambda_expr_nocond ::= "lambda" [parameter_list] ":" expression_nocond
+ *  [see: {@linktourl https://docs.python.org/3/reference/expressions.html#lambda}]
+ */
 class LambdaNoCond(val parameterList: ParameterList?, val exprNoCond: ExpressionNoCond): Node() {
     override fun toString(): String {
         var result = "lambda "

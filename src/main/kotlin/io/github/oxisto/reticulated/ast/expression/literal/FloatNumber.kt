@@ -17,6 +17,17 @@
 
 package io.github.oxisto.reticulated.ast.expression.literal
 
+/**
+ * This class represents a floatnumber
+ * The EBNF representation is:
+ *      floatnumber   ::=  pointfloat | exponentfloat
+ *      pointfloat    ::=  [digitpart] fraction | digitpart "."
+ *      exponentfloat ::=  (digitpart | pointfloat) exponent
+ *      digitpart     ::=  digit (["_"] digit)*
+ *      fraction      ::=  "." digitpart
+ *      exponent      ::=  ("e" | "E") ["+" | "-"] digitpart
+ *  [see: {@linktourl https://docs.python.org/3/reference/lexical_analysis.html#literals}]
+ */
 class FloatNumber(val value: Float) : Literal<Float>() {
 
     override fun toString(): String {

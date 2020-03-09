@@ -19,6 +19,9 @@ package io.github.oxisto.reticulated.ast.expression.comprehension
 
 import io.github.oxisto.reticulated.ast.expression.CallTrailer
 
+/**
+ * This class is the base for all comparison´s.
+ */
 abstract class BaseComprehension: CallTrailer(){
     abstract override fun toString(): String
 }

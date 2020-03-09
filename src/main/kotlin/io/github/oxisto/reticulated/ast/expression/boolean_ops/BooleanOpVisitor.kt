@@ -24,6 +24,13 @@ import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 
 class BooleanOpVisitor(val scope: Scope) : Python3BaseVisitor<BaseBooleanOp>() {
+
+    /**
+     * This visitor is called for an or_test.
+     * It´s EBNF representation is:
+     *      or_test ::= and_test | or_test "or" and_test
+     * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#boolean-operations}]
+     */
     override fun visitOr_test(ctx: Python3Parser.Or_testContext): BaseBooleanOp {
         val orTest: OrTest?
         val andTest: AndTest
@@ -43,6 +50,12 @@ class BooleanOpVisitor(val scope: Scope) : Python3BaseVisitor<BaseBooleanOp>() {
         return OrTest(orTest, andTest)
     }
 
+    /**
+     * This visitor is called for an and_test.
+     * It´s EBNF representation is:
+     *      and_test ::= not_test | and_test "and" not_test
+     * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#boolean-operations}]
+     */
     override fun visitAnd_test(ctx: Python3Parser.And_testContext): BaseBooleanOp {
         val andTest: AndTest?
         val notTest: NotTest
@@ -62,6 +75,12 @@ class BooleanOpVisitor(val scope: Scope) : Python3BaseVisitor<BaseBooleanOp>() {
         return AndTest(andTest, notTest)
     }
 
+    /**
+     * This visitor is called for a not_test.
+     * It´s EBNF representation is:
+     *      not_test ::= comparison | "not" not_test
+     * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#boolean-operations}]
+     */
     override fun visitNot_test(ctx: Python3Parser.Not_testContext): BaseBooleanOp {
         val comparison: Comparison?
         val notTest: NotTest?

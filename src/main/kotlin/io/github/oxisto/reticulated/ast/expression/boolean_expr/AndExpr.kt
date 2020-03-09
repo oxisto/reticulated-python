@@ -18,8 +18,24 @@
 package io.github.oxisto.reticulated.ast.expression.boolean_expr
 
 import io.github.oxisto.reticulated.ast.expression.operator.ShiftExpr
+import java.lang.IllegalArgumentException
 
+/**
+ * This class represents an and_expr.
+ * It´s EBNF definition is: and_expr ::= shift_expr | and_expr "&" shift_expr
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#binary-bitwise-operations}]
+ */
 class AndExpr(val andExpr: BaseBooleanExpr?, val shiftExpr: ShiftExpr): BaseBooleanExpr() {
+
+    init {
+        if (
+                andExpr != null &&
+                andExpr !is AndExpr &&
+                andExpr !is ShiftExpr
+        ){
+            throw IllegalArgumentException()
+        }
+    }
 
     override fun toString(): String {
         var result = "AndExpr(" + System.lineSeparator() + "\t"
