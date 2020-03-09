@@ -27,7 +27,26 @@ class ParameterListVisitor(val scope: Scope) : Python3BaseVisitor<List<Parameter
       list.add(parameter)
     }
 
-    return list;
+    return list
+  }
+
+  override fun visitVarargslist(ctx: Python3Parser.VarargslistContext): List<Parameter> {
+    // TODO: handle parameter_list_starrgs
+    val list = ArrayList<Parameter>()
+
+    // loop through the children
+    for (tree in ctx.children) {
+      // skip commas, etc.
+      if (tree is TerminalNode) {
+        continue
+      }
+
+      val parameter = tree.accept(ParameterVisitor(this.scope))
+
+      list.add(parameter)
+    }
+
+    return list
   }
 
 }

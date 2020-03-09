@@ -37,8 +37,7 @@ class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
    */
   override fun visitAtom_expr(ctx: Python3Parser.Atom_exprContext): Expression {
 
-    // TODO: can be different things: atom | attributeref | subscription | slicing | call
-    // TODO: check if it is a expression no cond
+    // TODO: can be different things: attributeref | subscription | slicing
     // return super.visitAtom_expr(ctx)
 
     return if (ctx.childCount == 1) {

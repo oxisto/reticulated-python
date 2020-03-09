@@ -20,6 +20,8 @@ package io.github.oxisto.reticulated.ast.expression.comprehension
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.ExpressionNoCond
+import io.github.oxisto.reticulated.ast.expression.ExpressionNoCondVisitor
+import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
 import io.github.oxisto.reticulated.ast.expression.boolean_ops.BooleanOpVisitor
 import io.github.oxisto.reticulated.ast.expression.boolean_ops.OrTest
 import io.github.oxisto.reticulated.ast.expression.lambda.LambdaNoCondVisitor
@@ -117,27 +119,15 @@ class ComprehensionVisitor(val scope: Scope) : Python3BaseVisitor<BaseComprehens
         if(ctx.childCount < 2 || ctx.childCount > 3){
             throw CouldNotParseException("The childCount of the ctx=$ctx was unexpected.")
         }
-        val secondChild = ctx.getChild(1)
-        val expressionNoCond : ExpressionNoCond = if ( secondChild is Python3Parser.Test_nocondContext ){
-            ExpressionNoCond(
-                    secondChild.accept(BooleanOpVisitor(this.scope)) as OrTest,
-                    null
-            )
-        } else {
-            if(secondChild !is Python3Parser.Lambdef_nocondContext){
-                throw CouldNotParseException(
-                        "The second child of the ctx=$ctx was neither a Test_nocondContext nor a Lambdef_nocondContext."
+
+        val expressionNoCond: ExpressionNoCond = ctx
+                .getChild(1)
+                .accept(
+                        ExpressionNoCondVisitor(
+                                this.scope
+                        )
                 )
-            }
-            ExpressionNoCond(
-                    null,
-                    secondChild.accept(
-                            LambdaNoCondVisitor(
-                                    this.scope
-                            )
-                    )
-            )
-        }
+
         val compIter: BaseComprehension? = if ( ctx.childCount == 3 ) {
             ctx.getChild(2).accept(this) as BaseComprehension
         } else { null }

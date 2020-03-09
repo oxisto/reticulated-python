@@ -19,6 +19,7 @@ package io.github.oxisto.reticulated.ast.expression.comparison
 
 import io.github.oxisto.reticulated.ast.Node
 import io.github.oxisto.reticulated.ast.expression.boolean_expr.OrExpr
+import io.github.oxisto.reticulated.Pair
 
 /**
  * This class represents a comparison.
@@ -32,8 +33,8 @@ class Comparison(val orExpr: OrExpr, val comparisons: List<Pair<CompOperator, Or
         var result = "Comparison(" + System.lineSeparator() +
                 "\torExpr=$orExpr"
         for(elem:Pair<CompOperator, OrExpr> in comparisons){
-            val compOperatorOfElem = elem.first
-            val orExprOfElem = elem.second
+            val compOperatorOfElem = elem.getT()
+            val orExprOfElem = elem.getU()
             result += " compOperator=$compOperatorOfElem orEpr=$orExprOfElem"
         }
         result += System.lineSeparator() + ")"

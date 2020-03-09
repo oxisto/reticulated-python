@@ -20,6 +20,7 @@ package io.github.oxisto.reticulated.ast.expression.lambda
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.ExpressionNoCond
+import io.github.oxisto.reticulated.ast.expression.ExpressionNoCondVisitor
 import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
 import io.github.oxisto.reticulated.ast.statement.Parameter
 import io.github.oxisto.reticulated.ast.statement.ParameterList
@@ -44,7 +45,7 @@ class LambdaNoCondVisitor(val scope: Scope): Python3BaseVisitor<LambdaNoCond>() 
             position:Int -> ctx
                 .getChild(position)
                 .accept(
-                        ExpressionVisitor(
+                        ExpressionNoCondVisitor(
                                 this.scope
                         )
                 ) as ExpressionNoCond

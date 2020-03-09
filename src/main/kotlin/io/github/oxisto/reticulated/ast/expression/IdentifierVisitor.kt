@@ -24,18 +24,11 @@ import org.antlr.v4.runtime.tree.TerminalNode
 class IdentifierVisitor(val scope: Scope) : Python3BaseVisitor<Identifier>() {
 
   /**
-   * see visitTerminal in the ExpressionVisitor
+   * see visitTerminal in the ExpressionVisitor for Literals usw.
    */
   override fun visitTerminal(node: TerminalNode): Identifier {
 
-    // TODO: literals and stuff
-    // TODO: functions without "primary." identifier are not included
-
-    // return super.visitTerm(ctx)
-
-    val id = Identifier(node.text)
-
-    return id
+    return Identifier(node.text)
   }
 
 }
