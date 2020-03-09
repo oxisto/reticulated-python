@@ -17,6 +17,7 @@
 
 package io.github.oxisto.reticulated.ast.expression.operator
 
+import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.AwaitExpr
 import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
@@ -24,8 +25,6 @@ import io.github.oxisto.reticulated.ast.expression.Primary
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 import org.antlr.v4.runtime.ParserRuleContext
-import java.lang.Exception
-import java.lang.IllegalArgumentException
 
 /**
  * This class offers visitors for a shift_expr, an a_expr, a m_expr, an u_expr and a power (expression).
@@ -41,6 +40,9 @@ import java.lang.IllegalArgumentException
  */
 class OperatorVisitor(val scope: Scope): Python3BaseVisitor<BaseOperator>() {
     override fun visitShift_expr(ctx: Python3Parser.Shift_exprContext): BaseOperator {
+        if(ctx.childCount < 1 || ctx.childCount > 2){
+            throw CouldNotParseException()
+        }
         val shiftExpr: ShiftExpr?
         val binaryOperator: BinaryOperator?
         val baseOperator: BaseOperator
@@ -60,12 +62,15 @@ class OperatorVisitor(val scope: Scope): Python3BaseVisitor<BaseOperator>() {
                     .valueOf(
                             ctx.getChild(1).text
                     )
-            baseOperator = getBaseOperatorByPosition(3)
+            baseOperator = getBaseOperatorByPosition(2)
         }
         return ShiftExpr(shiftExpr, binaryOperator, baseOperator)
     }
 
     override fun visitArith_expr(ctx: Python3Parser.Arith_exprContext): BaseOperator {
+        if(ctx.childCount < 1 || ctx.childCount > 3) {
+            throw CouldNotParseException()
+        }
         return when (ctx.childCount) {
             1 -> {
                 ctx.getChild(0).accept(this) as PowerExpr
@@ -97,10 +102,10 @@ class OperatorVisitor(val scope: Scope): Python3BaseVisitor<BaseOperator>() {
                         BinaryOperator.MODULO -> {
                         MultiplicativeExpr(baseOperatorLeft, binaryOperator, baseOperatorRight)
                     }
-                    else -> throw Exception("Could not parse")
+                    else -> throw CouldNotParseException("Could not parse")
                 }
             }
-            else -> throw Exception("Could not parse")
+            else -> throw CouldNotParseException("Could not parse")
         }
     }
 
@@ -114,7 +119,7 @@ class OperatorVisitor(val scope: Scope): Python3BaseVisitor<BaseOperator>() {
 
     private fun handlePowerAndAwaitExpr(ctx: ParserRuleContext): PowerExpr {
         if(ctx.childCount != 1 && ctx.childCount != 3 ){
-            throw IllegalArgumentException()
+            throw CouldNotParseException()
         }
         val awaitExpr: AwaitExpr?
         val primary: Primary?

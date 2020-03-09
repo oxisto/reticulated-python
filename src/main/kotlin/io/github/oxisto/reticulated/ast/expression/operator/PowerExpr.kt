@@ -17,9 +17,9 @@
 
 package io.github.oxisto.reticulated.ast.expression.operator;
 
+import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.expression.AwaitExpr
 import io.github.oxisto.reticulated.ast.expression.Primary
-import java.lang.IllegalArgumentException
 
 /**
  * This class represents power (expression).
@@ -36,11 +36,11 @@ class PowerExpr(
     init {
         if(awaitExpr == null) {
             if(primary == null){
-                throw IllegalArgumentException()
+                throw CouldNotParseException()
             }
         }else {
             if(primary != null) {
-                throw IllegalArgumentException()
+                throw CouldNotParseException()
             }
         }
     }

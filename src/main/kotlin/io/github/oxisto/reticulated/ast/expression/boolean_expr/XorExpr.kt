@@ -17,7 +17,7 @@
 
 package io.github.oxisto.reticulated.ast.expression.boolean_expr
 
-import java.lang.IllegalArgumentException
+import io.github.oxisto.reticulated.ast.CouldNotParseException
 
 /**
  * The visitor for an xor_expr.
@@ -29,7 +29,7 @@ class XorExpr(val xorExpr: BaseBooleanExpr?, val andExpr: AndExpr): BaseBooleanE
 
     init {
         if(xorExpr != null && xorExpr !is XorExpr && xorExpr !is AndExpr) {
-            throw IllegalArgumentException()
+            throw CouldNotParseException("The xorExpr=$xorExpr is unexpected.")
         }
     }
 

@@ -17,12 +17,11 @@
 
 package io.github.oxisto.reticulated.ast.expression.comparison
 
+import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.expression.boolean_expr.BooleanExprVisitor
 import io.github.oxisto.reticulated.ast.expression.boolean_expr.OrExpr
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
-import java.lang.Exception
-import java.lang.IllegalArgumentException
 
 /**
  * This visitor is called for a comparison
@@ -34,7 +33,9 @@ class ComparisonVisitor(val scope: io.github.oxisto.reticulated.ast.Scope): Pyth
 
     override fun visitComparison(ctx: Python3Parser.ComparisonContext): Comparison {
         if(ctx.childCount < 1 || ctx.childCount%2 == 0){
-            throw IllegalArgumentException()
+            throw CouldNotParseException(
+                    "The ctx=$ctx in a ComparisonContext should have one or a even childCount."
+            )
         }
         val getOrExprByPosition = {
             position:Int -> ctx
@@ -54,7 +55,9 @@ class ComparisonVisitor(val scope: io.github.oxisto.reticulated.ast.Scope): Pyth
                     .text
             val compOperator: CompOperator = CompOperator
                     .getCompOperatorBySymbol(compSymbol)
-                    ?: throw Exception("Could not parse")
+                    ?: throw CouldNotParseException(
+                            "The compOperator should be an element of the enum CompOperator."
+                    )
             val pair = Pair(
                     compOperator,
                     getOrExprByPosition(index+1)

@@ -17,19 +17,19 @@
 
 package io.github.oxisto.reticulated.ast.expression
 
+import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.expression.boolean_ops.OrTest
-import java.lang.IllegalArgumentException
 
 class ConditionalExpression(val orTest: OrTest, val orTestOptional: OrTest?, val expressionOptional: Expression?): Expression() {
 
   init {
     if(orTestOptional == null){
       if(expressionOptional != null){
-        throw IllegalArgumentException()
+        throw CouldNotParseException()
       }
     }else{
       if(expressionOptional == null){
-        throw IllegalArgumentException()
+        throw CouldNotParseException()
       }
     }
   }

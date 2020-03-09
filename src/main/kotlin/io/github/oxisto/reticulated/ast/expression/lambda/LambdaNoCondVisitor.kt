@@ -17,6 +17,7 @@
 
 package io.github.oxisto.reticulated.ast.expression.lambda
 
+import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.ExpressionNoCond
 import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
@@ -34,6 +35,9 @@ import io.github.oxisto.reticulated.grammar.Python3Parser
  */
 class LambdaNoCondVisitor(val scope: Scope): Python3BaseVisitor<LambdaNoCond>() {
     override fun visitLambdef_nocond(ctx: Python3Parser.Lambdef_nocondContext): LambdaNoCond {
+        if(ctx.childCount < 3 || ctx.childCount > 4){
+            throw CouldNotParseException("The childCount of the ctx=$ctx was not expected.")
+        }
         val parameterList: ParameterList?
         val expressionNoCond: ExpressionNoCond
         val getExpressionNoCondByPosition = {
@@ -49,7 +53,6 @@ class LambdaNoCondVisitor(val scope: Scope): Python3BaseVisitor<LambdaNoCond>() 
             parameterList = null
             expressionNoCond = getExpressionNoCondByPosition(2)
         } else {
-            assert(ctx.childCount == 4)
             val listOfParameter = ctx
                     .getChild(1)
                     .accept(

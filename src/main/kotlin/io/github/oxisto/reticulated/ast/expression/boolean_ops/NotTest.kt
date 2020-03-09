@@ -17,8 +17,8 @@
 
 package io.github.oxisto.reticulated.ast.expression.boolean_ops
 
+import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.expression.comparison.Comparison
-import java.lang.IllegalArgumentException
 
 /**
  * This class represents a not_test.
@@ -31,11 +31,15 @@ class NotTest(val comparison: Comparison?, val notTest:NotTest? ): BaseBooleanOp
     init {
         if(comparison == null){
             if(notTest == null){
-                throw IllegalArgumentException()
+                throw CouldNotParseException(
+                        "In a NotTest should not be boat, the comparison ant the notTest, null."
+                )
             }
         }else {
             if(notTest != null){
-                throw IllegalArgumentException()
+                throw CouldNotParseException(
+                        "In a NotTest should be ether the comparison or the notTes, null."
+                )
             }
         }
     }

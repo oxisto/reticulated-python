@@ -17,7 +17,7 @@
 
 package io.github.oxisto.reticulated.ast.expression.operator
 
-import java.lang.IllegalArgumentException
+import io.github.oxisto.reticulated.ast.CouldNotParseException
 
 /**
  * This class represents an a_expr.
@@ -35,7 +35,7 @@ class AdditiveExpr(
     init {
         if(binaryOperator == null){
             if(additiveExpr != null){
-                throw IllegalArgumentException()
+                throw CouldNotParseException()
             }
         }else{
             if(additiveExpr == null || (
@@ -43,7 +43,7 @@ class AdditiveExpr(
                                     binaryOperator != BinaryOperator.SUBTRACTION
                             )
             ){
-                throw IllegalArgumentException()
+                throw CouldNotParseException()
             }
         }
     }

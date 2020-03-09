@@ -18,7 +18,6 @@
 package io.github.oxisto.reticulated.ast.expression.argument
 
 import io.github.oxisto.reticulated.ast.Container
-import io.github.oxisto.reticulated.ast.Node
 import io.github.oxisto.reticulated.ast.expression.CallTrailer
 
 /**

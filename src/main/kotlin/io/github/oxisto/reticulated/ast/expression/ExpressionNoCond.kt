@@ -17,19 +17,19 @@
 
 package io.github.oxisto.reticulated.ast.expression
 
+import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.expression.boolean_ops.OrTest
 import io.github.oxisto.reticulated.ast.expression.lambda.LambdaNoCond
-import java.lang.IllegalArgumentException
 
 class ExpressionNoCond(val orTest: OrTest?, val lambdaNoCond: LambdaNoCond?): Expression(){
     init {
         if ( orTest == null ) {
             if ( lambdaNoCond == null ) {
-                throw IllegalArgumentException()
+                throw CouldNotParseException()
             }
         } else {
             if ( lambdaNoCond != null) {
-                throw IllegalArgumentException()
+                throw CouldNotParseException()
             }
         }
     }

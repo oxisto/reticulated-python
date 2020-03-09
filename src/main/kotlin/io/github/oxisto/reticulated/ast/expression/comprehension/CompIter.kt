@@ -17,7 +17,7 @@
 
 package io.github.oxisto.reticulated.ast.expression.comprehension
 
-import java.lang.IllegalArgumentException
+import io.github.oxisto.reticulated.ast.CouldNotParseException
 
 /**
  * This class represents a comp_iter.
@@ -29,11 +29,15 @@ class CompIter(val compFor: CompFor?, val compIf: CompIf?) : BaseComprehension()
     init {
         if(compFor == null){
             if(compIf == null){
-                throw IllegalArgumentException()
+                throw CouldNotParseException(
+                        "In a CompIter should not be both, the compFor and the compIf, null."
+                )
             }
         } else {
             if ( compIf != null ) {
-                throw IllegalArgumentException()
+                throw CouldNotParseException(
+                        "In a CompIter should me ether compFor or compIf null."
+                )
             }
         }
     }

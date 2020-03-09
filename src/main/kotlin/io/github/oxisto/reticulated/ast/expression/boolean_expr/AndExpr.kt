@@ -17,8 +17,8 @@
 
 package io.github.oxisto.reticulated.ast.expression.boolean_expr
 
+import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.expression.operator.ShiftExpr
-import java.lang.IllegalArgumentException
 
 /**
  * This class represents an and_expr.
@@ -33,7 +33,7 @@ class AndExpr(val andExpr: BaseBooleanExpr?, val shiftExpr: ShiftExpr): BaseBool
                 andExpr !is AndExpr &&
                 andExpr !is ShiftExpr
         ){
-            throw IllegalArgumentException()
+            throw CouldNotParseException("The andExpr=$andExpr is strange.")
         }
     }
 

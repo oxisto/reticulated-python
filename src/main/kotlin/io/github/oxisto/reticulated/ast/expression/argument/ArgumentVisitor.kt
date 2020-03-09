@@ -17,12 +17,11 @@
 
 package io.github.oxisto.reticulated.ast.expression.argument
 
-import io.github.oxisto.reticulated.ast.EmptyContextException
+import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.*
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
-import java.lang.Exception
 
 /**
  * This visitor is called for a single argument.
@@ -36,6 +35,9 @@ import java.lang.Exception
 class ArgumentVisitor(val scope: Scope) : Python3BaseVisitor<Argument>() {
 
   override fun visitArgument(ctx: Python3Parser.ArgumentContext): Argument {
+    if(ctx.childCount < 1 || ctx.childCount > 3){
+        throw CouldNotParseException("The childCount of the ctx=$ctx was not expected.")
+    }
     val getExpressionByPosition = {
       positionOfTheExpression: Int -> ctx
         .getChild(positionOfTheExpression)
@@ -62,7 +64,7 @@ class ArgumentVisitor(val scope: Scope) : Python3BaseVisitor<Argument>() {
             } else if(stars == "**") {
                 return Kwarg(expression)
             }
-            throw Exception("Could not parse")
+            throw CouldNotParseException("Firs child of $ctx does not begin with '*' or '**'.")
         }
         3 -> {
             // It is a keyword_item, (parent: keyword_arguments), in the form: identifier "=" expression
@@ -74,7 +76,7 @@ class ArgumentVisitor(val scope: Scope) : Python3BaseVisitor<Argument>() {
             val expression = getExpressionByPosition(2)
             return KeywordItem(identifier, expression)
         }
-        else -> throw Exception("Could not parse")
+        else -> throw CouldNotParseException("ctx: $ctx has ${ctx.childCount} children!")
     }
   }
 

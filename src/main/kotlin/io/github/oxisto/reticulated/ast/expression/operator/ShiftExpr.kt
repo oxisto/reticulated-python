@@ -17,7 +17,7 @@
 
 package io.github.oxisto.reticulated.ast.expression.operator
 
-import java.lang.IllegalArgumentException
+import io.github.oxisto.reticulated.ast.CouldNotParseException
 
 /**
  * This class represents a shift_expr.
@@ -35,7 +35,7 @@ class ShiftExpr(
     init {
         if(binaryOperator == null){
             if(shiftExpr != null) {
-                throw IllegalArgumentException()
+                throw CouldNotParseException()
             }
         }else {
             if(shiftExpr == null || (
@@ -43,7 +43,7 @@ class ShiftExpr(
                                     binaryOperator != BinaryOperator.SHIFT_LEFT
                         )
             ){
-                throw IllegalArgumentException()
+                throw CouldNotParseException()
             }
         }
     }

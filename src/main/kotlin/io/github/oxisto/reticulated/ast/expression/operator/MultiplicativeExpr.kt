@@ -17,7 +17,8 @@
 
 package io.github.oxisto.reticulated.ast.expression.operator
 
-import java.lang.IllegalArgumentException
+import io.github.oxisto.reticulated.ast.CouldNotParseException
+
 
 /**
  * This class represents a m_expr.
@@ -36,7 +37,7 @@ class MultiplicativeExpr(
     init {
         if(binaryOperator == null) {
             if(multiplicativeExpr != null){
-                throw IllegalArgumentException()
+                throw CouldNotParseException()
             }
         }else {
             if (multiplicativeExpr == null || (
@@ -47,7 +48,7 @@ class MultiplicativeExpr(
                                     binaryOperator != BinaryOperator.MODULO
                             )
             ) {
-                throw IllegalArgumentException()
+                throw CouldNotParseException()
             }
         }
     }

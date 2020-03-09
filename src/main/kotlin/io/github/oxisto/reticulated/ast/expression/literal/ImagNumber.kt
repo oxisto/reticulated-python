@@ -17,7 +17,7 @@
 
 package io.github.oxisto.reticulated.ast.expression.literal
 
-import java.lang.IllegalArgumentException
+import io.github.oxisto.reticulated.ast.CouldNotParseException
 
 /**
  * This class represents a imagnumber
@@ -29,11 +29,11 @@ class ImagNumber(val floatNumber:FloatNumber?, val integer:Integer?) : Literal<I
     init {
         if(floatNumber == null){
             if(integer == null) {
-                throw IllegalArgumentException()
+                throw CouldNotParseException()
             }
         }else {
             if(integer != null) {
-                throw IllegalArgumentException()
+                throw CouldNotParseException()
             }
         }
     }
