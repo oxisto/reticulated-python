@@ -19,7 +19,7 @@
  */
 package io.github.oxisto.reticulated
 
-import io.github.oxisto.reticulated.ast.expression.Call
+import io.github.oxisto.reticulated.ast.expression.call.Call
 import io.github.oxisto.reticulated.ast.expression.Name
 import io.github.oxisto.reticulated.ast.expression.argument.ArgumentList
 import io.github.oxisto.reticulated.ast.simple.ExpressionStatement

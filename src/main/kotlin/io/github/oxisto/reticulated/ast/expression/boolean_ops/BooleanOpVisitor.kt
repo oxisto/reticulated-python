@@ -36,7 +36,7 @@ class BooleanOpVisitor(val scope: Scope) : Python3BaseVisitor<BaseBooleanOp>() {
         if(ctx.childCount < 1 || ctx.childCount > 3){
             throw CouldNotParseException("The ctx=$ctx child count is unexpected.")
         }
-        val orTest: OrTest?
+        val orTest: BaseBooleanOp?
         val andTest: AndTest
         val getAndTestByPosition = {
             position:Int -> ctx
@@ -47,7 +47,7 @@ class BooleanOpVisitor(val scope: Scope) : Python3BaseVisitor<BaseBooleanOp>() {
             orTest = null
             andTest = getAndTestByPosition(0)
         }else{
-            orTest = ctx.getChild(0).accept(this) as OrTest
+            orTest = ctx.getChild(0).accept(this)
             andTest = getAndTestByPosition(2)
         }
         return OrTest(orTest, andTest)
@@ -63,7 +63,7 @@ class BooleanOpVisitor(val scope: Scope) : Python3BaseVisitor<BaseBooleanOp>() {
         if(ctx.childCount < 1 || ctx.childCount > 3){
             throw CouldNotParseException("The ctx=$ctx child count is unexpected.")
         }
-        val andTest: AndTest?
+        val andTest: BaseBooleanOp?
         val notTest: NotTest
         val getNotTestByPosition = {
             position: Int -> ctx
@@ -74,7 +74,7 @@ class BooleanOpVisitor(val scope: Scope) : Python3BaseVisitor<BaseBooleanOp>() {
             andTest = null
             notTest = getNotTestByPosition(0)
         } else {
-            andTest = ctx.getChild(0).accept(this) as AndTest
+            andTest = ctx.getChild(0).accept(this)
             notTest = getNotTestByPosition(2)
         }
         return AndTest(andTest, notTest)

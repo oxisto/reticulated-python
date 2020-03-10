@@ -22,7 +22,11 @@ import io.github.oxisto.reticulated.ast.expression.argument.ArgumentList
 import io.github.oxisto.reticulated.ast.expression.boolean_expr.AndExpr
 import io.github.oxisto.reticulated.ast.expression.boolean_expr.OrExpr
 import io.github.oxisto.reticulated.ast.expression.boolean_expr.XorExpr
+import io.github.oxisto.reticulated.ast.expression.boolean_ops.AndTest
+import io.github.oxisto.reticulated.ast.expression.boolean_ops.NotTest
 import io.github.oxisto.reticulated.ast.expression.boolean_ops.OrTest
+import io.github.oxisto.reticulated.ast.expression.call.Call
+import io.github.oxisto.reticulated.ast.expression.call.EmptyCallTrailer
 import io.github.oxisto.reticulated.ast.expression.comparison.CompOperator
 import io.github.oxisto.reticulated.ast.expression.comparison.Comparison
 import io.github.oxisto.reticulated.ast.expression.comprehension.CompIf
@@ -38,6 +42,7 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Test
 import java.io.File
+import javax.naming.NameAlreadyBoundException
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
@@ -239,13 +244,13 @@ class ExpressionsTest {
     assertNotNull(expressionStatement)
     val call = expressionStatement.expression as Call
 
-    /*
+
     print(
             beautifyResult(
                     call.toString()
             )
     )
-    */
+
 
     assertNotNull(call)
     val name = call.primary as Name
@@ -479,8 +484,6 @@ class ExpressionsTest {
 
     val compIFCIF = compIterCF.compIter as CompIf
     assertNotNull(compIFCIF)
-    val subCompIterCIF = compIFCIF.compIter
-    assertNull(subCompIterCIF)
     val exprNoCond = compIFCIF.expressionNoCond
     assertNotNull(exprNoCond)
     val orTestCIF = exprNoCond.orTest
@@ -605,10 +608,10 @@ class ExpressionsTest {
             .andExpr
     assertNotNull(andExprSP)
     val nameOfSubXorExprSP = ((
-                andExprSP
-                      .andExpr as ShiftExpr
-              )
-                    .baseOperator as PowerExpr
+            andExprSP
+                    .andExpr as ShiftExpr
+            )
+            .baseOperator as PowerExpr
             ).primary as Name
     assertNotNull(nameOfSubXorExprSP.name, "b")
     val nameOfAndExprSP = (
@@ -652,23 +655,222 @@ class ExpressionsTest {
                     .baseOperator as PowerExpr
             ).primary as Name
     assertNotNull(bName.name, "b")
+
+
+    val subCompIterCIF = compIFCIF.compIter as CompIf
+    assertNotNull(subCompIterCIF)
+    val subSubCompIterCIF = subCompIterCIF.compIter
+    assertNull(subSubCompIterCIF)
+    val expressionNoCondICIF = subCompIterCIF.expressionNoCond
+    assertNotNull(expressionNoCondICIF)
+    val lambdaNoCondICIF = expressionNoCondICIF.lambdaNoCond
+    assertNull(lambdaNoCondICIF)
+    val orTestICIF = expressionNoCondICIF.orTest
+    assertNotNull(orTestICIF)
+    val subOrTestICIF = orTestICIF.orTest as AndTest
+    assertNotNull(subOrTestICIF)
+    val andTestICIF = subOrTestICIF.andTest as NotTest
+    assertNotNull(andTestICIF)
+    val notTestICIF = andTestICIF.notTest
+    assertNull(notTestICIF)
+    val comparisonICIF = andTestICIF.comparison
+    assertNotNull(comparisonICIF)
+    val orExprICIF = comparisonICIF.orExpr
+    assertNotNull(orExprICIF)
+    val subOrExprICIF = orExprICIF.orExpr
+    assertNull(subOrExprICIF)
+    val xorExprICIF = orExprICIF.xorExpr
+    assertNotNull(xorExprICIF)
+    val subXorExprICIF = xorExprICIF.xorExpr
+    assertNull(subXorExprICIF)
+    val andExprICIF = xorExprICIF.andExpr
+    assertNotNull(andExprICIF)
+    val subAndExprICIF = andExprICIF.andExpr
+    assertNull(subAndExprICIF)
+    val shiftExprICIF = andExprICIF.shiftExpr
+    assertNotNull(shiftExprICIF)
+    val subShiftExprICIF = shiftExprICIF.shiftExpr
+    assertNull(subShiftExprICIF)
+    val binaryOperatorICIF = shiftExprICIF.binaryOperator
+    assertNull(binaryOperatorICIF)
+    val baseOperatorICIF = shiftExprICIF.baseOperator as PowerExpr
+    assertNotNull(baseOperatorICIF)
+    val awaitExprICIF = baseOperatorICIF.awaitExpr
+    assertNull(awaitExprICIF)
+    val subBaseOperatorICIF = baseOperatorICIF.baseOperator
+    assertNull(subBaseOperatorICIF)
+    val ICIFName = baseOperatorICIF.primary as Name
+    assertNotNull(ICIFName.name, "x")
+
+    val comparisonsICIF = comparisonICIF.comparisons
+    assertNotNull(comparisonsICIF)
+    assertEquals(comparisonsICIF.size, 1)
+    val firstICIFPair = comparisonsICIF[0]
+    assertNotNull(firstICIFPair)
+    val compOperatorICIFP = firstICIFPair.getFirst()
+    assertNotNull(compOperatorICIFP)
+    assertEquals(compOperatorICIFP.symbol, "is")
+    val orExprICIFP = firstICIFPair.getSecond()
+    assertNotNull(orExprICIFP)
+    val subOrExprICIFP = orExprICIFP.orExpr
+    assertNull(subOrExprICIFP)
+    val xorExprICIFP = orExprICIFP.xorExpr
+    assertNotNull(xorExprICIFP)
+    val subXorExprICIFP = xorExprICIFP.xorExpr
+    assertNull(subXorExprICIFP)
+    val andExprICIFP = xorExprICIFP.andExpr
+    assertNotNull(andExprICIFP)
+    val subAndExprICIFP = andExprICIFP.andExpr
+    assertNull(subAndExprICIFP)
+    val shiftExprICIFP = andExprICIFP.shiftExpr
+    assertNotNull(shiftExprICIFP)
+    val subShiftExprICIFP = shiftExprICIFP.shiftExpr
+    assertNull(subShiftExprICIFP)
+    val binaryOperatorICIFP = shiftExprICIFP.binaryOperator
+    assertNull(binaryOperatorICIFP)
+    val baseOperatorICIFP = shiftExprICIFP.baseOperator as PowerExpr
+    assertNotNull(baseOperatorICIFP)
+    val awaitExprICIFP = baseOperatorICIFP.awaitExpr
+    assertNull(awaitExprICIFP)
+    val subBaseOperatorICIFP = baseOperatorICIFP.baseOperator
+    assertNull(subBaseOperatorICIFP)
+    val ICIFPNameY = baseOperatorICIFP.primary as Name
+    assertNotNull(ICIFPNameY)
+    assertEquals(ICIFPNameY.name, "y")
+
+    val notTestICIFO = subOrTestICIF.notTest
+    assertNotNull(notTestICIFO)
+    val subNotTestICIFO = notTestICIFO.notTest
+    assertNull(subNotTestICIFO)
+    val comparisonICIFO = notTestICIFO.comparison
+    assertNotNull(comparisonICIFO)
+    val orExprICIFO = comparisonICIFO.orExpr
+    assertNotNull(orExprICIFO)
+    val subOrExprICIFO = orExprICIFO.orExpr
+    assertNull(subOrExprICIFO)
+    val xorExprICIFO = orExprICIFO.xorExpr
+    assertNotNull(xorExprICIFO)
+    val subXorExprICIFO = xorExprICIFO.xorExpr
+    assertNull(subXorExprICIFO)
+    val andExprICIFO = xorExprICIFO.andExpr
+    assertNotNull(andExprICIFO)
+    val subAndExprICIFO = andExprICIFO.andExpr
+    assertNull(subAndExprICIFO)
+    val shiftExprICIFO = andExprICIFO.shiftExpr
+    assertNotNull(shiftExprICIFO)
+    val subShiftExprICIFO = shiftExprICIFO.shiftExpr
+    assertNull(subShiftExprICIFO)
+    val binaryOperatorICIFO = shiftExprICIFO.binaryOperator
+    assertNull(binaryOperatorICIFO)
+    val baseOperatorICIFO = shiftExprICIFO.baseOperator as PowerExpr
+    assertNotNull(baseOperatorICIFO)
+    val awaitExprICIFO = baseOperatorICIFO.awaitExpr
+    assertNull(awaitExprICIFO)
+    val subBaseOperatorICIFO = baseOperatorICIFO.baseOperator
+    assertNull(subBaseOperatorICIFO)
+    val ICIFONameZ = baseOperatorICIFO.primary as Name
+    assertNotNull(ICIFONameZ)
+    assertEquals(ICIFONameZ.name, "z")
+
+    val comparisonsICIFO = comparisonICIFO.comparisons
+    assertNotNull(comparisonsICIFO)
+    assertEquals(comparisonsICIFO.size, 1)
+    val firstPairICIFO = comparisonsICIFO[0]
+    assertNotNull(firstPairICIFO)
+    val compOperatorICIFO = firstPairICIFO.getFirst()
+    assertNotNull(compOperatorICIFO)
+    assertEquals(compOperatorICIFO.symbol, "not in")
+    val orExprFU = firstPairICIFO.getSecond()
+    assertNotNull(orExprFU)
+    val subOrExprFU = orExprFU.orExpr
+    assertNull(subOrExprFU)
+    val xorExprFU = orExprFU.xorExpr
+    assertNotNull(xorExprFU)
+    val subXorExprFU = xorExprFU.xorExpr
+    assertNull(subXorExprFU)
+    val andExprFU = xorExprFU.andExpr
+    assertNotNull(andExprFU)
+    val subAndExprFU = andExprFU.andExpr
+    assertNull(subAndExprFU)
+    val shiftExprFU = andExprFU.shiftExpr
+    assertNotNull(shiftExprFU)
+    val subShiftExprFU = shiftExprFU.shiftExpr
+    assertNull(subShiftExprFU)
+    val binaryOperatorFU = shiftExprFU.binaryOperator
+    assertNull(binaryOperatorFU)
+    val baseOperatorFU = shiftExprFU.baseOperator as PowerExpr
+    assertNotNull(baseOperatorFU)
+    val awaitExprFU = baseOperatorFU.awaitExpr
+    assertNull(awaitExprFU)
+    val subBaseOperatorFU = baseOperatorFU.baseOperator
+    assertNull(subBaseOperatorFU)
+    val firstCallFU = baseOperatorFU.primary as Call
+    assertNotNull(firstCallFU)
+    val nameOfFirstCallFU = firstCallFU.primary as Name
+    assertNotNull(nameOfFirstCallFU)
+    assertEquals(nameOfFirstCallFU.name, "fun")
+    val callTrailerFCFU = firstCallFU.callTrailer as ArgumentList
+    assertNotNull(callTrailerFCFU)
+    assertEquals(callTrailerFCFU.count, 2)
+    val firstArgumentFCFU = callTrailerFCFU[0]
+    assertNotNull(firstArgumentFCFU)
+    val callFFCFU = firstArgumentFCFU.expression as Call
+    assertNotNull(callFFCFU)
+    val nameOfCFFCFU = callFFCFU.primary as Name
+    assertNotNull(nameOfCFFCFU)
+    assertEquals(nameOfCFFCFU.name, "fun")
+    val callTrailerCFFCFU = callFFCFU.callTrailer as ArgumentList
+    assertNotNull(callTrailerCFFCFU)
+    assertEquals(callTrailerCFFCFU.count, 1)
+    val firstArgumentCFFCFU = callTrailerCFFCFU[0]
+    assertNotNull(firstArgumentCFFCFU)
+    val callOfCCFFCFU = firstArgumentCFFCFU.expression as Call
+    assertNotNull(callOfCCFFCFU)
+    val nameOfCCFFCFU = callOfCCFFCFU.primary as Name
+    assertNotNull(nameOfCCFFCFU)
+    assertEquals(nameOfCCFFCFU.name, "fun")
+    val trailerOfCCFFCFU = callOfCCFFCFU.callTrailer as ArgumentList
+    assertNotNull(trailerOfCCFFCFU)
+    assertEquals(trailerOfCCFFCFU.count, 1)
+    val firstArgumentOFCCFFCFU = trailerOfCCFFCFU[0]
+    assertNotNull(firstArgumentOFCCFFCFU)
+    val callOfCCCFFCFU = firstArgumentOFCCFFCFU.expression as Call
+    assertNotNull(callOfCCCFFCFU)
+    val nameOfCCCFFCFU = callOfCCCFFCFU.primary as Name
+    assertNotNull(nameOfCCCFFCFU)
+    assertEquals(nameOfCCCFFCFU.name, "this_is_a_function_call")
+    val callTrailerOfCCCFFCFU = callOfCCCFFCFU.callTrailer as EmptyCallTrailer
+    assertNotNull(callTrailerOfCCCFFCFU)
+
+    val secondArgumentFCFU = callTrailerFCFU[1]
+    assertNotNull(secondArgumentFCFU)
+    val callOfFCFU = secondArgumentFCFU.expression as Call
+    assertNotNull(callOfFCFU)
+    val nameOFSFCFU = callOfFCFU.primary as Name
+    assertNotNull(nameOFSFCFU)
+    assertEquals(nameOFSFCFU.name, "this_is_a_function_call")
+    val callTrailerOFSFCFU = callOfFCFU.callTrailer as EmptyCallTrailer
+    assertNotNull(callTrailerOFSFCFU)
+
+    // TODO: fullFill rest of the andTest
+    val andTestCIF = orTestICIF.andTest
   }
 
-  fun beautifyResult(input: String): String{
+  private fun beautifyResult(input: String): String{
     var result = String()
     var count = -1
-    for(line in input.split(System.lineSeparator())){
-      if(line.isNotEmpty() && line[0] == ')'){
+    for ( line in input.split( System.lineSeparator() ) ) {
+      val isClosingBracket = line.isNotEmpty() && line[0] == ')'
+      if ( isClosingBracket ) {
         count --
       }
-      val tmp = count
-      while(count > 0){
+      var tmp = count
+      while ( tmp > 0 ) {
         result += "\t"
-        count--
+        tmp--
       }
-      count = tmp
       result += line + System.lineSeparator()
-      if(!(line.isNotEmpty() && line[0] == ')')){
+      if ( !isClosingBracket ) {
         count++
       }
     }

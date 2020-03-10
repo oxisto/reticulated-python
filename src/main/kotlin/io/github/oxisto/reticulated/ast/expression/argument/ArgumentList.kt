@@ -18,7 +18,7 @@
 package io.github.oxisto.reticulated.ast.expression.argument
 
 import io.github.oxisto.reticulated.ast.Container
-import io.github.oxisto.reticulated.ast.expression.CallTrailer
+import io.github.oxisto.reticulated.ast.expression.call.CallTrailer
 
 /**
  * This class represents the argument_list.

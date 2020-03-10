@@ -19,6 +19,7 @@ package io.github.oxisto.reticulated.ast.expression
 
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.argument.CallTrailerVisitor
+import io.github.oxisto.reticulated.ast.expression.call.Call
 import io.github.oxisto.reticulated.ast.expression.literal.Integer
 import io.github.oxisto.reticulated.ast.expression.literal.StringLiteral
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
@@ -65,7 +66,20 @@ class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
         } else if(trailer.getChild(0).text == "await") {
           // It is an await expression
           AwaitExpr(trailer.getChild(1).accept(this) as Primary)
-        }else {
+        } else if(
+                trailer.getChild(0).text == "(" &&
+                trailer.getChild(1).text == ")"
+                ) {
+          // It is a call without arguments
+          // parse the trailer
+          val argumentList =
+                  trailer.accept(
+                          CallTrailerVisitor(
+                                  this.scope
+                          )
+                  )
+          Call(primary, argumentList)
+        } else {
           throw Exception("could not parse")
         }
       } else if (
@@ -82,9 +96,8 @@ class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
                         )
                 )
         // create a call
-        val call = Call(primary, argumentList)
 
-        call
+        Call(primary, argumentList)
       } else {
         throw Exception("could not parse")
       }

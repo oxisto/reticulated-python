@@ -21,5 +21,18 @@ enum class BinaryOperator(val representation: String) {
     SHIFT_RIGHT(">>"), SHIFT_LEFT("<<"), ADDITION("+"),
     SUBTRACTION("-"), MULTIPLICATION("*"), DIVISION("/"),
     FLOOR_DIVISION("//"), MATRIX_MULTIPLICATION("@"),
-    MODULO("%"), POWER("**")
+    MODULO("%"), POWER("**");
+
+    companion object {
+        fun getBinaryOperatorBySymbol(symbolToFind: String): BinaryOperator? {
+            var result: BinaryOperator? = null
+            for (binaryOperator in values()) {
+                if (binaryOperator.representation == symbolToFind) {
+                    result = binaryOperator
+                    break
+                }
+            }
+            return result
+        }
+    }
 }

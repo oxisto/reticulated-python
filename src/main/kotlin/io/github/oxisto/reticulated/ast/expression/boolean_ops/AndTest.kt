@@ -17,13 +17,21 @@
 
 package io.github.oxisto.reticulated.ast.expression.boolean_ops
 
+import io.github.oxisto.reticulated.ast.CouldNotParseException
+
 /**
  * This class represents an and_test.
  * It´s EBNF definition is:
  *      and_test ::= not_test | and_test "and" not_test
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#boolean-operations}]
  */
-class AndTest(val andTest:AndTest?, val notTest:NotTest): BaseBooleanOp() {
+class AndTest(val andTest:BaseBooleanOp?, val notTest:NotTest): BaseBooleanOp() {
+
+    init {
+        if ( andTest != null && andTest !is AndTest && andTest !is NotTest ) {
+            throw CouldNotParseException()
+        }
+    }
 
     override fun toString(): String {
         var result = "AndTest(" + System.lineSeparator() + "\t"

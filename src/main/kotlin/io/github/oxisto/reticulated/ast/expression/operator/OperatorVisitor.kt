@@ -22,6 +22,8 @@ import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.AwaitExpr
 import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
 import io.github.oxisto.reticulated.ast.expression.Primary
+import io.github.oxisto.reticulated.ast.expression.boolean_expr.BaseBooleanExpr
+import io.github.oxisto.reticulated.ast.expression.boolean_ops.BaseBooleanOp
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 import org.antlr.v4.runtime.ParserRuleContext
@@ -40,10 +42,10 @@ import org.antlr.v4.runtime.ParserRuleContext
  */
 class OperatorVisitor(val scope: Scope): Python3BaseVisitor<BaseOperator>() {
     override fun visitShift_expr(ctx: Python3Parser.Shift_exprContext): BaseOperator {
-        if(ctx.childCount < 1 || ctx.childCount > 2){
+        if(ctx.childCount < 1 || ctx.childCount > 3){
             throw CouldNotParseException()
         }
-        val shiftExpr: ShiftExpr?
+        val shiftExpr: BaseBooleanExpr?
         val binaryOperator: BinaryOperator?
         val baseOperator: BaseOperator
         val getBaseOperatorByPosition = {
@@ -57,9 +59,9 @@ class OperatorVisitor(val scope: Scope): Python3BaseVisitor<BaseOperator>() {
             baseOperator = getBaseOperatorByPosition(0)
         } else {
             shiftExpr = ctx.getChild(0)
-                    .accept(this) as ShiftExpr
+                    .accept(this)
             binaryOperator = BinaryOperator
-                    .valueOf(
+                    .getBinaryOperatorBySymbol(
                             ctx.getChild(1).text
                     )
             baseOperator = getBaseOperatorByPosition(2)

@@ -15,7 +15,9 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.expression
+package io.github.oxisto.reticulated.ast.expression.call
+
+import io.github.oxisto.reticulated.ast.expression.Primary
 
 class Call(val primary: Primary, val callTrailer: CallTrailer) : Primary() {
 

@@ -27,12 +27,12 @@ enum class CompOperator(val symbol:String) {
             val compOperators = values()
             var result: CompOperator? = null
             for (compOperator in compOperators) {
-                if (compOperator.symbol == symbolToFind) {
+                if (compOperator.symbol.replace(" ", "") == symbolToFind) {
                     result = compOperator
+                    break
                 }
             }
             return result
         }
     }
-
 }

@@ -18,6 +18,8 @@
 package io.github.oxisto.reticulated.ast.expression.operator
 
 import io.github.oxisto.reticulated.ast.CouldNotParseException
+import io.github.oxisto.reticulated.ast.expression.boolean_expr.BaseBooleanExpr
+import io.github.oxisto.reticulated.ast.expression.boolean_ops.BaseBooleanOp
 
 /**
  * This class represents a shift_expr.
@@ -27,20 +29,20 @@ import io.github.oxisto.reticulated.ast.CouldNotParseException
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#unary-arithmetic-and-bitwise-operations}]
  */
 class ShiftExpr(
-        val shiftExpr: ShiftExpr?,
+        val shiftExpr: BaseBooleanExpr?,
         val binaryOperator: BinaryOperator?,
         val baseOperator: BaseOperator
 ): BaseOperator() {
 
     init {
         if(binaryOperator == null){
-            if(shiftExpr != null) {
+            if(shiftExpr != null && shiftExpr !is ShiftExpr && shiftExpr !is BaseOperator) {
                 throw CouldNotParseException()
             }
         }else {
             if(shiftExpr == null || (
                             binaryOperator != BinaryOperator.SHIFT_LEFT &&
-                                    binaryOperator != BinaryOperator.SHIFT_LEFT
+                                    binaryOperator != BinaryOperator.SHIFT_RIGHT
                         )
             ){
                 throw CouldNotParseException()

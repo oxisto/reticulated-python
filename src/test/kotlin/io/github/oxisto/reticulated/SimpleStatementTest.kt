@@ -16,7 +16,7 @@
  */
 package io.github.oxisto.reticulated
 
-import io.github.oxisto.reticulated.ast.expression.Call
+import io.github.oxisto.reticulated.ast.expression.call.Call
 import io.github.oxisto.reticulated.ast.expression.Identifier
 import io.github.oxisto.reticulated.ast.expression.literal.Integer
 import io.github.oxisto.reticulated.ast.simple.AssignmentExpression
