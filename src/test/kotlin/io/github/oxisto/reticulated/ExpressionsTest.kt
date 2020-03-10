@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Fraunhofer AISEC. All rights reserved.
+ * Copyright (c) 2020, Fraunhofer AISEC. All rights reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -28,15 +28,12 @@ import io.github.oxisto.reticulated.ast.expression.comparison.Comparison
 import io.github.oxisto.reticulated.ast.expression.comprehension.CompIf
 import io.github.oxisto.reticulated.ast.expression.comprehension.Comprehension
 import io.github.oxisto.reticulated.ast.expression.literal.Integer
-import io.github.oxisto.reticulated.ast.expression.operator.BaseOperator
-import io.github.oxisto.reticulated.ast.expression.operator.BinaryOperator
 import io.github.oxisto.reticulated.ast.expression.operator.PowerExpr
-import io.github.oxisto.reticulated.ast.expression.operator.ShiftExpr
 import io.github.oxisto.reticulated.ast.simple.ExpressionStatement
 import io.github.oxisto.reticulated.ast.statement.FunctionDefinition
 import io.github.oxisto.reticulated.ast.statement.StatementList
-import io.github.oxisto.reticulated.Pair
 import io.github.oxisto.reticulated.ast.expression.comprehension.CompFor
+import io.github.oxisto.reticulated.ast.expression.operator.ShiftExpr
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Test
@@ -249,6 +246,7 @@ class ExpressionsTest {
             )
     )
     */
+
     assertNotNull(call)
     val name = call.primary as Name
     assertNotNull(name)
@@ -379,11 +377,11 @@ class ExpressionsTest {
     assertNotNull(subComparisonCI)
     assertEquals(subComparisonCI.size, 1)
     val elem = subComparisonCI[0] as? Pair<CompOperator, OrExpr> ?: throw AssertionError()
-    val compOperatorCI = elem.getT()
+    val compOperatorCI = elem.getFirst()
     assertNotNull(compOperatorCI)
     val compOperatorCISymbol = compOperatorCI.symbol
     assertEquals(compOperatorCISymbol, "<")
-    val orExprCIP = elem.getU()
+    val orExprCIP = elem.getSecond()
     assertNotNull(orExprCIP)
     val subOrExprCIP = orExprCIP.orExpr
     assertNull(subOrExprCIP)
@@ -485,7 +483,175 @@ class ExpressionsTest {
     assertNull(subCompIterCIF)
     val exprNoCond = compIFCIF.expressionNoCond
     assertNotNull(exprNoCond)
-    // TODO: continue Test lambdas
+    val orTestCIF = exprNoCond.orTest
+    assertNull(orTestCIF)
+    val lambdaNoCondCIF = exprNoCond.lambdaNoCond
+    assertNotNull(lambdaNoCondCIF)
+    val parameterListCIF = lambdaNoCondCIF.parameterList
+    assertNull(parameterListCIF)
+    val exprNoCondCIFL = lambdaNoCondCIF.exprNoCond
+    assertNotNull(exprNoCondCIFL)
+    val orTestCIFL = exprNoCondCIFL.orTest
+    assertNull(orTestCIFL)
+    val lambdaNoCondCIFL = exprNoCondCIFL.lambdaNoCond
+    assertNotNull(lambdaNoCondCIFL)
+    val parameterListCIFL = lambdaNoCondCIFL.parameterList
+    assertNotNull(parameterListCIFL)
+    assertEquals(parameterListCIFL.count, 1)
+    val parameterCIFL = parameterListCIFL[0]
+    assertNotNull(parameterCIFL)
+    val exprOfParameterCIFL = parameterCIFL.expression
+    assertNull(exprOfParameterCIFL)
+    val idOfParameterCIFL = parameterCIFL.id
+    assertNotNull(idOfParameterCIFL)
+    assertEquals(idOfParameterCIFL.name, "a")
+    val exprNoCondLL = lambdaNoCondCIFL.exprNoCond
+    assertNotNull(exprNoCondLL)
+    val orTestLL = exprNoCondLL.orTest
+    assertNull(orTestLL)
+    val lambdaNoCondLL = exprNoCondLL.lambdaNoCond
+    assertNotNull(lambdaNoCondLL)
+    val parameterListLL = lambdaNoCondLL.parameterList
+    assertNotNull(parameterListLL)
+    assertEquals(parameterListLL.count, 2)
+    val parameter1LL = parameterListLL[0]
+    assertNotNull(parameter1LL)
+    val idOfParameter1LL = parameter1LL.id
+    assertNotNull(idOfParameter1LL)
+    assertEquals(idOfParameter1LL.name, "b")
+    val parameter2LL = parameterListLL[1]
+    assertNotNull(parameter2LL)
+    val idOfParameter2LL = parameter2LL.id
+    assertNotNull(idOfParameter2LL)
+    assertEquals(idOfParameter2LL.name, "c")
+    val exprNoCondSLL = lambdaNoCondLL.exprNoCond
+    assertNotNull(exprNoCondSLL)
+    val lambdaNoCondSLL = exprNoCondSLL.lambdaNoCond
+    assertNull(lambdaNoCondSLL)
+    val orTestSLL = exprNoCondSLL.orTest
+    assertNotNull(orTestSLL)
+    val subOrTestSLL = orTestSLL.orTest
+    assertNull(subOrTestSLL)
+    val andTestSLL = orTestSLL.andTest
+    assertNotNull(andTestSLL)
+    val subAndTestSLL = andTestSLL.andTest
+    assertNull(subAndTestSLL)
+    val notTestSLL = andTestSLL.notTest
+    assertNotNull(notTestSLL)
+    val subNotTestSLL = notTestSLL.notTest
+    assertNull(subNotTestSLL)
+    val comparisonSLL = notTestSLL.comparison
+    assertNotNull(comparisonSLL)
+    val orExprSLL = comparisonSLL.orExpr
+    assertNotNull(orExprSLL)
+    val subOrExprSLL = orExprSLL.orExpr
+    assertNull(subOrExprSLL)
+    val xorExprSLL = orExprSLL.xorExpr
+    assertNotNull(xorExprSLL)
+    val subXorExprSLL = xorExprSLL.xorExpr
+    assertNull(subXorExprSLL)
+    val andExprSLL = xorExprSLL.andExpr
+    assertNotNull(andExprSLL)
+    val subAndExprSLL = andExprSLL.andExpr
+    assertNull(subAndExprSLL)
+    val shiftExprSLL = andExprSLL.shiftExpr
+    assertNotNull(shiftExprSLL)
+    val subShiftExprSLL = shiftExprSLL.shiftExpr
+    assertNull(subShiftExprSLL)
+    val binaryOperatorSLL = shiftExprSLL.binaryOperator
+    assertNull(binaryOperatorSLL)
+    val baseOperatorSLL = shiftExprSLL.baseOperator as PowerExpr
+    assertNotNull(baseOperatorSLL)
+    val awaitExprSLL = baseOperatorSLL.awaitExpr
+    assertNull(awaitExprSLL)
+    val subBaseOperatorSLL = baseOperatorSLL.baseOperator
+    assertNull(subBaseOperatorSLL)
+    val nameSLL = baseOperatorSLL.primary as Name
+    assertNotNull(nameSLL)
+    assertEquals(nameSLL.name, "a")
+    val comparisonsSLL = comparisonSLL.comparisons
+    assertNotNull(comparisonsSLL)
+    assertEquals(comparisonsSLL.size, 4)
+    val firstPair = comparisonsSLL[0]
+    assertNotNull(firstPair)
+    val compOperatorFP = firstPair.getFirst()
+    assertNotNull(compOperatorFP)
+    assertEquals(compOperatorFP.symbol, "<")
+    val orExprFP = firstPair.getSecond()
+    val xorExprFP = orExprFP.orExpr as XorExpr
+    val powerExprFP0 = xorExprFP
+            .andExpr
+            .shiftExpr
+            .baseOperator as PowerExpr
+    assertNotNull(powerExprFP0)
+    val nameFP0 = powerExprFP0.primary as Name
+    assertEquals(nameFP0.name, "x")
+    val powerExprFP = orExprFP
+            .xorExpr
+            .andExpr
+            .shiftExpr
+            .baseOperator as PowerExpr
+    assertNotNull(powerExprFP)
+    val nameFP = powerExprFP.primary as Name
+    assertEquals(nameFP.name, "y")
+    val secondPair = comparisonsSLL[1]
+    assertNotNull(secondPair)
+    val compOperatorSP = secondPair.getFirst()
+    assertNotNull(compOperatorSP)
+    assertEquals(compOperatorSP.symbol, "<=")
+    val andExprSP = secondPair
+            .getSecond()
+            .xorExpr
+            .andExpr
+    assertNotNull(andExprSP)
+    val nameOfSubXorExprSP = ((
+                andExprSP
+                      .andExpr as ShiftExpr
+              )
+                    .baseOperator as PowerExpr
+            ).primary as Name
+    assertNotNull(nameOfSubXorExprSP.name, "b")
+    val nameOfAndExprSP = (
+            andExprSP
+                    .shiftExpr
+                    .baseOperator as PowerExpr
+            ).primary as Name
+    assertNotNull(nameOfAndExprSP.name, "z")
+    val thirdPair = comparisonsSLL[2]
+    assertNotNull(thirdPair)
+    val compOperatorTP = thirdPair.getFirst()
+    assertNotNull(compOperatorTP)
+    assertEquals(compOperatorTP.symbol, ">=")
+    val xorExprTP = thirdPair.getSecond().xorExpr
+    assertNotNull(xorExprTP)
+    val cNameTP = (
+            (
+                    xorExprTP.xorExpr as AndExpr
+                    ).shiftExpr
+                    .baseOperator as PowerExpr
+            ).primary as Name
+    assertNotNull(cNameTP.name, "c")
+    val aNameTP = (
+            xorExprTP
+                    .andExpr
+                    .shiftExpr
+                    .baseOperator as PowerExpr
+            ).primary as Name
+    assertNotNull(aNameTP)
+    assertEquals(aNameTP.name, "a")
+    val forthPair = comparisonsSLL[3]
+    val compOperatorFPP = forthPair.getFirst()
+    assertNotNull(compOperatorFPP)
+    assertEquals(compOperatorFPP.symbol, ">")
+    val bName = (
+            forthPair
+                    .getSecond()
+                    .xorExpr
+                    .andExpr
+                    .shiftExpr
+                    .baseOperator as PowerExpr
+            ).primary as Name
+    assertNotNull(bName.name, "b")
   }
 
   fun beautifyResult(input: String): String{

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Fraunhofer AISEC. All rights reserved.
+ * Copyright (c) 2020, Fraunhofer AISEC. All rights reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -39,8 +39,9 @@ class AndExpr(val andExpr: BaseBooleanExpr?, val shiftExpr: ShiftExpr): BaseBool
 
     override fun toString(): String {
         var result = "AndExpr(" + System.lineSeparator() + "\t"
+
         if (andExpr != null) {
-            result += "andExpr=$andExpr & shiftExpr=$shiftExpr"
+            result += "andExpr=$andExpr & "
         }
         result += "shiftExpr=$shiftExpr" + System.lineSeparator() +
                 ")"

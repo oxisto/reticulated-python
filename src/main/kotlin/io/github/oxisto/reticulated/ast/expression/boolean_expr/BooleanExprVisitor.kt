@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Fraunhofer AISEC. All rights reserved.
+ * Copyright (c) 2020, Fraunhofer AISEC. All rights reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -106,7 +106,7 @@ class BooleanExprVisitor(val scope: Scope):  Python3BaseVisitor<BaseBooleanExpr>
             if(ctx.childCount != 3){
                 throw CouldNotParseException("The ctx=$ctx child count is unexpected.")
             }
-            val child = ctx.getChild(2)
+            val child = ctx.getChild(0)
             andExpr = if(child is Python3Parser.And_exprContext) {
                 child.accept(this) as BaseBooleanExpr
             } else {
@@ -116,7 +116,7 @@ class BooleanExprVisitor(val scope: Scope):  Python3BaseVisitor<BaseBooleanExpr>
                         )
                 )
             }
-            shiftExpr = getShiftExprByPosition(0)
+            shiftExpr = getShiftExprByPosition(2)
         }
         return AndExpr(andExpr, shiftExpr)
     }

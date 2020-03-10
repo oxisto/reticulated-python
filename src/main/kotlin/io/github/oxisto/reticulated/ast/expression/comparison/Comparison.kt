@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Fraunhofer AISEC. All rights reserved.
+ * Copyright (c) 2020, Fraunhofer AISEC. All rights reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -33,8 +33,8 @@ class Comparison(val orExpr: OrExpr, val comparisons: List<Pair<CompOperator, Or
         var result = "Comparison(" + System.lineSeparator() +
                 "\torExpr=$orExpr"
         for(elem:Pair<CompOperator, OrExpr> in comparisons){
-            val compOperatorOfElem = elem.getT()
-            val orExprOfElem = elem.getU()
+            val compOperatorOfElem = elem.getFirst()
+            val orExprOfElem = elem.getSecond()
             result += " compOperator=$compOperatorOfElem orEpr=$orExprOfElem"
         }
         result += System.lineSeparator() + ")"

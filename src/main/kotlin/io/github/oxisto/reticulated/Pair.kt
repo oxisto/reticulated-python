@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Fraunhofer AISEC. All rights reserved.
+ * Copyright (c) 2020, Fraunhofer AISEC. All rights reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,11 +17,11 @@
 
 package io.github.oxisto.reticulated
 
-class Pair<T, U>(private val t: T, private val u: U) {
-    fun getT(): T {
-        return t
+class Pair<T, U>(private val first: T, private val second: U) {
+    fun getFirst(): T {
+        return first
     }
-    fun getU(): U {
-        return u
+    fun getSecond(): U {
+        return second
     }
 }
