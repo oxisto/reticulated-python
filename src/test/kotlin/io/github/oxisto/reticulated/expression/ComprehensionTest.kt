@@ -1025,7 +1025,7 @@ class ComprehensionTest {
     assertEquals(nameOfSubShiftExprX.name, "x")
     val binaryOperatorX = shiftExprX.binaryOperator
     assertNotNull(binaryOperatorX)
-    assertEquals(binaryOperatorX.representation, ">>")
+    assertEquals(binaryOperatorX.symbol, ">>")
     val baseOperatorX = shiftExprX.baseOperator as PowerExpr
     assertNotNull(baseOperatorX)
     val awaitExprBX = baseOperatorX.awaitExpr
@@ -1068,7 +1068,7 @@ class ComprehensionTest {
     assertEquals(nameOfSCX.name, "z")
     val binaryOperatorCX = shiftExprCX.binaryOperator
     assertNotNull(binaryOperatorCX)
-    assertEquals(binaryOperatorCX.representation, "<<")
+    assertEquals(binaryOperatorCX.symbol, "<<")
     val baseOperatorCX = shiftExprCX.baseOperator as PowerExpr
     assertNotNull(baseOperatorCX)
     val awaitExprCX = baseOperatorCX.awaitExpr

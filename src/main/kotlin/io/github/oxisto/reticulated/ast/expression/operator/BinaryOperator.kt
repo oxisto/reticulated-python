@@ -17,17 +17,17 @@
 
 package io.github.oxisto.reticulated.ast.expression.operator
 
-enum class BinaryOperator(val representation: String) {
+enum class BinaryOperator(val symbol: String) {
     SHIFT_RIGHT(">>"), SHIFT_LEFT("<<"), ADDITION("+"),
     SUBTRACTION("-"), MULTIPLICATION("*"), DIVISION("/"),
     FLOOR_DIVISION("//"), MATRIX_MULTIPLICATION("@"),
     MODULO("%"), POWER("**");
 
     companion object {
-        fun getBinaryOperatorBySymbol(symbolToFind: String): BinaryOperator? {
+        fun getBinaryOperator(symbolToFind: String): BinaryOperator? {
             var result: BinaryOperator? = null
             for (binaryOperator in values()) {
-                if (binaryOperator.representation == symbolToFind) {
+                if (binaryOperator.symbol == symbolToFind) {
                     result = binaryOperator
                     break
                 }

@@ -52,7 +52,7 @@ class ShiftExpr(
     override fun toString(): String {
         var result = "ShiftExpr(" + System.lineSeparator() + "\t"
         if (shiftExpr != null) {
-            result += "shiftExpr=$shiftExpr binaryOperator=${binaryOperator!!.representation} "
+            result += "shiftExpr=$shiftExpr binaryOperator=${binaryOperator!!.symbol} "
         }
         result += "additiveExpr=$baseOperator" + System.lineSeparator() +
                 ")"

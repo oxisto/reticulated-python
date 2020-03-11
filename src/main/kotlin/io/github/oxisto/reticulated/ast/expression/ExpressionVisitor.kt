@@ -22,11 +22,11 @@ import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.argument.CallTrailerVisitor
 import io.github.oxisto.reticulated.ast.expression.boolean_ops.BooleanOpVisitor
 import io.github.oxisto.reticulated.ast.expression.call.Call
-import io.github.oxisto.reticulated.ast.expression.literal.Integer
-import io.github.oxisto.reticulated.ast.expression.literal.StringLiteral
+import io.github.oxisto.reticulated.ast.expression.literal.*
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 import org.antlr.v4.runtime.tree.TerminalNode
+import org.antlr.v4.runtime.tree.TerminalNodeImpl
 
 /**
  * Think of splitting the class
@@ -134,21 +134,43 @@ class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
    *
    */
   override fun visitTerminal(node: TerminalNode): Expression {
-
     // check for some literals now
     val text = node.text
 
-    if (text.startsWith("\"")) {
-      return StringLiteral(text.replace("\"", ""))
+    val intOrNull = text.toIntOrNull()
+    val floatOrNull = text.toFloatOrNull()
+    val isImagNumber = text.length > 1 && (
+        text.last() == 'J' || text.last() == 'j'
+      )
+    // TODO: BytesLiteral
+    return when {
+      intOrNull != null -> {
+        Integer(intOrNull)
+      }
+      text.startsWith("\"") || text.startsWith("\'") -> {
+        StringLiteral(
+            text.replace("\"", "")
+                .replace("\'", "")
+        )
+      }
+      floatOrNull != null -> {
+        FloatNumber(floatOrNull)
+      }
+      isImagNumber -> {
+        val textWithoutLast = text.substring(0, text.lastIndex)
+        val intOrNullOfImag = textWithoutLast.toIntOrNull()
+        val floatOrNullOfImag = textWithoutLast.toFloatOrNull()
+        if(intOrNullOfImag != null){
+          ImagNumber(null, Integer(intOrNullOfImag))
+        }else if (floatOrNullOfImag != null) {
+          ImagNumber(FloatNumber(floatOrNullOfImag), null)
+        }else {
+          throw CouldNotParseException()
+        }
+      }
+      else -> {
+        Identifier(node.text)
+      }
     }
-
-    // check if it is a number
-    val i = text.toIntOrNull()
-    if (i != null) {
-      return Integer(i)
-    }
-
-    // lets just return an identifier for now
-    return Identifier(node.text)
   }
 }

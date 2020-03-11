@@ -53,7 +53,7 @@ class PowerExpr(
             "awaitExpr=$awaitExpr"
         }
         if(baseOperator != null){
-            result += " power=${BinaryOperator.POWER.representation} unaryExpr=$baseOperator"
+            result += " power=${BinaryOperator.POWER.symbol} unaryExpr=$baseOperator"
         }
         result += System.lineSeparator() + ")"
         return result

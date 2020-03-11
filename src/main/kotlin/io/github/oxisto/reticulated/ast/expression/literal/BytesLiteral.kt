@@ -21,7 +21,7 @@ package io.github.oxisto.reticulated.ast.expression.literal
  * This class represents a bytesliteral
  * The EBNF representation is:
  *      bytesliteral   ::=  bytesprefix ( shortbytes | longbytes )
- *      bytesprefix    ::=  "b" | "B" | "br" | "Br" | "bR" | "BR" | "rb" | "rB" | "Rb" | "RB
+ *      bytesprefix    ::=  "b" | "B" | "br" | "Br" | "bR" | "BR" | "rb" | "rB" | "Rb" | "RB"
  *      shortbytes     ::=  "'" shortbytesitem* "'" | '"' shortbytesitem* '"'
  *      longbytes      ::=  "'''" longbytesitem* "'''" | '"""' longbytesitem* '"""'
  *      shortbytesitem ::=  shortbyteschar | bytesescapeseq

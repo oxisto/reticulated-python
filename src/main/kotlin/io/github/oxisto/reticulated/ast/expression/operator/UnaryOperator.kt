@@ -17,6 +17,19 @@
 
 package io.github.oxisto.reticulated.ast.expression.operator
 
-enum class UnaryOperator(val representation: String) {
-    POSITIVE("+"), NEGATIVE("-"), BITWISE_NOT("~")
+enum class UnaryOperator(val symbol: String) {
+    POSITIVE("+"), NEGATIVE("-"), BITWISE_NOT("~");
+
+    companion object {
+        fun getUnaryOperator(symbolToFind: String): UnaryOperator? {
+            var result: UnaryOperator? = null
+            for (unaryOperator in UnaryOperator.values()) {
+                if (unaryOperator.symbol == symbolToFind) {
+                    result = unaryOperator
+                    break
+                }
+            }
+            return result
+        }
+    }
 }

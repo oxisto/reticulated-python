@@ -26,6 +26,7 @@ import io.github.oxisto.reticulated.ast.expression.boolean_expr.BaseBooleanExpr
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 import org.antlr.v4.runtime.ParserRuleContext
+import org.antlr.v4.runtime.tree.ParseTree
 import org.antlr.v4.runtime.tree.TerminalNodeImpl
 
 /**
@@ -61,7 +62,7 @@ class OperatorVisitor(val scope: Scope): Python3BaseVisitor<BaseOperator>() {
             shiftExpr = ctx.getChild(0)
                     .accept(this)
             binaryOperator = BinaryOperator
-                    .getBinaryOperatorBySymbol(
+                    .getBinaryOperator(
                             ctx.getChild(1).text
                     )
             baseOperator = getBaseOperatorByPosition(2)
@@ -78,13 +79,11 @@ class OperatorVisitor(val scope: Scope): Python3BaseVisitor<BaseOperator>() {
                 ctx.getChild(0).accept(this) as PowerExpr
             }
             2 -> {
-                val unaryOperator = UnaryOperator.valueOf(ctx.getChild(0).text)
-                val unaryExpr:UnaryExpr = ctx.getChild(1).accept(this) as UnaryExpr
-                UnaryExpr( unaryOperator, unaryExpr)
+                handleUnaryOperator(ctx)
             }
             3 -> {
                 val binaryOperator: BinaryOperator = BinaryOperator
-                    .getBinaryOperatorBySymbol(
+                    .getBinaryOperator(
                         ctx
                         .getChild(1)
                         .text
@@ -114,14 +113,45 @@ class OperatorVisitor(val scope: Scope): Python3BaseVisitor<BaseOperator>() {
     override fun visitTerm(ctx: Python3Parser.TermContext): BaseOperator {
         val child = ctx.getChild(0)
         return if(child.childCount == 2 && child.getChild(0) is TerminalNodeImpl){
-            child.getChild(1).accept(this)
+            handleUnaryOperator(ctx)
         } else {
             handlePower(ctx)
         }
     }
 
+    override fun visitFactor(ctx: Python3Parser.FactorContext): BaseOperator {
+        return if(ctx.childCount == 2){
+            getUnaryExprByParseTree(ctx)
+        } else {
+            ctx.getChild(0).accept(this) as PowerExpr
+        }
+    }
+
     override fun visitPower(ctx: Python3Parser.PowerContext): PowerExpr {
         return handlePower(ctx)
+    }
+
+    private fun handleUnaryOperator(ctx: ParserRuleContext): UnaryExpr {
+        if(ctx.childCount != 1) {
+            throw CouldNotParseException()
+        }
+        val child = ctx.getChild(0)
+        if(child.childCount != 2) {
+            throw CouldNotParseException()
+        }
+        return getUnaryExprByParseTree(child)
+    }
+
+    private fun getUnaryExprByParseTree(parseTree: ParseTree): UnaryExpr {
+        return UnaryExpr(
+            UnaryOperator.getUnaryOperator(
+                parseTree
+                    .getChild(0)
+                    .text.toString()
+            ) ?: throw CouldNotParseException(),
+            parseTree.getChild(1)
+                .accept(this)
+        )
     }
 
     private fun handlePower(ctx: ParserRuleContext): PowerExpr{

@@ -24,7 +24,7 @@ package io.github.oxisto.reticulated.ast.expression.operator
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#unary-arithmetic-and-bitwise-operations}]
  */
 class UnaryExpr(
-        val unaryOperator:UnaryOperator,
+        val unaryOperator: UnaryOperator,
         val baseOperator: BaseOperator
 ): BaseOperator() {
 
