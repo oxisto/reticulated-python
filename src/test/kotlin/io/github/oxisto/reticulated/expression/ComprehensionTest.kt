@@ -1,136 +1,53 @@
-/*
- * Copyright (c) 2020, Fraunhofer AISEC. All rights reserved.
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
- */
+package io.github.oxisto.reticulated.expression
 
-package io.github.oxisto.reticulated
-
-import io.github.oxisto.reticulated.ast.expression.*
+import io.github.oxisto.reticulated.PythonParser
+import io.github.oxisto.reticulated.TestUtils.Companion.beautifyResult
+import io.github.oxisto.reticulated.ast.expression.Identifier
+import io.github.oxisto.reticulated.ast.expression.Name
+import io.github.oxisto.reticulated.ast.expression.Primary
 import io.github.oxisto.reticulated.ast.expression.argument.ArgumentList
-import io.github.oxisto.reticulated.ast.expression.boolean_expr.AndExpr
 import io.github.oxisto.reticulated.ast.expression.boolean_expr.OrExpr
+import io.github.oxisto.reticulated.ast.expression.boolean_ops.OrTest
+import io.github.oxisto.reticulated.ast.expression.call.Call
+import io.github.oxisto.reticulated.ast.expression.comparison.CompOperator
+import io.github.oxisto.reticulated.ast.expression.comprehension.CompIf
+import io.github.oxisto.reticulated.ast.expression.comprehension.Comprehension
+import io.github.oxisto.reticulated.ast.expression.operator.PowerExpr
+import io.github.oxisto.reticulated.ast.simple.ExpressionStatement
+import io.github.oxisto.reticulated.ast.statement.StatementList
+import io.github.oxisto.reticulated.ast.expression.literal.Integer
+import io.github.oxisto.reticulated.Pair
+import io.github.oxisto.reticulated.ast.expression.boolean_expr.AndExpr
 import io.github.oxisto.reticulated.ast.expression.boolean_expr.XorExpr
 import io.github.oxisto.reticulated.ast.expression.boolean_ops.AndTest
 import io.github.oxisto.reticulated.ast.expression.boolean_ops.NotTest
-import io.github.oxisto.reticulated.ast.expression.boolean_ops.OrTest
-import io.github.oxisto.reticulated.ast.expression.call.Call
 import io.github.oxisto.reticulated.ast.expression.call.EmptyCallTrailer
-import io.github.oxisto.reticulated.ast.expression.comparison.CompOperator
 import io.github.oxisto.reticulated.ast.expression.comparison.Comparison
-import io.github.oxisto.reticulated.ast.expression.comprehension.CompIf
-import io.github.oxisto.reticulated.ast.expression.comprehension.Comprehension
-import io.github.oxisto.reticulated.ast.expression.literal.Integer
-import io.github.oxisto.reticulated.ast.expression.operator.PowerExpr
-import io.github.oxisto.reticulated.ast.simple.ExpressionStatement
-import io.github.oxisto.reticulated.ast.statement.FunctionDefinition
-import io.github.oxisto.reticulated.ast.statement.StatementList
 import io.github.oxisto.reticulated.ast.expression.comprehension.CompFor
 import io.github.oxisto.reticulated.ast.expression.operator.ShiftExpr
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNull
+import org.junit.Assert
 import org.junit.Test
 import java.io.File
-import javax.naming.NameAlreadyBoundException
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
-class ExpressionsTest {
-  @Test
-  fun testAttributeRef() {
-    val file = File(
-            javaClass
-            .classLoader
-            .getResource("import.py")!!
-            .file
-    )
-
-    val input = PythonParser()
-            .parse(file.path)
-            .root
-    assertNotNull(input)
-
-    val s1 = input.statements[1] as StatementList
-    val expr = s1.statements[0] as ExpressionStatement
-    println(expr)
-    val call = expr.expression as Call
-    val arg = call.callTrailer as ArgumentList
-    val arg0 = arg[0]
-    assertNotNull(arg0)
-  }
-
-  @Test
-  fun testKwargCallRef() {
-    val file = File(
-                  javaClass
-                    .classLoader
-                    .getResource("kwarg.py")!!
-                    .file
-    )
-
-    val input = PythonParser()
-            .parse(file.path)
-            .root
-
-    assertNotNull(input)
-
-    val functionDefinition = input.statements[1] as FunctionDefinition
-    assertNotNull(functionDefinition)
-    val parameterList = functionDefinition.parameterList
-    assertNotNull(parameterList)
-    val param1 = parameterList.parameters[0]
-    assertNotNull(param1)
-    // TODO: parameter expression is null
-    // val param1Expression = param1.expression as Expression
-    // assertNotNull(param1Expression)
-    val param2 = parameterList.parameters[1]
-    assertNotNull(param2)
-    // val param2Expression = param2.expression as Expression
-    // assertNotNull(param2Expression)
-
-    val statementList = input.statements[2] as StatementList
-    assertNotNull(statementList)
-    val expr = statementList.statements[0] as ExpressionStatement
-    print(expr)
-    assertNotNull(expr)
-    val call = expr.expression as Call
-    assertNotNull(call)
-    val primary = call.primary
-    assertNotNull(primary)
-    val argList = call.callTrailer as ArgumentList
-    assertNotNull(argList)
-    val kwarg1 = argList[2]
-    assertNotNull(kwarg1)
-    val kwarg2 = argList[3]
-    assertNotNull(kwarg2)
-
-    assertNotNull(primary)
-  }
+class ComprehensionTest {
 
   @Test
   fun testComprehensionArgument() {
     // booms because it is not implemented
     val file = File(
-            javaClass
-                    .classLoader
-                    .getResource("comprehension_argument.py")!!
-                    .file
+        javaClass
+            .classLoader
+            .getResource("expressions/comprehension_argument.py")!!
+            .file
     )
 
     val input = PythonParser()
-            .parse(file.path)
-            .root
+        .parse(file.path)
+        .root
 
     assertNotNull(input)
     val statements = input.statements
@@ -142,9 +59,9 @@ class ExpressionsTest {
     val call = expressionStatement.expression as Call
 
     println(
-            beautifyResult(
-                    call.toString()
-            )
+        beautifyResult(
+            call.toString()
+        )
     )
 
     assertNotNull(call)
@@ -219,21 +136,21 @@ class ExpressionsTest {
     val integer = arguments.expression as Integer
     assertNotNull(integer)
     assertEquals(integer.value, 10)
-    
+
   }
 
   @Test
   fun testFullComprehensionArgument() {
     val file = File(
-            javaClass
-                    .classLoader
-                    .getResource("full_comprehension_argument.py")!!
-                    .file
+        javaClass
+            .classLoader
+            .getResource("expressions/full_comprehension_argument.py")!!
+            .file
     )
 
     val input = PythonParser()
-            .parse(file.path)
-            .root
+        .parse(file.path)
+        .root
 
     assertNotNull(input)
     val statements = input.statements
@@ -246,9 +163,9 @@ class ExpressionsTest {
 
 
     print(
-            beautifyResult(
-                    call.toString()
-            )
+        beautifyResult(
+            call.toString()
+        )
     )
 
 
@@ -583,17 +500,17 @@ class ExpressionsTest {
     val orExprFP = firstPair.getSecond()
     val xorExprFP = orExprFP.orExpr as XorExpr
     val powerExprFP0 = xorExprFP
-            .andExpr
-            .shiftExpr
-            .baseOperator as PowerExpr
+        .andExpr
+        .shiftExpr
+        .baseOperator as PowerExpr
     assertNotNull(powerExprFP0)
     val nameFP0 = powerExprFP0.primary as Name
     assertEquals(nameFP0.name, "x")
     val powerExprFP = orExprFP
-            .xorExpr
-            .andExpr
-            .shiftExpr
-            .baseOperator as PowerExpr
+        .xorExpr
+        .andExpr
+        .shiftExpr
+        .baseOperator as PowerExpr
     assertNotNull(powerExprFP)
     val nameFP = powerExprFP.primary as Name
     assertEquals(nameFP.name, "y")
@@ -603,22 +520,22 @@ class ExpressionsTest {
     assertNotNull(compOperatorSP)
     assertEquals(compOperatorSP.symbol, "<=")
     val andExprSP = secondPair
-            .getSecond()
-            .xorExpr
-            .andExpr
+        .getSecond()
+        .xorExpr
+        .andExpr
     assertNotNull(andExprSP)
     val nameOfSubXorExprSP = ((
-            andExprSP
-                    .andExpr as ShiftExpr
-            )
-            .baseOperator as PowerExpr
-            ).primary as Name
+        andExprSP
+            .andExpr as ShiftExpr
+        )
+        .baseOperator as PowerExpr
+        ).primary as Name
     assertNotNull(nameOfSubXorExprSP.name, "b")
     val nameOfAndExprSP = (
-            andExprSP
-                    .shiftExpr
-                    .baseOperator as PowerExpr
-            ).primary as Name
+        andExprSP
+            .shiftExpr
+            .baseOperator as PowerExpr
+        ).primary as Name
     assertNotNull(nameOfAndExprSP.name, "z")
     val thirdPair = comparisonsSLL[2]
     assertNotNull(thirdPair)
@@ -628,18 +545,18 @@ class ExpressionsTest {
     val xorExprTP = thirdPair.getSecond().xorExpr
     assertNotNull(xorExprTP)
     val cNameTP = (
-            (
-                    xorExprTP.xorExpr as AndExpr
-                    ).shiftExpr
-                    .baseOperator as PowerExpr
-            ).primary as Name
+        (
+            xorExprTP.xorExpr as AndExpr
+            ).shiftExpr
+            .baseOperator as PowerExpr
+        ).primary as Name
     assertNotNull(cNameTP.name, "c")
     val aNameTP = (
-            xorExprTP
-                    .andExpr
-                    .shiftExpr
-                    .baseOperator as PowerExpr
-            ).primary as Name
+        xorExprTP
+            .andExpr
+            .shiftExpr
+            .baseOperator as PowerExpr
+        ).primary as Name
     assertNotNull(aNameTP)
     assertEquals(aNameTP.name, "a")
     val forthPair = comparisonsSLL[3]
@@ -647,13 +564,13 @@ class ExpressionsTest {
     assertNotNull(compOperatorFPP)
     assertEquals(compOperatorFPP.symbol, ">")
     val bName = (
-            forthPair
-                    .getSecond()
-                    .xorExpr
-                    .andExpr
-                    .shiftExpr
-                    .baseOperator as PowerExpr
-            ).primary as Name
+        forthPair
+            .getSecond()
+            .xorExpr
+            .andExpr
+            .shiftExpr
+            .baseOperator as PowerExpr
+        ).primary as Name
     assertNotNull(bName.name, "b")
 
 
@@ -692,7 +609,7 @@ class ExpressionsTest {
     val subShiftExprICIF = shiftExprICIF.shiftExpr
     assertNull(subShiftExprICIF)
     val binaryOperatorICIF = shiftExprICIF.binaryOperator
-    assertNull(binaryOperatorICIF)
+    Assert.assertNull(binaryOperatorICIF)
     val baseOperatorICIF = shiftExprICIF.baseOperator as PowerExpr
     assertNotNull(baseOperatorICIF)
     val awaitExprICIF = baseOperatorICIF.awaitExpr
@@ -852,28 +769,109 @@ class ExpressionsTest {
     val callTrailerOFSFCFU = callOfFCFU.callTrailer as EmptyCallTrailer
     assertNotNull(callTrailerOFSFCFU)
 
-    // TODO: fullFill rest of the andTest
     val andTestCIF = orTestICIF.andTest
-  }
-
-  private fun beautifyResult(input: String): String{
-    var result = String()
-    var count = -1
-    for ( line in input.split( System.lineSeparator() ) ) {
-      val isClosingBracket = line.isNotEmpty() && line[0] == ')'
-      if ( isClosingBracket ) {
-        count --
-      }
-      var tmp = count
-      while ( tmp > 0 ) {
-        result += "\t"
-        tmp--
-      }
-      result += line + System.lineSeparator()
-      if ( !isClosingBracket ) {
-        count++
-      }
-    }
-    return result
+    assertNotNull(andTestCIF)
+    val subAndTestCIF = andTestCIF.andTest
+    assertNull(subAndTestCIF)
+    val notTestCIF = andTestCIF.notTest
+    assertNotNull(notTestCIF)
+    val comparisonCIF = notTestCIF.comparison
+    assertNull(comparisonCIF)
+    val subNotTestCIF = notTestCIF.notTest
+    assertNotNull(subNotTestCIF)
+    val comparisonSCIF = subNotTestCIF.comparison
+    assertNull(comparisonSCIF)
+    val subNotTestSCIF = subNotTestCIF.notTest
+    assertNotNull(subNotTestSCIF)
+    val comparisonSSCIF = subNotTestSCIF.comparison
+    assertNull(comparisonSSCIF)
+    val subNotTestSSCIF = subNotTestSCIF.notTest
+    assertNotNull(subNotTestSSCIF)
+    val comparisonSSSCIF = subNotTestSSCIF.comparison
+    assertNull(comparisonSSSCIF)
+    val subNotTestSSSCIF = subNotTestSSCIF.notTest
+    assertNotNull(subNotTestSSSCIF)
+    val comparisonX = subNotTestSSSCIF.comparison
+    assertNotNull(comparisonX)
+    val subNotTestSSSSCIF = subNotTestSSSCIF.notTest
+    assertNull(subNotTestSSSSCIF)
+    val orExprX = comparisonX.orExpr
+    assertNotNull(orExprX)
+    val subOrExprX = orExprX.orExpr
+    assertNull(subOrExprX)
+    val xorExprX = orExprX.xorExpr
+    assertNotNull(xorExprX)
+    val subXorExprX = xorExprX.xorExpr
+    assertNull(subXorExprX)
+    val andExprX = xorExprX.andExpr
+    assertNotNull(andExprX)
+    val subAndExprX = andExprX.andExpr
+    assertNull(subAndExprX)
+    val shiftExprX = andExprX.shiftExpr
+    assertNotNull(shiftExprX)
+    val subShiftExprX = shiftExprX.shiftExpr as PowerExpr
+    assertNotNull(subShiftExprX)
+    val awaitExprX = subShiftExprX.awaitExpr
+    assertNull(awaitExprX)
+    val baseOperatorSSHX = subShiftExprX.baseOperator
+    assertNull(baseOperatorSSHX)
+    val nameOfSubShiftExprX = subShiftExprX.primary as Name
+    assertNotNull(nameOfSubShiftExprX)
+    assertEquals(nameOfSubShiftExprX.name, "x")
+    val binaryOperatorX = shiftExprX.binaryOperator
+    assertNotNull(binaryOperatorX)
+    assertEquals(binaryOperatorX.representation, ">>")
+    val baseOperatorX = shiftExprX.baseOperator as PowerExpr
+    assertNotNull(baseOperatorX)
+    val awaitExprBX = baseOperatorX.awaitExpr
+    assertNull(awaitExprBX)
+    val subBaseOperatorX = baseOperatorX.baseOperator
+    assertNull(subBaseOperatorX)
+    val nameOfBaseOperatorX = baseOperatorX.primary as Name
+    assertNotNull(nameOfBaseOperatorX)
+    assertEquals(nameOfBaseOperatorX.name, "y")
+    val comparisonsX = comparisonX.comparisons
+    assertNotNull(comparisonsX)
+    assertEquals(comparisonsX.size, 1)
+    val firstPairOfComparisonsX = comparisonsX[0]
+    assertNotNull(firstPairOfComparisonsX)
+    val compOperatorX = firstPairOfComparisonsX.getFirst()
+    assertNotNull(compOperatorX)
+    assertEquals(compOperatorX.symbol, "!=")
+    val orExprCX = firstPairOfComparisonsX.getSecond()
+    assertNotNull(orExprCX)
+    val subOrExprCX = orExprCX.orExpr
+    assertNull(subOrExprCX)
+    val xorExprCX = orExprCX.xorExpr
+    assertNotNull(xorExprCX)
+    val subXorExprCX = xorExprCX.xorExpr
+    assertNull(subXorExprCX)
+    val andExprCX = xorExprCX.andExpr
+    assertNotNull(andExprCX)
+    val subAndExprCS = andExprCX.andExpr
+    assertNull(subAndExprCS)
+    val shiftExprCX = andExprCX.shiftExpr
+    assertNotNull(shiftExprCX)
+    val subShiftExprCX = shiftExprCX.shiftExpr as PowerExpr
+    assertNotNull(subShiftExprCX)
+    val awaitExprSCX = subShiftExprCX.awaitExpr
+    assertNull(awaitExprSCX)
+    val baseOperatorSCX  = subShiftExprCX.baseOperator
+    assertNull(baseOperatorSCX)
+    val nameOfSCX = subShiftExprCX.primary as Name
+    assertNotNull(nameOfSCX)
+    assertEquals(nameOfSCX.name, "z")
+    val binaryOperatorCX = shiftExprCX.binaryOperator
+    assertNotNull(binaryOperatorCX)
+    assertEquals(binaryOperatorCX.representation, "<<")
+    val baseOperatorCX = shiftExprCX.baseOperator as PowerExpr
+    assertNotNull(baseOperatorCX)
+    val awaitExprCX = baseOperatorCX.awaitExpr
+    assertNull(awaitExprCX)
+    val subBaseOperatorCX = baseOperatorCX.baseOperator
+    assertNull(subBaseOperatorCX)
+    val nameOfBCX = baseOperatorCX.primary as Name
+    assertNotNull(nameOfBCX)
+    assertEquals(nameOfBCX.name, "x")
   }
 }
