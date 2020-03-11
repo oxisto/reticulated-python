@@ -17,8 +17,10 @@
 
 package io.github.oxisto.reticulated.ast.expression
 
+import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.argument.CallTrailerVisitor
+import io.github.oxisto.reticulated.ast.expression.boolean_ops.BooleanOpVisitor
 import io.github.oxisto.reticulated.ast.expression.call.Call
 import io.github.oxisto.reticulated.ast.expression.literal.Integer
 import io.github.oxisto.reticulated.ast.expression.literal.StringLiteral
@@ -31,6 +33,13 @@ import org.antlr.v4.runtime.tree.TerminalNode
  */
 class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
 
+  override fun visitTest(ctx: Python3Parser.TestContext): Expression {
+    if(ctx.childCount != 1){
+      throw CouldNotParseException("Currently not implemented.")
+    }
+    // For now return a orTest
+    return ctx.getChild(0).accept(BooleanOpVisitor(this.scope))
+  }
 
   /**
    * It is probably a primary
@@ -99,7 +108,7 @@ class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
 
         Call(primary, argumentList)
       } else {
-        throw Exception("could not parse")
+        throw CouldNotParseException()
       }
     }
   }
@@ -140,8 +149,6 @@ class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
     }
 
     // lets just return an identifier for now
-    val id = Identifier(node.text)
-
-    return id
+    return Identifier(node.text)
   }
 }

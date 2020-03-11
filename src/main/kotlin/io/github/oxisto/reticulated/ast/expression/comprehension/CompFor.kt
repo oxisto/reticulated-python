@@ -27,7 +27,7 @@ import io.github.oxisto.reticulated.ast.simple.target.TargetList
  *
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#displays-for-lists-sets-and-dictionaries}]
  */
-class CompFor(val isAsync: Boolean, val targetList: TargetList, val orTest: OrTest, val compIter: BaseComprehension?) : BaseComprehension() {
+class CompFor(val isAsync: Boolean, val targetList: TargetList, val orTest: OrTest, val compIter: CompIter?) : BaseComprehension() {
 
     override fun toString(): String {
         var result = String()

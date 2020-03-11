@@ -26,9 +26,7 @@ import io.github.oxisto.reticulated.ast.expression.Expression
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#calls}]
  */
 open class Argument(val expression: Expression) : Node() {
-    init {
-        expression.parent = this
-    }
+
     override fun toString(): String {
         return "Argument(" + System.lineSeparator() +
                 "\texpression=$expression" + System.lineSeparator() +

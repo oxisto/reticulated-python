@@ -33,7 +33,7 @@ class SimpleStatementVisitor(val scope: Scope) : Python3BaseVisitor<SimpleStatem
       throw EmptyContextException()
     }
 
-    // not sure how to handle this. are there cases with more than 1 child?
+    // not sure how to handle this. are there cases with more than 1 child? Yes, e.g.: a = 1 + 1
     return ctx.getChild(0).accept(this)
   }
 
@@ -72,7 +72,7 @@ class SimpleStatementVisitor(val scope: Scope) : Python3BaseVisitor<SimpleStatem
 
       // probably an assignment statement, but there are cases when an assignment has more than 3 children e.g. a = b = 123
       // for now assume that child 0 = target; child 2 = expression
-      //val targetList = ctx.getChild(0).accept(TargetListVisitor(this.scope))
+      // val targetList = ctx.getChild(0).accept(TargetListVisitor(this.scope))
       val target = ctx.getChild(0).accept(TargetVisitor(this.scope))
 
       val expression = ctx.getChild(2).accept(ExpressionVisitor(this.scope))

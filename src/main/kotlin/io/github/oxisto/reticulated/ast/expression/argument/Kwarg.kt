@@ -25,9 +25,6 @@ import io.github.oxisto.reticulated.ast.expression.Expression
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#calls}]
  */
 open class Kwarg(expression: Expression) : KeywordArgument(expression) {
-    init {
-        super.expression.parent = this
-    }
 
     override fun toString(): String {
         return "Kwarg(" + System.lineSeparator() +

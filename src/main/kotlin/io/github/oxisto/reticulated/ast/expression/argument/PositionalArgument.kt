@@ -15,7 +15,7 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.expression.argument;
+package io.github.oxisto.reticulated.ast.expression.argument
 
 import io.github.oxisto.reticulated.ast.expression.Expression
 
@@ -27,9 +27,7 @@ import io.github.oxisto.reticulated.ast.expression.Expression
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#calls}]
  */
 class PositionalArgument(expression: Expression) : Argument(expression) {
-    init {
-        super.expression.parent = this
-    }
+
     override fun toString(): String{
         return "PositionalArgument(" + System.lineSeparator() +
                 "positionalArgument=*$expression" + System.lineSeparator() +

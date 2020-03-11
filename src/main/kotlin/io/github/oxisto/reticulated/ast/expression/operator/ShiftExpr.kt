@@ -19,7 +19,6 @@ package io.github.oxisto.reticulated.ast.expression.operator
 
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.expression.boolean_expr.BaseBooleanExpr
-import io.github.oxisto.reticulated.ast.expression.boolean_ops.BaseBooleanOp
 
 /**
  * This class represents a shift_expr.

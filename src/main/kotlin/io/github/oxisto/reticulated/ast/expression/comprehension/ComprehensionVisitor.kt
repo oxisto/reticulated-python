@@ -48,7 +48,7 @@ class ComprehensionVisitor(val scope: Scope) : Python3BaseVisitor<BaseComprehens
         val isAsync: Boolean
         val targetList: TargetList
         val orTest: OrTest
-        val compIter: BaseComprehension?
+        val compIter: CompIter?
 
         val getTargetListByPosition = {
             position:Int -> ctx
@@ -73,7 +73,7 @@ class ComprehensionVisitor(val scope: Scope) : Python3BaseVisitor<BaseComprehens
                 .getChild(position)
                 .accept(
                         this
-                ) as BaseComprehension
+                ) as CompIter
         }
         if ( ctx.childCount == 4 ) {
             isAsync = false
@@ -101,10 +101,11 @@ class ComprehensionVisitor(val scope: Scope) : Python3BaseVisitor<BaseComprehens
             orTest = getOrTestByPosition(4)
             compIter = getCompIterByPosition(5)
         }
+
         return CompFor(isAsync, targetList, orTest, compIter)
     }
 
-    override fun visitComp_iter(ctx: Python3Parser.Comp_iterContext): BaseComprehension {
+    override fun visitComp_iter(ctx: Python3Parser.Comp_iterContext): CompIter {
         if(ctx.childCount != 1){
             throw CouldNotParseException("The childCount of the ctx=$ctx was unexpected.")
         }
@@ -112,10 +113,14 @@ class ComprehensionVisitor(val scope: Scope) : Python3BaseVisitor<BaseComprehens
         if(child !is Python3Parser.Comp_forContext && child !is Python3Parser.Comp_ifContext) {
             throw CouldNotParseException("")
         }
-        return child.accept(this)
+        return if(ctx.getChild(0).getChild(0).text == "if"){
+            CompIter(null, child.accept(this) as CompIf)
+        }else {
+            CompIter(child.accept(this) as CompFor, null)
+        }
     }
 
-    override fun visitComp_if(ctx: Python3Parser.Comp_ifContext): BaseComprehension {
+    override fun visitComp_if(ctx: Python3Parser.Comp_ifContext): CompIf {
         if(ctx.childCount < 2 || ctx.childCount > 3){
             throw CouldNotParseException("The childCount of the ctx=$ctx was unexpected.")
         }
@@ -128,8 +133,8 @@ class ComprehensionVisitor(val scope: Scope) : Python3BaseVisitor<BaseComprehens
                         )
                 )
 
-        val compIter: BaseComprehension? = if ( ctx.childCount == 3 ) {
-            ctx.getChild(2).accept(this) as BaseComprehension
+        val compIter: CompIter? = if ( ctx.childCount == 3 ) {
+            ctx.getChild(2).accept(this) as CompIter
         } else { null }
 
         return CompIf(expressionNoCond, compIter)

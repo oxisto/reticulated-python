@@ -25,7 +25,7 @@ import io.github.oxisto.reticulated.ast.expression.ExpressionNoCond
  *      comp_if ::= "if" expression_nocond [comp_iter]
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#displays-for-lists-sets-and-dictionaries}]
  */
-class CompIf(val expressionNoCond: ExpressionNoCond, val compIter: BaseComprehension? = null) : BaseComprehension() {
+class CompIf(val expressionNoCond: ExpressionNoCond, val compIter: CompIter? = null) : BaseComprehension() {
     override fun toString(): String {
         var result = "if expressionNoCond=$expressionNoCond"
         if ( compIter != null )

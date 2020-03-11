@@ -18,7 +18,9 @@ package io.github.oxisto.reticulated
 
 import io.github.oxisto.reticulated.ast.expression.call.Call
 import io.github.oxisto.reticulated.ast.expression.Identifier
+import io.github.oxisto.reticulated.ast.expression.boolean_ops.OrTest
 import io.github.oxisto.reticulated.ast.expression.literal.Integer
+import io.github.oxisto.reticulated.ast.expression.operator.PowerExpr
 import io.github.oxisto.reticulated.ast.simple.AssignmentExpression
 import io.github.oxisto.reticulated.ast.simple.ExpressionStatement
 import io.github.oxisto.reticulated.ast.simple.ImportStatement
@@ -27,6 +29,7 @@ import org.junit.Test
 import java.io.File
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class SimpleStatementTest {
@@ -45,7 +48,18 @@ class SimpleStatementTest {
     val identifier = assign.target as Identifier
     assertEquals("i", identifier.name)
 
-    val assigned = assign.expression
+    val assigned = (
+          (
+              assign.expression as OrTest
+              ).andTest
+              .notTest
+              .comparison!!
+              .orExpr
+              .xorExpr
+              .andExpr
+              .shiftExpr
+              .baseOperator as PowerExpr
+        ).primary
     assertTrue(assigned is Integer)
     assertEquals(4, assigned.value)
 
@@ -53,7 +67,48 @@ class SimpleStatementTest {
     val exprStatement = s1.first()
     assertTrue(exprStatement is ExpressionStatement)
 
-    val call = exprStatement.expression
+    val orTestCall = exprStatement.expression as OrTest
+    assertNotNull(orTestCall)
+    val subOrTestCall = orTestCall.orTest
+    assertNull(subOrTestCall)
+    val andTestCall = orTestCall.andTest
+    assertNotNull(andTestCall)
+    val subAndTestCall = andTestCall.andTest
+    assertNull(subAndTestCall)
+    val notTestCall = andTestCall.notTest
+    assertNotNull(notTestCall)
+    val subNotTestCall = notTestCall.notTest
+    assertNull(subNotTestCall)
+    val comparisonCall = notTestCall.comparison
+    assertNotNull(comparisonCall)
+    val comparisonsCall = comparisonCall.comparisons
+    assertNotNull(comparisonsCall)
+    assertEquals(comparisonsCall.size, 0)
+    val orExprCall = comparisonCall.orExpr
+    assertNotNull(orExprCall)
+    val subOrExprCall = orExprCall.orExpr
+    assertNull(subOrExprCall)
+    val xorExprCall = orExprCall.xorExpr
+    assertNotNull(xorExprCall)
+    val subXorExprCall = xorExprCall.xorExpr
+    assertNull(subXorExprCall)
+    val andExprCall = xorExprCall.andExpr
+    assertNotNull(andExprCall)
+    val subAndExprCall = andExprCall.andExpr
+    assertNull(subAndExprCall)
+    val shiftExprCall = andExprCall.shiftExpr
+    assertNotNull(shiftExprCall)
+    val subShiftExprCall = shiftExprCall.shiftExpr
+    assertNull(subShiftExprCall)
+    val binaryOperatorCall = shiftExprCall.binaryOperator
+    assertNull(binaryOperatorCall)
+    val baseOperatorCall = shiftExprCall.baseOperator as PowerExpr
+    assertNotNull(baseOperatorCall)
+    val awaitExprCall = baseOperatorCall.awaitExpr
+    assertNull(awaitExprCall)
+    val subBaseOperatorCall = baseOperatorCall.baseOperator
+    assertNull(subBaseOperatorCall)
+    val call = baseOperatorCall.primary
     assertTrue(call is Call)
     assertEquals("print", call.primary.asIdentifier().name)
   }

@@ -1,29 +1,24 @@
 package io.github.oxisto.reticulated.expression
 
 import io.github.oxisto.reticulated.PythonParser
-import io.github.oxisto.reticulated.TestUtils.Companion.beautifyResult
 import io.github.oxisto.reticulated.ast.expression.Identifier
 import io.github.oxisto.reticulated.ast.expression.Name
 import io.github.oxisto.reticulated.ast.expression.Primary
 import io.github.oxisto.reticulated.ast.expression.argument.ArgumentList
-import io.github.oxisto.reticulated.ast.expression.boolean_expr.OrExpr
 import io.github.oxisto.reticulated.ast.expression.boolean_ops.OrTest
 import io.github.oxisto.reticulated.ast.expression.call.Call
-import io.github.oxisto.reticulated.ast.expression.comparison.CompOperator
 import io.github.oxisto.reticulated.ast.expression.comprehension.CompIf
 import io.github.oxisto.reticulated.ast.expression.comprehension.Comprehension
 import io.github.oxisto.reticulated.ast.expression.operator.PowerExpr
 import io.github.oxisto.reticulated.ast.simple.ExpressionStatement
 import io.github.oxisto.reticulated.ast.statement.StatementList
 import io.github.oxisto.reticulated.ast.expression.literal.Integer
-import io.github.oxisto.reticulated.Pair
 import io.github.oxisto.reticulated.ast.expression.boolean_expr.AndExpr
 import io.github.oxisto.reticulated.ast.expression.boolean_expr.XorExpr
 import io.github.oxisto.reticulated.ast.expression.boolean_ops.AndTest
 import io.github.oxisto.reticulated.ast.expression.boolean_ops.NotTest
 import io.github.oxisto.reticulated.ast.expression.call.EmptyCallTrailer
 import io.github.oxisto.reticulated.ast.expression.comparison.Comparison
-import io.github.oxisto.reticulated.ast.expression.comprehension.CompFor
 import io.github.oxisto.reticulated.ast.expression.operator.ShiftExpr
 import org.junit.Assert
 import org.junit.Test
@@ -41,7 +36,7 @@ class ComprehensionTest {
     val file = File(
         javaClass
             .classLoader
-            .getResource("expressions/comprehension_argument.py")!!
+            .getResource("expressions/comprehension/comprehension_argument.py")!!
             .file
     )
 
@@ -56,21 +51,75 @@ class ComprehensionTest {
     assertNotNull(statementList)
     val expressionStatement = statementList[0] as ExpressionStatement
     assertNotNull(expressionStatement)
-    val call = expressionStatement.expression as Call
-
+    val orTestCall = expressionStatement.expression as OrTest
+    assertNotNull(orTestCall)
+    val subOrTestCall = orTestCall.orTest
+    assertNull(subOrTestCall)
+    val andTestCall = orTestCall.andTest
+    assertNotNull(andTestCall)
+    val subAndTestCall = andTestCall.andTest
+    assertNull(subAndTestCall)
+    val notTestCall = andTestCall.notTest
+    assertNotNull(notTestCall)
+    val subNotTestCall = notTestCall.notTest
+    assertNull(subNotTestCall)
+    val comparisonCall = notTestCall.comparison
+    assertNotNull(comparisonCall)
+    val comparisonsCall = comparisonCall.comparisons
+    assertNotNull(comparisonsCall)
+    assertEquals(comparisonsCall.size, 0)
+    val orExprCall = comparisonCall.orExpr
+    assertNotNull(orExprCall)
+    val subOrExprCall = orExprCall.orExpr
+    assertNull(subOrExprCall)
+    val xorExprCall = orExprCall.xorExpr
+    assertNotNull(xorExprCall)
+    val subXorExprCall = xorExprCall.xorExpr
+    assertNull(subXorExprCall)
+    val andExprCall = xorExprCall.andExpr
+    assertNotNull(andExprCall)
+    val subAndExprCall = andExprCall.andExpr
+    assertNull(subAndExprCall)
+    val shiftExprCall = andExprCall.shiftExpr
+    assertNotNull(shiftExprCall)
+    val subShiftExprCall = shiftExprCall.shiftExpr
+    assertNull(subShiftExprCall)
+    val binaryOperatorCall = shiftExprCall.binaryOperator
+    assertNull(binaryOperatorCall)
+    val baseOperatorCall = shiftExprCall.baseOperator as PowerExpr
+    assertNotNull(baseOperatorCall)
+    val awaitExprCall = baseOperatorCall.awaitExpr
+    assertNull(awaitExprCall)
+    val subBaseOperatorCall = baseOperatorCall.baseOperator
+    assertNull(subBaseOperatorCall)
+    val call = baseOperatorCall.primary as Call
+    /*
     println(
         beautifyResult(
             call.toString()
         )
     )
-
+  */
     assertNotNull(call)
     val name = call.primary as Name
     assertNotNull(name)
     assertEquals(name.name, "fun")
     val comprehension = call.callTrailer as Comprehension
     assertNotNull(comprehension)
-    val expression = comprehension.expression as Name
+
+    val expression = (
+        (
+            (
+                comprehension.expression as OrTest
+                ).andTest
+                .notTest
+                .comparison as Comparison
+            ).orExpr
+            .xorExpr
+            .andExpr
+            .shiftExpr
+            .baseOperator as PowerExpr
+        ).primary as Name
     assertNotNull(expression)
     assertEquals(expression.name, "x")
     val compFor = comprehension.compFor
@@ -133,7 +182,19 @@ class ComprehensionTest {
     assertNotNull(argumentList)
     val arguments = argumentList[0]
     assertNotNull(arguments)
-    val integer = arguments.expression as Integer
+    val integer = (
+        (
+            (
+                arguments.expression as OrTest
+                ).andTest
+                .notTest
+                .comparison as Comparison
+            ).orExpr
+            .xorExpr
+            .andExpr
+            .shiftExpr
+            .baseOperator as PowerExpr
+        ).primary as Integer
     assertNotNull(integer)
     assertEquals(integer.value, 10)
 
@@ -144,7 +205,7 @@ class ComprehensionTest {
     val file = File(
         javaClass
             .classLoader
-            .getResource("expressions/full_comprehension_argument.py")!!
+            .getResource("expressions/comprehension/full_comprehension_argument.py")!!
             .file
     )
 
@@ -159,15 +220,56 @@ class ComprehensionTest {
     assertNotNull(statementList)
     val expressionStatement = statementList[0] as ExpressionStatement
     assertNotNull(expressionStatement)
-    val call = expressionStatement.expression as Call
+    val orTestCall = expressionStatement.expression as OrTest
+    assertNotNull(orTestCall)
+    val subOrTestCall = orTestCall.orTest
+    assertNull(subOrTestCall)
+    val andTestCall = orTestCall.andTest
+    assertNotNull(andTestCall)
+    val subAndTestCall = andTestCall.andTest
+    assertNull(subAndTestCall)
+    val notTestCall = andTestCall.notTest
+    assertNotNull(notTestCall)
+    val subNotTestCall = notTestCall.notTest
+    assertNull(subNotTestCall)
+    val comparisonCall = notTestCall.comparison
+    assertNotNull(comparisonCall)
+    val comparisonsCall = comparisonCall.comparisons
+    assertNotNull(comparisonsCall)
+    assertEquals(comparisonsCall.size, 0)
+    val orExprCall = comparisonCall.orExpr
+    assertNotNull(orExprCall)
+    val subOrExprCall = orExprCall.orExpr
+    assertNull(subOrExprCall)
+    val xorExprCall = orExprCall.xorExpr
+    assertNotNull(xorExprCall)
+    val subXorExprCall = xorExprCall.xorExpr
+    assertNull(subXorExprCall)
+    val andExprCall = xorExprCall.andExpr
+    assertNotNull(andExprCall)
+    val subAndExprCall = andExprCall.andExpr
+    assertNull(subAndExprCall)
+    val shiftExprCall = andExprCall.shiftExpr
+    assertNotNull(shiftExprCall)
+    val subShiftExprCall = shiftExprCall.shiftExpr
+    assertNull(subShiftExprCall)
+    val binaryOperatorCall = shiftExprCall.binaryOperator
+    assertNull(binaryOperatorCall)
+    val baseOperatorCall = shiftExprCall.baseOperator as PowerExpr
+    assertNotNull(baseOperatorCall)
+    val awaitExprCall = baseOperatorCall.awaitExpr
+    assertNull(awaitExprCall)
+    val subBaseOperatorCall = baseOperatorCall.baseOperator
+    assertNull(subBaseOperatorCall)
+    val call = baseOperatorCall.primary as Call
 
-
+    /*
     print(
         beautifyResult(
             call.toString()
         )
     )
-
+    */
 
     assertNotNull(call)
     val name = call.primary as Name
@@ -175,7 +277,19 @@ class ComprehensionTest {
     assertEquals(name.name, "fun")
     val comprehension = call.callTrailer as Comprehension
     assertNotNull(comprehension)
-    val expression = comprehension.expression as Name
+    val expression = (
+        (
+            (
+                comprehension.expression as OrTest
+                ).andTest
+                .notTest
+                .comparison as Comparison
+            ).orExpr
+            .xorExpr
+            .andExpr
+            .shiftExpr
+            .baseOperator as PowerExpr
+    ).primary as Name
     assertNotNull(expression)
     assertEquals(expression.name, "x")
     val compFor = comprehension.compFor
@@ -242,13 +356,27 @@ class ComprehensionTest {
     assertNotNull(argumentList)
     val arguments = argumentList[0]
     assertNotNull(arguments)
-    val integer = arguments.expression as Integer
+    val integer = (
+        (
+            (
+                arguments.expression as OrTest
+                ).andTest
+                .notTest
+                .comparison as Comparison
+            ).orExpr
+            .xorExpr
+            .andExpr
+            .shiftExpr
+            .baseOperator as PowerExpr
+        ).primary as Integer
     assertNotNull(integer)
     assertEquals(integer.value, 10)
 
-    val compIter = compFor.compIter as CompIf
+    val compIter = compFor.compIter
     assertNotNull(compIter)
-    val expressionNoCond = compIter.expressionNoCond
+    val compIf = compIter.compIf
+    assertNotNull(compIf)
+    val expressionNoCond = compIf.expressionNoCond
     assertNotNull(expressionNoCond)
     val lambdaNoCond = expressionNoCond.lambdaNoCond
     assertNull(lambdaNoCond)
@@ -295,10 +423,10 @@ class ComprehensionTest {
     val nameCI = primaryCI.asIdentifier().name
     assertNotNull(nameCI)
 
-    val subComparisonCI = comparisonCI.comparisons as ArrayList<*>
+    val subComparisonCI = comparisonCI.comparisons
     assertNotNull(subComparisonCI)
     assertEquals(subComparisonCI.size, 1)
-    val elem = subComparisonCI[0] as? Pair<CompOperator, OrExpr> ?: throw AssertionError()
+    val elem = subComparisonCI[0]
     val compOperatorCI = elem.getFirst()
     assertNotNull(compOperatorCI)
     val compOperatorCISymbol = compOperatorCI.symbol
@@ -331,15 +459,17 @@ class ComprehensionTest {
     assertNotNull(integerCIP)
     assertEquals(integerCIP.value, 7)
 
-    val compIterCF = compIter.compIter as CompFor
-    assertNotNull(compIterCF)
-    assertFalse(compIterCF.isAsync)
-    val targets = compIterCF.targetList
+    val compIterFC = compIf.compIter
+    assertNotNull(compIterFC)
+    val compForCF = compIterFC.compFor
+    assertNotNull(compForCF)
+    assertFalse(compForCF.isAsync)
+    val targets = compForCF.targetList
     assertNotNull(targets)
     val target = targets[0] as Identifier
     assertNotNull(target)
     assertEquals(target.name, "u")
-    val orTestCF = compIterCF.orTest
+    val orTestCF = compForCF.orTest
     assertNotNull(orTestCF)
     val subOrTestCF = orTestCF.orTest
     assertNull(subOrTestCF)
@@ -390,16 +520,42 @@ class ComprehensionTest {
     assertEquals(callTrailerCF.count, 2)
     val firstArgCF = callTrailerCF[0]
     assertNotNull(firstArgCF)
-    val firstArgExprCF = firstArgCF.expression as Identifier
+    val firstArgExprCF = (
+        (
+            (
+                firstArgCF.expression as OrTest
+                ).andTest
+                .notTest
+                .comparison as Comparison
+            ).orExpr
+            .xorExpr
+            .andExpr
+            .shiftExpr
+            .baseOperator as PowerExpr
+        ).primary as Identifier
     assertNotNull(firstArgExprCF)
     assertEquals(firstArgExprCF.name, "x")
     val secondArgCF = callTrailerCF[1]
     assertNotNull(secondArgCF)
-    val secondArgExprCF = secondArgCF.expression as Identifier
+    val secondArgExprCF = (
+        (
+            (
+                secondArgCF.expression as OrTest
+                ).andTest
+                .notTest
+                .comparison as Comparison
+            ).orExpr
+            .xorExpr
+            .andExpr
+            .shiftExpr
+            .baseOperator as PowerExpr
+    ).primary as Identifier
     assertNotNull(secondArgExprCF)
     assertEquals(secondArgExprCF.name, "z")
 
-    val compIFCIF = compIterCF.compIter as CompIf
+    val compIterIFCIF = compForCF.compIter
+    assertNotNull(compIterIFCIF)
+    val compIFCIF = compIterIFCIF.compIf as CompIf
     assertNotNull(compIFCIF)
     val exprNoCond = compIFCIF.expressionNoCond
     assertNotNull(exprNoCond)
@@ -573,8 +729,9 @@ class ComprehensionTest {
         ).primary as Name
     assertNotNull(bName.name, "b")
 
-
-    val subCompIterCIF = compIFCIF.compIter as CompIf
+    val compIterCIF = compIFCIF.compIter
+    assertNotNull(compIterCIF)
+    val subCompIterCIF = compIterCIF.compIf as CompIf
     assertNotNull(subCompIterCIF)
     val subSubCompIterCIF = subCompIterCIF.compIter
     assertNull(subSubCompIterCIF)
@@ -616,8 +773,8 @@ class ComprehensionTest {
     assertNull(awaitExprICIF)
     val subBaseOperatorICIF = baseOperatorICIF.baseOperator
     assertNull(subBaseOperatorICIF)
-    val ICIFName = baseOperatorICIF.primary as Name
-    assertNotNull(ICIFName.name, "x")
+    val iCIFName = baseOperatorICIF.primary as Name
+    assertNotNull(iCIFName.name, "x")
 
     val comparisonsICIF = comparisonICIF.comparisons
     assertNotNull(comparisonsICIF)
@@ -651,9 +808,9 @@ class ComprehensionTest {
     assertNull(awaitExprICIFP)
     val subBaseOperatorICIFP = baseOperatorICIFP.baseOperator
     assertNull(subBaseOperatorICIFP)
-    val ICIFPNameY = baseOperatorICIFP.primary as Name
-    assertNotNull(ICIFPNameY)
-    assertEquals(ICIFPNameY.name, "y")
+    val iCIFPNameY = baseOperatorICIFP.primary as Name
+    assertNotNull(iCIFPNameY)
+    assertEquals(iCIFPNameY.name, "y")
 
     val notTestICIFO = subOrTestICIF.notTest
     assertNotNull(notTestICIFO)
@@ -685,9 +842,9 @@ class ComprehensionTest {
     assertNull(awaitExprICIFO)
     val subBaseOperatorICIFO = baseOperatorICIFO.baseOperator
     assertNull(subBaseOperatorICIFO)
-    val ICIFONameZ = baseOperatorICIFO.primary as Name
-    assertNotNull(ICIFONameZ)
-    assertEquals(ICIFONameZ.name, "z")
+    val iCIFONameZ = baseOperatorICIFO.primary as Name
+    assertNotNull(iCIFONameZ)
+    assertEquals(iCIFONameZ.name, "z")
 
     val comparisonsICIFO = comparisonICIFO.comparisons
     assertNotNull(comparisonsICIFO)
@@ -731,7 +888,19 @@ class ComprehensionTest {
     assertEquals(callTrailerFCFU.count, 2)
     val firstArgumentFCFU = callTrailerFCFU[0]
     assertNotNull(firstArgumentFCFU)
-    val callFFCFU = firstArgumentFCFU.expression as Call
+    val callFFCFU = (
+        (
+            (
+                firstArgumentFCFU.expression as OrTest
+                ).andTest
+                .notTest
+                .comparison as Comparison
+            ).orExpr
+            .xorExpr
+            .andExpr
+            .shiftExpr
+            .baseOperator as PowerExpr
+    ).primary as Call
     assertNotNull(callFFCFU)
     val nameOfCFFCFU = callFFCFU.primary as Name
     assertNotNull(nameOfCFFCFU)
@@ -741,7 +910,19 @@ class ComprehensionTest {
     assertEquals(callTrailerCFFCFU.count, 1)
     val firstArgumentCFFCFU = callTrailerCFFCFU[0]
     assertNotNull(firstArgumentCFFCFU)
-    val callOfCCFFCFU = firstArgumentCFFCFU.expression as Call
+    val callOfCCFFCFU = (
+        (
+            (
+                firstArgumentCFFCFU.expression as OrTest
+                ).andTest
+                .notTest
+                .comparison as Comparison
+            ).orExpr
+            .xorExpr
+            .andExpr
+            .shiftExpr
+            .baseOperator as PowerExpr
+    ).primary as Call
     assertNotNull(callOfCCFFCFU)
     val nameOfCCFFCFU = callOfCCFFCFU.primary as Name
     assertNotNull(nameOfCCFFCFU)
@@ -751,7 +932,19 @@ class ComprehensionTest {
     assertEquals(trailerOfCCFFCFU.count, 1)
     val firstArgumentOFCCFFCFU = trailerOfCCFFCFU[0]
     assertNotNull(firstArgumentOFCCFFCFU)
-    val callOfCCCFFCFU = firstArgumentOFCCFFCFU.expression as Call
+    val callOfCCCFFCFU = (
+        (
+            (
+                firstArgumentOFCCFFCFU.expression as OrTest
+                ).andTest
+                .notTest
+                .comparison as Comparison
+            ).orExpr
+            .xorExpr
+            .andExpr
+            .shiftExpr
+            .baseOperator as PowerExpr
+    ).primary as Call
     assertNotNull(callOfCCCFFCFU)
     val nameOfCCCFFCFU = callOfCCCFFCFU.primary as Name
     assertNotNull(nameOfCCCFFCFU)
@@ -761,7 +954,19 @@ class ComprehensionTest {
 
     val secondArgumentFCFU = callTrailerFCFU[1]
     assertNotNull(secondArgumentFCFU)
-    val callOfFCFU = secondArgumentFCFU.expression as Call
+    val callOfFCFU = (
+        (
+            (
+                secondArgumentFCFU.expression as OrTest
+                ).andTest
+                .notTest
+                .comparison as Comparison
+            ).orExpr
+            .xorExpr
+            .andExpr
+            .shiftExpr
+            .baseOperator as PowerExpr
+    ).primary as Call
     assertNotNull(callOfFCFU)
     val nameOFSFCFU = callOfFCFU.primary as Name
     assertNotNull(nameOFSFCFU)

@@ -23,10 +23,10 @@ import io.github.oxisto.reticulated.ast.expression.AwaitExpr
 import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
 import io.github.oxisto.reticulated.ast.expression.Primary
 import io.github.oxisto.reticulated.ast.expression.boolean_expr.BaseBooleanExpr
-import io.github.oxisto.reticulated.ast.expression.boolean_ops.BaseBooleanOp
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 import org.antlr.v4.runtime.ParserRuleContext
+import org.antlr.v4.runtime.tree.TerminalNodeImpl
 
 /**
  * This class offers visitors for a shift_expr, an a_expr, a m_expr, an u_expr and a power (expression).
@@ -84,11 +84,11 @@ class OperatorVisitor(val scope: Scope): Python3BaseVisitor<BaseOperator>() {
             }
             3 -> {
                 val binaryOperator: BinaryOperator = BinaryOperator
-                    .valueOf(
+                    .getBinaryOperatorBySymbol(
                         ctx
                         .getChild(1)
                         .text
-                    )
+                    ) ?: throw CouldNotParseException()
                 val baseOperatorLeft: BaseOperator = ctx
                         .getChild(0)
                         .accept(this)
@@ -112,14 +112,19 @@ class OperatorVisitor(val scope: Scope): Python3BaseVisitor<BaseOperator>() {
     }
 
     override fun visitTerm(ctx: Python3Parser.TermContext): BaseOperator {
-        return handlePowerAndAwaitExpr(ctx)
+        val child = ctx.getChild(0)
+        return if(child.childCount == 2 && child.getChild(0) is TerminalNodeImpl){
+            child.getChild(1).accept(this)
+        } else {
+            handlePower(ctx)
+        }
     }
 
     override fun visitPower(ctx: Python3Parser.PowerContext): PowerExpr {
-        return handlePowerAndAwaitExpr(ctx)
+        return handlePower(ctx)
     }
 
-    private fun handlePowerAndAwaitExpr(ctx: ParserRuleContext): PowerExpr {
+    private fun handlePower(ctx: ParserRuleContext): PowerExpr{
         if(ctx.childCount != 1 && ctx.childCount != 3 ){
             throw CouldNotParseException()
         }
@@ -128,27 +133,26 @@ class OperatorVisitor(val scope: Scope): Python3BaseVisitor<BaseOperator>() {
         val child = ctx.getChild(0)
         if(child.childCount == 2){
             awaitExpr = child.accept(
-                    ExpressionVisitor(
-                            this.scope
-                    )
+                ExpressionVisitor(
+                    this.scope
+                )
             ) as AwaitExpr
             primary = null
         }else{
             awaitExpr = null
             primary = child.accept(
-                    ExpressionVisitor(
-                            this.scope
-                    )
+                ExpressionVisitor(
+                    this.scope
+                )
             ) as Primary
         }
 
         val unaryExpr: UnaryExpr? = if(ctx.childCount == 3){
             ctx
-                    .getChild(2)
-                    .accept(this) as UnaryExpr
+                .getChild(2)
+                .accept(this) as UnaryExpr
         }else { null }
         return PowerExpr(awaitExpr, primary, unaryExpr)
     }
-
 
 }

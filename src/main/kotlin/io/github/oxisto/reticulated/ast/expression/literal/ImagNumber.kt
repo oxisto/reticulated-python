@@ -39,11 +39,10 @@ class ImagNumber(val floatNumber:FloatNumber?, val integer:Integer?) : Literal<I
     }
 
     override fun toString():String {
-        val result:String
-        if(floatNumber == null){
-            result = "value=$integer j"
+        val result:String = if(floatNumber == null){
+            "value=$integer j"
         }else{
-            result = "value=$floatNumber j"
+            "value=$floatNumber j"
         }
         return "ImagNumber(" + System.lineSeparator() +
                 "\t$result" + System.lineSeparator() +

@@ -21,7 +21,6 @@ import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.ExpressionNoCond
 import io.github.oxisto.reticulated.ast.expression.ExpressionNoCondVisitor
-import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
 import io.github.oxisto.reticulated.ast.statement.Parameter
 import io.github.oxisto.reticulated.ast.statement.ParameterList
 import io.github.oxisto.reticulated.ast.statement.ParameterListVisitor
