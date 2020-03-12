@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Fraunhofer AISEC. All rights reserved.
+ * Copyright (c) 2020, Christian Banse and Andreas Hager. All rights reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -24,7 +24,12 @@ import kotlin.test.assertNotNull
 class ScopeTest {
   @Test
   fun testImport() {
-    val file = File(javaClass.classLoader.getResource("import.py").file)
+    val file = File(
+        javaClass
+        .classLoader
+        .getResource("import.py")!!
+        .file
+    )
 
     val result = PythonParser().parse(file.path)
     assertNotNull(result)

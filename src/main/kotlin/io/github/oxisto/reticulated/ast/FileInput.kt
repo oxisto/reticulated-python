@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Fraunhofer AISEC. All rights reserved.
+ * Copyright (c) 2020, Christian Banse and Andreas Hager. All rights reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast;
+package io.github.oxisto.reticulated.ast
 
 import io.github.oxisto.reticulated.ast.statement.Statement
 import java.util.*
