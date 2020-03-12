@@ -28,9 +28,7 @@ class KwargTest {
     val input = PythonParser()
         .parse(file.path)
         .root
-
     assertNotNull(input)
-
     val functionDefinition = input.statements[1] as FunctionDefinition
     assertNotNull(functionDefinition)
     val parameterList = functionDefinition.parameterList
@@ -48,7 +46,6 @@ class KwargTest {
     val statementList = input.statements[2] as StatementList
     assertNotNull(statementList)
     val expr = statementList.statements[0] as ExpressionStatement
-    print(expr)
     assertNotNull(expr)
     val orTestCall = expr.expression as OrTest
     assertNotNull(orTestCall)
@@ -104,5 +101,166 @@ class KwargTest {
 
     assertNotNull(primary)
   }
+
+    @Test fun kwargToStringTest(){
+        val file = File(
+            javaClass
+                .classLoader
+                .getResource("expressions/argument/kwarg.py")!!
+                .file
+        )
+
+        val input = PythonParser()
+            .parse(file.path)
+            .root
+        assertNotNull(input)
+
+        val inputString = input.toString()
+        assertEquals(inputString, """FileInput(statements=[FunctionDefinition(id=Identifier(
+	name='func'
+), parameters=ParameterList(parameters=[Parameter(
+	id=Identifier(
+	name='param'
+)
+), Parameter(
+	id=Identifier(
+	name='args'
+)
+), Parameter(
+	id=Identifier(
+	name='kwargs'
+)
+)])), FunctionDefinition(id=Identifier(
+	name='fun_func'
+), parameters=ParameterList(parameters=[Parameter(
+	id=Identifier(
+	name='args_f'
+)
+), Parameter(
+	id=Identifier(
+	name='kwargs_f'
+)
+)])), StatementList(
+	statements=[ExpressionStatement(
+	expression=OrTest(
+	andTest=AndTest(
+	notTest=NotTest(
+	comparison=Comparison(
+	orExpr=OrExpr(
+	xorExpr=XorExpr(
+	andExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=Call(
+	primary=Identifier(
+	name='fun_func'
+) callTrailer=ArgumentList(
+	argument=[Argument(
+	expression=OrTest(
+	andTest=AndTest(
+	notTest=NotTest(
+	comparison=Comparison(
+	orExpr=OrExpr(
+	xorExpr=XorExpr(
+	andExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=StringLiteral(
+	value=${'$'}
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+), Argument(
+	expression=OrTest(
+	andTest=AndTest(
+	notTest=NotTest(
+	comparison=Comparison(
+	orExpr=OrExpr(
+	xorExpr=XorExpr(
+	andExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=StringLiteral(
+	value=%
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+), KeywordItem(
+	keywordItem=(Identifier(
+	name='kwargs1'
+)=OrTest(
+	andTest=AndTest(
+	notTest=NotTest(
+	comparison=Comparison(
+	orExpr=OrExpr(
+	xorExpr=XorExpr(
+	andExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=StringLiteral(
+	value=test1
+)
+)
+)
+)
+)
+)
+)
+)
+)
+))
+), KeywordItem(
+	keywordItem=(Identifier(
+	name='kwargs2'
+)=OrTest(
+	andTest=AndTest(
+	notTest=NotTest(
+	comparison=Comparison(
+	orExpr=OrExpr(
+	xorExpr=XorExpr(
+	andExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=StringLiteral(
+	value=test2
+)
+)
+)
+)
+)
+)
+)
+)
+)
+))
+)]
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)]
+)])""".replace("\n", System.lineSeparator()))
+    }
 
 }

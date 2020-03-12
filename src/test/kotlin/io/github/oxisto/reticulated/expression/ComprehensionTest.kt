@@ -31,7 +31,6 @@ class ComprehensionTest {
 
   @Test
   fun testComprehensionArgument() {
-    // booms because it is not implemented
     val file = File(
         javaClass
             .classLoader
@@ -42,7 +41,6 @@ class ComprehensionTest {
     val input = PythonParser()
         .parse(file.path)
         .root
-
     assertNotNull(input)
     val statements = input.statements
     assertNotNull(statements)
@@ -211,7 +209,6 @@ class ComprehensionTest {
     val input = PythonParser()
         .parse(file.path)
         .root
-
     assertNotNull(input)
     val statements = input.statements
     assertNotNull(statements)
@@ -1078,4 +1075,694 @@ class ComprehensionTest {
     assertNotNull(nameOfBCX)
     assertEquals(nameOfBCX.name, "x")
   }
+
+    @Test fun comprehensionArgumentToStringTest(){
+        val file = File(
+            javaClass
+                .classLoader
+                .getResource("expressions/comprehension/comprehension_argument.py")!!
+                .file
+        )
+
+        val input = PythonParser()
+            .parse(file.path)
+            .root
+
+        val inputString = input.toString()
+        assertEquals(inputString, """FileInput(statements=[StatementList(
+	statements=[ExpressionStatement(
+	expression=OrTest(
+	andTest=AndTest(
+	notTest=NotTest(
+	comparison=Comparison(
+	orExpr=OrExpr(
+	xorExpr=XorExpr(
+	andExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=Call(
+	primary=Identifier(
+	name='fun'
+) callTrailer=Comprehension(
+	expression=OrTest(
+	andTest=AndTest(
+	notTest=NotTest(
+	comparison=Comparison(
+	orExpr=OrExpr(
+	xorExpr=XorExpr(
+	andExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=Identifier(
+	name='x'
+)
+)
+)
+)
+)
+)
+)
+)
+)
+) compFor=CompFor(
+	compFor=for targetList=TargetList(
+	targets=[Identifier(
+	name='x'
+), Identifier(
+	name='y'
+)]
+) in orTest=OrTest(
+	andTest=AndTest(
+	notTest=NotTest(
+	comparison=Comparison(
+	orExpr=OrExpr(
+	xorExpr=XorExpr(
+	andExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=Call(
+	primary=Identifier(
+	name='range'
+) callTrailer=ArgumentList(
+	argument=[Argument(
+	expression=OrTest(
+	andTest=AndTest(
+	notTest=NotTest(
+	comparison=Comparison(
+	orExpr=OrExpr(
+	xorExpr=XorExpr(
+	andExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=Integer(
+	value=10
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)]
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)]
+)])""".replace("\n", System.lineSeparator()))
+    }
+    @Test fun fullComprehensionArgumentToStringTest(){
+        val file = File(
+            javaClass
+                .classLoader
+                .getResource("expressions/comprehension/full_comprehension_argument.py")!!
+                .file
+        )
+
+        val input = PythonParser()
+            .parse(file.path)
+            .root
+
+        val inputString = input.toString()
+        assertEquals(inputString, """FileInput(statements=[StatementList(
+	statements=[ExpressionStatement(
+	expression=OrTest(
+	andTest=AndTest(
+	notTest=NotTest(
+	comparison=Comparison(
+	orExpr=OrExpr(
+	xorExpr=XorExpr(
+	andExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=Call(
+	primary=Identifier(
+	name='fun'
+) callTrailer=Comprehension(
+	expression=OrTest(
+	andTest=AndTest(
+	notTest=NotTest(
+	comparison=Comparison(
+	orExpr=OrExpr(
+	xorExpr=XorExpr(
+	andExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=Identifier(
+	name='x'
+)
+)
+)
+)
+)
+)
+)
+)
+)
+) compFor=CompFor(
+	compFor=for targetList=TargetList(
+	targets=[Identifier(
+	name='x'
+), Identifier(
+	name='y'
+), Identifier(
+	name='z'
+)]
+) in orTest=OrTest(
+	andTest=AndTest(
+	notTest=NotTest(
+	comparison=Comparison(
+	orExpr=OrExpr(
+	xorExpr=XorExpr(
+	andExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=Call(
+	primary=Identifier(
+	name='range'
+) callTrailer=ArgumentList(
+	argument=[Argument(
+	expression=OrTest(
+	andTest=AndTest(
+	notTest=NotTest(
+	comparison=Comparison(
+	orExpr=OrExpr(
+	xorExpr=XorExpr(
+	andExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=Integer(
+	value=10
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)]
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+) compIter=CompIter(
+	compIf=CompIf(
+	compIf=if expressionNoCond=ExpressionNoCond(
+	ortest=OrTest(
+	andTest=AndTest(
+	notTest=NotTest(
+	comparison=Comparison(
+	orExpr=OrExpr(
+	xorExpr=XorExpr(
+	andExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=Identifier(
+	name='x'
+)
+)
+)
+)
+)
+) compOperator=SMALLER orEpr=OrExpr(
+	xorExpr=XorExpr(
+	andExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=Integer(
+	value=7
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+) compIter=CompIter(
+	compFor=CompFor(
+	compFor=for targetList=TargetList(
+	targets=[Identifier(
+	name='u'
+)]
+) in orTest=OrTest(
+	andTest=AndTest(
+	notTest=NotTest(
+	comparison=Comparison(
+	orExpr=OrExpr(
+	xorExpr=XorExpr(
+	andExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=Call(
+	primary=Identifier(
+	name='range'
+) callTrailer=ArgumentList(
+	argument=[Argument(
+	expression=OrTest(
+	andTest=AndTest(
+	notTest=NotTest(
+	comparison=Comparison(
+	orExpr=OrExpr(
+	xorExpr=XorExpr(
+	andExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=Identifier(
+	name='x'
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+), Argument(
+	expression=OrTest(
+	andTest=AndTest(
+	notTest=NotTest(
+	comparison=Comparison(
+	orExpr=OrExpr(
+	xorExpr=XorExpr(
+	andExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=Identifier(
+	name='z'
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)]
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+) compIter=CompIter(
+	compIf=CompIf(
+	compIf=if expressionNoCond=ExpressionNoCond(
+	lambdaNoCond=LambdaNoCond(
+	lambdaNoCond=lambda : exprNoCond=ExpressionNoCond(
+	lambdaNoCond=LambdaNoCond(
+	lambdaNoCond=lambda parameterList=ParameterList(parameters=[Parameter(
+	id=Identifier(
+	name='a'
+)
+)]) : exprNoCond=ExpressionNoCond(
+	lambdaNoCond=LambdaNoCond(
+	lambdaNoCond=lambda parameterList=ParameterList(parameters=[Parameter(
+	id=Identifier(
+	name='b'
+)
+), Parameter(
+	id=Identifier(
+	name='c'
+)
+)]) : exprNoCond=ExpressionNoCond(
+	ortest=OrTest(
+	andTest=AndTest(
+	notTest=NotTest(
+	comparison=Comparison(
+	orExpr=OrExpr(
+	xorExpr=XorExpr(
+	andExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=Identifier(
+	name='a'
+)
+)
+)
+)
+)
+) compOperator=SMALLER orEpr=OrExpr(
+	orExpr=XorExpr(
+	andExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=Identifier(
+	name='x'
+)
+)
+)
+)
+) | xorExpr=XorExpr(
+	andExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=Identifier(
+	name='y'
+)
+)
+)
+)
+)
+) compOperator=SMALLER_OR_EQUAL orEpr=OrExpr(
+	xorExpr=XorExpr(
+	andExpr=AndExpr(
+	andExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=Identifier(
+	name='b'
+)
+)
+) & shiftExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=Identifier(
+	name='z'
+)
+)
+)
+)
+)
+) compOperator=LARGER_OR_EQUAL orEpr=OrExpr(
+	xorExpr=XorExpr(
+	xorExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=Identifier(
+	name='c'
+)
+)
+)
+) ^ andExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=Identifier(
+	name='a'
+)
+)
+)
+)
+)
+) compOperator=LARGER orEpr=OrExpr(
+	xorExpr=XorExpr(
+	andExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=Identifier(
+	name='b'
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+) compIter=CompIter(
+	compIf=CompIf(
+	compIf=if expressionNoCond=ExpressionNoCond(
+	ortest=OrTest(
+	orTest=AndTest(
+	andTest=NotTest(
+	comparison=Comparison(
+	orExpr=OrExpr(
+	xorExpr=XorExpr(
+	andExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=Identifier(
+	name='x'
+)
+)
+)
+)
+)
+) compOperator=IS orEpr=OrExpr(
+	xorExpr=XorExpr(
+	andExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=Identifier(
+	name='y'
+)
+)
+)
+)
+)
+)
+)
+) and notTest=NotTest(
+	comparison=Comparison(
+	orExpr=OrExpr(
+	xorExpr=XorExpr(
+	andExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=Identifier(
+	name='z'
+)
+)
+)
+)
+)
+) compOperator=NOT_IN orEpr=OrExpr(
+	xorExpr=XorExpr(
+	andExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=Call(
+	primary=Identifier(
+	name='fun'
+) callTrailer=ArgumentList(
+	argument=[Argument(
+	expression=OrTest(
+	andTest=AndTest(
+	notTest=NotTest(
+	comparison=Comparison(
+	orExpr=OrExpr(
+	xorExpr=XorExpr(
+	andExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=Call(
+	primary=Identifier(
+	name='fun'
+) callTrailer=ArgumentList(
+	argument=[Argument(
+	expression=OrTest(
+	andTest=AndTest(
+	notTest=NotTest(
+	comparison=Comparison(
+	orExpr=OrExpr(
+	xorExpr=XorExpr(
+	andExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=Call(
+	primary=Identifier(
+	name='fun'
+) callTrailer=ArgumentList(
+	argument=[Argument(
+	expression=OrTest(
+	andTest=AndTest(
+	notTest=NotTest(
+	comparison=Comparison(
+	orExpr=OrExpr(
+	xorExpr=XorExpr(
+	andExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=Call(
+	primary=Identifier(
+	name='this_is_a_function_call'
+) callTrailer=EmptyCallTrailer( '(' ')' )
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)]
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)]
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+), Argument(
+	expression=OrTest(
+	andTest=AndTest(
+	notTest=NotTest(
+	comparison=Comparison(
+	orExpr=OrExpr(
+	xorExpr=XorExpr(
+	andExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=Call(
+	primary=Identifier(
+	name='this_is_a_function_call'
+) callTrailer=EmptyCallTrailer( '(' ')' )
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)]
+)
+)
+)
+)
+)
+)
+)
+)
+)
+) or andTest=AndTest(
+	notTest=NotTest(
+	not notTest=NotTest(
+	not notTest=NotTest(
+	not notTest=NotTest(
+	not notTest=NotTest(
+	comparison=Comparison(
+	orExpr=OrExpr(
+	xorExpr=XorExpr(
+	andExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	shiftExpr=PowerExpr(
+	primary=Identifier(
+	name='x'
+)
+) binaryOperator=>> additiveExpr=PowerExpr(
+	primary=Identifier(
+	name='y'
+)
+)
+)
+)
+)
+) compOperator=NOT_EQUAL orEpr=OrExpr(
+	xorExpr=XorExpr(
+	andExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	shiftExpr=PowerExpr(
+	primary=Identifier(
+	name='z'
+)
+) binaryOperator=<< additiveExpr=PowerExpr(
+	primary=Identifier(
+	name='x'
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)]
+)])""".replace("\n", System.lineSeparator()))
+
+    }
 }

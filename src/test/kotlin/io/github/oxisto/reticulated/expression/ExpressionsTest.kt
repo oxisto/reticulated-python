@@ -45,6 +45,69 @@ class ExpressionsTest {
             .root
     assertNotNull(input)
 
+    val inputString = input.toString()
+    assertEquals(inputString, """FileInput(statements=[StatementList(
+	statements=[ImportStatement(
+	module=Identifier(
+	name='os'
+)
+)]
+), StatementList(
+	statements=[ExpressionStatement(
+	expression=OrTest(
+	andTest=AndTest(
+	notTest=NotTest(
+	comparison=Comparison(
+	orExpr=OrExpr(
+	xorExpr=XorExpr(
+	andExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=Call(
+	primary=Identifier(
+	name='print'
+) callTrailer=ArgumentList(
+	argument=[Argument(
+	expression=OrTest(
+	andTest=AndTest(
+	notTest=NotTest(
+	comparison=Comparison(
+	orExpr=OrExpr(
+	xorExpr=XorExpr(
+	andExpr=AndExpr(
+	shiftExpr=ShiftExpr(
+	additiveExpr=PowerExpr(
+	primary=AttributeRef(
+	primary=Identifier(
+	name='os'
+)"."identifier=Identifier(
+	name='name'
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)]
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)]
+)])""".replace("\n", System.lineSeparator()))
+
     val s1 = input.statements[1] as StatementList
     val expressionStatement = s1[0] as ExpressionStatement
     assertNotNull(expressionStatement)

@@ -34,4 +34,13 @@ open class Parameter(final override val id: Identifier, val expression: Expressi
     expression?.parent = this
   }
 
+  override fun toString(): String {
+    var result = "Parameter(" + System.lineSeparator() +
+        "\tid=$id"
+    if(expression != null){
+      result += " expression=$expression"
+    }
+    result += System.lineSeparator() + ")"
+    return result
+  }
 }

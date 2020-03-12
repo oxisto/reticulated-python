@@ -37,4 +37,10 @@ class StatementList(val statements: List<SimpleStatement>) : Statement(), Contai
 
   override val children get() = this.statements
 
+  override fun toString(): String {
+    return "StatementList(" + System.lineSeparator() +
+        "\tstatements=$statements" + System.lineSeparator() +
+        ")"
+  }
+
 }

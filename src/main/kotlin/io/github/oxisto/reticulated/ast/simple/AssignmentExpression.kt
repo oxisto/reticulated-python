@@ -37,6 +37,10 @@ class AssignmentExpression(
     return false
   }
 
-
+  override fun toString(): String {
+    return "AssignmentExpression(" + System.lineSeparator() +
+        "\ttarget=$target expression=$expression" + System.lineSeparator() +
+        ")"
+  }
 
 }

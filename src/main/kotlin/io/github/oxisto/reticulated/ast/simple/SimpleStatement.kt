@@ -38,4 +38,6 @@ abstract class SimpleStatement : Node() {
   abstract fun isAssignmentStatement(): Boolean
   abstract fun isImportStatement(): Boolean
 
+  abstract override fun toString(): String
+
 }
