@@ -22,11 +22,9 @@ import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.argument.CallTrailerVisitor
 import io.github.oxisto.reticulated.ast.expression.boolean_ops.BooleanOpVisitor
 import io.github.oxisto.reticulated.ast.expression.call.Call
-import io.github.oxisto.reticulated.ast.expression.literal.*
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 import org.antlr.v4.runtime.tree.TerminalNode
-import org.antlr.v4.runtime.tree.TerminalNodeImpl
 
 /**
  * Think of splitting the class
@@ -53,10 +51,20 @@ class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
     return if (ctx.childCount == 1) {
       // check if an atom really have in every case a childCount from 1
       // It is an atom
-      ctx.getChild(0).accept(this)
+      ctx.getChild(0)
+        .accept(
+          AtomVisitor(
+            this.scope
+        )
+      )
     } else {
       // first child is the primary
-      val primary = ctx.getChild(0).accept(this) as Primary
+      val primary = ctx.getChild(0)
+          .accept(
+              AtomVisitor(
+                  this.scope
+              )
+          ) as Primary
 
       // The other children are one out of: attributeref | subscription | slicing | call
       // All of them have a primary as the first child
@@ -67,7 +75,7 @@ class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
       if ( trailer.childCount == 2 ) {
         if (trailer.getChild(TerminalNode::class.java, 0).text == "." ) {
           // it is an attribute ref, parse the identifier
-          val id = trailer.getChild(1).accept(IdentifierVisitor(this.scope))
+          val id = trailer.getChild(1).accept(AtomVisitor(this.scope)) as Identifier
 
           val attributeRef = AttributeRef(primary, id)
 
@@ -113,64 +121,5 @@ class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
     }
   }
 
-  override fun visitAtom(ctx: Python3Parser.AtomContext): Atom {
 
-    val expression = ctx.getChild(0).accept(this)
-
-    if (expression is Identifier) {
-      // convert identifier to name
-      return Name.fromIdentifier(expression)
-    }
-
-    if (expression is Atom) {
-      return expression
-    }
-
-    throw Exception("Invalid type")
-  }
-
-  /**
-   * See visitTerminal in the IdentifierVisitor
-   *
-   */
-  override fun visitTerminal(node: TerminalNode): Expression {
-    // check for some literals now
-    val text = node.text
-
-    val intOrNull = text.toIntOrNull()
-    val floatOrNull = text.toFloatOrNull()
-    val isImagNumber = text.length > 1 && (
-        text.last() == 'J' || text.last() == 'j'
-      )
-    // TODO: BytesLiteral
-    return when {
-      intOrNull != null -> {
-        Integer(intOrNull)
-      }
-      text.startsWith("\"") || text.startsWith("\'") -> {
-        StringLiteral(
-            text.replace("\"", "")
-                .replace("\'", "")
-        )
-      }
-      floatOrNull != null -> {
-        FloatNumber(floatOrNull)
-      }
-      isImagNumber -> {
-        val textWithoutLast = text.substring(0, text.lastIndex)
-        val intOrNullOfImag = textWithoutLast.toIntOrNull()
-        val floatOrNullOfImag = textWithoutLast.toFloatOrNull()
-        if(intOrNullOfImag != null){
-          ImagNumber(null, Integer(intOrNullOfImag))
-        }else if (floatOrNullOfImag != null) {
-          ImagNumber(FloatNumber(floatOrNullOfImag), null)
-        }else {
-          throw CouldNotParseException()
-        }
-      }
-      else -> {
-        Identifier(node.text)
-      }
-    }
-  }
 }

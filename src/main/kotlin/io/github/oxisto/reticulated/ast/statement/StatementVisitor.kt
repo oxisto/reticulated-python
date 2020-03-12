@@ -20,7 +20,8 @@ package io.github.oxisto.reticulated.ast.statement
 import io.github.oxisto.reticulated.ast.*
 import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
-import io.github.oxisto.reticulated.ast.expression.IdentifierVisitor
+import io.github.oxisto.reticulated.ast.expression.AtomVisitor
+import io.github.oxisto.reticulated.ast.expression.Identifier
 import io.github.oxisto.reticulated.ast.simple.SimpleStatement
 import io.github.oxisto.reticulated.ast.simple.SimpleStatementVisitor
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
@@ -66,19 +67,24 @@ class StatementVisitor(val scope: Scope) : Python3BaseVisitor<Statement>() {
 
     // second is the name
     val id = ctx.getChild(1).accept(
-      IdentifierVisitor(
+      AtomVisitor(
         this.scope
       )
-    )
+    ) as Identifier
 
     // create a new scope for this function
     val functionScope = Scope(
       this.scope,
       ScopeType.FUNCTION
-    );
+    )
 
     // third is the parameter list
-    val parameterList = ctx.getChild(2).accept(Visitor(functionScope)) as ParameterList;
+    val parameterList = ctx.getChild(2)
+        .accept(
+            Visitor(
+                functionScope
+            )
+        ) as ParameterList
 
     // forth is ':' or '->'
     val op = ctx.getChild(3)
@@ -97,7 +103,7 @@ class StatementVisitor(val scope: Scope) : Python3BaseVisitor<Statement>() {
       Visitor(
         functionScope
       )
-    ) as Suite;
+    ) as Suite
 
     // create a new function definition
     val def = FunctionDefinition(id, parameterList, suite, expression)
@@ -105,7 +111,7 @@ class StatementVisitor(val scope: Scope) : Python3BaseVisitor<Statement>() {
     // add it to the function scope
     functionScope.handleParameterList(parameterList)
 
-    return def;
+    return def
   }
 
 }

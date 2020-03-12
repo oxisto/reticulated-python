@@ -19,6 +19,7 @@
  */
 package io.github.oxisto.reticulated
 
+import io.github.oxisto.reticulated.ast.expression.Identifier
 import io.github.oxisto.reticulated.ast.expression.call.Call
 import io.github.oxisto.reticulated.ast.expression.Name
 import io.github.oxisto.reticulated.ast.expression.argument.ArgumentList
@@ -161,7 +162,7 @@ class PythonParserTest {
             .shiftExpr
             .baseOperator as PowerExpr
         ).primary
-    assertTrue(name is Name)
+    assertTrue(name is Identifier)
     assertEquals("i", name.name)
 
     assertNotNull(input)

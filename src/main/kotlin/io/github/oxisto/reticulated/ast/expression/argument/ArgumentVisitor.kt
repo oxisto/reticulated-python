@@ -69,10 +69,10 @@ class ArgumentVisitor(val scope: Scope) : Python3BaseVisitor<Argument>() {
         3 -> {
             // It is a keyword_item, (parent: keyword_arguments), in the form: identifier "=" expression
             val identifier = ctx.getChild(0).accept(
-                    IdentifierVisitor(
+                    AtomVisitor(
                             this.scope
                     )
-            )
+            ) as Identifier
             val expression = getExpressionByPosition(2)
             return KeywordItem(identifier, expression)
         }

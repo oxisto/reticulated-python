@@ -2,7 +2,6 @@ package io.github.oxisto.reticulated.expression
 
 import io.github.oxisto.reticulated.PythonParser
 import io.github.oxisto.reticulated.ast.expression.Identifier
-import io.github.oxisto.reticulated.ast.expression.Name
 import io.github.oxisto.reticulated.ast.expression.Primary
 import io.github.oxisto.reticulated.ast.expression.argument.ArgumentList
 import io.github.oxisto.reticulated.ast.expression.boolean_ops.OrTest
@@ -101,7 +100,7 @@ class ComprehensionTest {
     )
   */
     assertNotNull(call)
-    val name = call.primary as Name
+    val name = call.primary as Identifier
     assertNotNull(name)
     assertEquals(name.name, "fun")
     val comprehension = call.callTrailer as Comprehension
@@ -119,7 +118,7 @@ class ComprehensionTest {
             .andExpr
             .shiftExpr
             .baseOperator as PowerExpr
-        ).primary as Name
+        ).primary as Identifier
     assertNotNull(expression)
     assertEquals(expression.name, "x")
     val compFor = comprehension.compFor
@@ -175,9 +174,9 @@ class ComprehensionTest {
     assertNull(subBaseOperator)
     val rangeCall = powerExpr.primary as Call
     assertNotNull(rangeCall)
-    val rangeCallName = rangeCall.primary as Name
-    assertNotNull(rangeCallName)
-    assertEquals(rangeCallName.name, "range")
+    val rangeCallIdentifier = rangeCall.primary as Identifier
+    assertNotNull(rangeCallIdentifier)
+    assertEquals(rangeCallIdentifier.name, "range")
     val argumentList = rangeCall.callTrailer as ArgumentList
     assertNotNull(argumentList)
     val arguments = argumentList[0]
@@ -272,7 +271,7 @@ class ComprehensionTest {
     */
 
     assertNotNull(call)
-    val name = call.primary as Name
+    val name = call.primary as Identifier
     assertNotNull(name)
     assertEquals(name.name, "fun")
     val comprehension = call.callTrailer as Comprehension
@@ -289,7 +288,7 @@ class ComprehensionTest {
             .andExpr
             .shiftExpr
             .baseOperator as PowerExpr
-    ).primary as Name
+    ).primary as Identifier
     assertNotNull(expression)
     assertEquals(expression.name, "x")
     val compFor = comprehension.compFor
@@ -349,9 +348,9 @@ class ComprehensionTest {
     assertNull(subBaseOperator)
     val rangeCall = powerExpr.primary as Call
     assertNotNull(rangeCall)
-    val rangeCallName = rangeCall.primary as Name
-    assertNotNull(rangeCallName)
-    assertEquals(rangeCallName.name, "range")
+    val rangeCallIdentifier = rangeCall.primary as Identifier
+    assertNotNull(rangeCallIdentifier)
+    assertEquals(rangeCallIdentifier.name, "range")
     val argumentList = rangeCall.callTrailer as ArgumentList
     assertNotNull(argumentList)
     val arguments = argumentList[0]
@@ -642,7 +641,7 @@ class ComprehensionTest {
     assertNull(awaitExprSLL)
     val subBaseOperatorSLL = baseOperatorSLL.baseOperator
     assertNull(subBaseOperatorSLL)
-    val nameSLL = baseOperatorSLL.primary as Name
+    val nameSLL = baseOperatorSLL.primary as Identifier
     assertNotNull(nameSLL)
     assertEquals(nameSLL.name, "a")
     val comparisonsSLL = comparisonSLL.comparisons
@@ -660,7 +659,7 @@ class ComprehensionTest {
         .shiftExpr
         .baseOperator as PowerExpr
     assertNotNull(powerExprFP0)
-    val nameFP0 = powerExprFP0.primary as Name
+    val nameFP0 = powerExprFP0.primary as Identifier
     assertEquals(nameFP0.name, "x")
     val powerExprFP = orExprFP
         .xorExpr
@@ -668,7 +667,7 @@ class ComprehensionTest {
         .shiftExpr
         .baseOperator as PowerExpr
     assertNotNull(powerExprFP)
-    val nameFP = powerExprFP.primary as Name
+    val nameFP = powerExprFP.primary as Identifier
     assertEquals(nameFP.name, "y")
     val secondPair = comparisonsSLL[1]
     assertNotNull(secondPair)
@@ -685,13 +684,13 @@ class ComprehensionTest {
             .andExpr as ShiftExpr
         )
         .baseOperator as PowerExpr
-        ).primary as Name
+        ).primary as Identifier
     assertNotNull(nameOfSubXorExprSP.name, "b")
     val nameOfAndExprSP = (
         andExprSP
             .shiftExpr
             .baseOperator as PowerExpr
-        ).primary as Name
+        ).primary as Identifier
     assertNotNull(nameOfAndExprSP.name, "z")
     val thirdPair = comparisonsSLL[2]
     assertNotNull(thirdPair)
@@ -700,34 +699,34 @@ class ComprehensionTest {
     assertEquals(compOperatorTP.symbol, ">=")
     val xorExprTP = thirdPair.getSecond().xorExpr
     assertNotNull(xorExprTP)
-    val cNameTP = (
+    val cIdentifierTP = (
         (
             xorExprTP.xorExpr as AndExpr
             ).shiftExpr
             .baseOperator as PowerExpr
-        ).primary as Name
-    assertNotNull(cNameTP.name, "c")
-    val aNameTP = (
+        ).primary as Identifier
+    assertNotNull(cIdentifierTP.name, "c")
+    val aIdentifierTP = (
         xorExprTP
             .andExpr
             .shiftExpr
             .baseOperator as PowerExpr
-        ).primary as Name
-    assertNotNull(aNameTP)
-    assertEquals(aNameTP.name, "a")
+        ).primary as Identifier
+    assertNotNull(aIdentifierTP)
+    assertEquals(aIdentifierTP.name, "a")
     val forthPair = comparisonsSLL[3]
     val compOperatorFPP = forthPair.getFirst()
     assertNotNull(compOperatorFPP)
     assertEquals(compOperatorFPP.symbol, ">")
-    val bName = (
+    val bIdentifier = (
         forthPair
             .getSecond()
             .xorExpr
             .andExpr
             .shiftExpr
             .baseOperator as PowerExpr
-        ).primary as Name
-    assertNotNull(bName.name, "b")
+        ).primary as Identifier
+    assertNotNull(bIdentifier.name, "b")
 
     val compIterCIF = compIFCIF.compIter
     assertNotNull(compIterCIF)
@@ -773,8 +772,8 @@ class ComprehensionTest {
     assertNull(awaitExprICIF)
     val subBaseOperatorICIF = baseOperatorICIF.baseOperator
     assertNull(subBaseOperatorICIF)
-    val iCIFName = baseOperatorICIF.primary as Name
-    assertNotNull(iCIFName.name, "x")
+    val iCIFIdentifier = baseOperatorICIF.primary as Identifier
+    assertNotNull(iCIFIdentifier.name, "x")
 
     val comparisonsICIF = comparisonICIF.comparisons
     assertNotNull(comparisonsICIF)
@@ -808,9 +807,9 @@ class ComprehensionTest {
     assertNull(awaitExprICIFP)
     val subBaseOperatorICIFP = baseOperatorICIFP.baseOperator
     assertNull(subBaseOperatorICIFP)
-    val iCIFPNameY = baseOperatorICIFP.primary as Name
-    assertNotNull(iCIFPNameY)
-    assertEquals(iCIFPNameY.name, "y")
+    val iCIFPIdentifierY = baseOperatorICIFP.primary as Identifier
+    assertNotNull(iCIFPIdentifierY)
+    assertEquals(iCIFPIdentifierY.name, "y")
 
     val notTestICIFO = subOrTestICIF.notTest
     assertNotNull(notTestICIFO)
@@ -842,9 +841,9 @@ class ComprehensionTest {
     assertNull(awaitExprICIFO)
     val subBaseOperatorICIFO = baseOperatorICIFO.baseOperator
     assertNull(subBaseOperatorICIFO)
-    val iCIFONameZ = baseOperatorICIFO.primary as Name
-    assertNotNull(iCIFONameZ)
-    assertEquals(iCIFONameZ.name, "z")
+    val iCIFOIdentifierZ = baseOperatorICIFO.primary as Identifier
+    assertNotNull(iCIFOIdentifierZ)
+    assertEquals(iCIFOIdentifierZ.name, "z")
 
     val comparisonsICIFO = comparisonICIFO.comparisons
     assertNotNull(comparisonsICIFO)
@@ -880,7 +879,7 @@ class ComprehensionTest {
     assertNull(subBaseOperatorFU)
     val firstCallFU = baseOperatorFU.primary as Call
     assertNotNull(firstCallFU)
-    val nameOfFirstCallFU = firstCallFU.primary as Name
+    val nameOfFirstCallFU = firstCallFU.primary as Identifier
     assertNotNull(nameOfFirstCallFU)
     assertEquals(nameOfFirstCallFU.name, "fun")
     val callTrailerFCFU = firstCallFU.callTrailer as ArgumentList
@@ -902,7 +901,7 @@ class ComprehensionTest {
             .baseOperator as PowerExpr
     ).primary as Call
     assertNotNull(callFFCFU)
-    val nameOfCFFCFU = callFFCFU.primary as Name
+    val nameOfCFFCFU = callFFCFU.primary as Identifier
     assertNotNull(nameOfCFFCFU)
     assertEquals(nameOfCFFCFU.name, "fun")
     val callTrailerCFFCFU = callFFCFU.callTrailer as ArgumentList
@@ -924,7 +923,7 @@ class ComprehensionTest {
             .baseOperator as PowerExpr
     ).primary as Call
     assertNotNull(callOfCCFFCFU)
-    val nameOfCCFFCFU = callOfCCFFCFU.primary as Name
+    val nameOfCCFFCFU = callOfCCFFCFU.primary as Identifier
     assertNotNull(nameOfCCFFCFU)
     assertEquals(nameOfCCFFCFU.name, "fun")
     val trailerOfCCFFCFU = callOfCCFFCFU.callTrailer as ArgumentList
@@ -946,7 +945,7 @@ class ComprehensionTest {
             .baseOperator as PowerExpr
     ).primary as Call
     assertNotNull(callOfCCCFFCFU)
-    val nameOfCCCFFCFU = callOfCCCFFCFU.primary as Name
+    val nameOfCCCFFCFU = callOfCCCFFCFU.primary as Identifier
     assertNotNull(nameOfCCCFFCFU)
     assertEquals(nameOfCCCFFCFU.name, "this_is_a_function_call")
     val callTrailerOfCCCFFCFU = callOfCCCFFCFU.callTrailer as EmptyCallTrailer
@@ -968,7 +967,7 @@ class ComprehensionTest {
             .baseOperator as PowerExpr
     ).primary as Call
     assertNotNull(callOfFCFU)
-    val nameOFSFCFU = callOfFCFU.primary as Name
+    val nameOFSFCFU = callOfFCFU.primary as Identifier
     assertNotNull(nameOFSFCFU)
     assertEquals(nameOFSFCFU.name, "this_is_a_function_call")
     val callTrailerOFSFCFU = callOfFCFU.callTrailer as EmptyCallTrailer
@@ -1020,7 +1019,7 @@ class ComprehensionTest {
     assertNull(awaitExprX)
     val baseOperatorSSHX = subShiftExprX.baseOperator
     assertNull(baseOperatorSSHX)
-    val nameOfSubShiftExprX = subShiftExprX.primary as Name
+    val nameOfSubShiftExprX = subShiftExprX.primary as Identifier
     assertNotNull(nameOfSubShiftExprX)
     assertEquals(nameOfSubShiftExprX.name, "x")
     val binaryOperatorX = shiftExprX.binaryOperator
@@ -1032,7 +1031,7 @@ class ComprehensionTest {
     assertNull(awaitExprBX)
     val subBaseOperatorX = baseOperatorX.baseOperator
     assertNull(subBaseOperatorX)
-    val nameOfBaseOperatorX = baseOperatorX.primary as Name
+    val nameOfBaseOperatorX = baseOperatorX.primary as Identifier
     assertNotNull(nameOfBaseOperatorX)
     assertEquals(nameOfBaseOperatorX.name, "y")
     val comparisonsX = comparisonX.comparisons
@@ -1063,7 +1062,7 @@ class ComprehensionTest {
     assertNull(awaitExprSCX)
     val baseOperatorSCX  = subShiftExprCX.baseOperator
     assertNull(baseOperatorSCX)
-    val nameOfSCX = subShiftExprCX.primary as Name
+    val nameOfSCX = subShiftExprCX.primary as Identifier
     assertNotNull(nameOfSCX)
     assertEquals(nameOfSCX.name, "z")
     val binaryOperatorCX = shiftExprCX.binaryOperator
@@ -1075,7 +1074,7 @@ class ComprehensionTest {
     assertNull(awaitExprCX)
     val subBaseOperatorCX = baseOperatorCX.baseOperator
     assertNull(subBaseOperatorCX)
-    val nameOfBCX = baseOperatorCX.primary as Name
+    val nameOfBCX = baseOperatorCX.primary as Identifier
     assertNotNull(nameOfBCX)
     assertEquals(nameOfBCX.name, "x")
   }
