@@ -15,13 +15,16 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.expression.boolean_expr
-
-import io.github.oxisto.reticulated.ast.Node
+package io.github.oxisto.reticulated.ast.expression.booleanops
+import io.github.oxisto.reticulated.ast.expression.Expression
 
 /**
- * The base class for all boolean expressions and all operators.
+ * This class is the base class for all boolean operations.
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#boolean-operations}]
  */
-abstract class BaseBooleanExpr: Node() {
-     abstract override fun toString(): String
+abstract class BaseBooleanOp: Expression() {
+    abstract override fun toString(): String
+    override fun isCall(): Boolean {
+        return false
+    }
 }

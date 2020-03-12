@@ -22,7 +22,7 @@ import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.AwaitExpr
 import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
 import io.github.oxisto.reticulated.ast.expression.Primary
-import io.github.oxisto.reticulated.ast.expression.boolean_expr.BaseBooleanExpr
+import io.github.oxisto.reticulated.ast.expression.booleanexpr.BaseBooleanExpr
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 import org.antlr.v4.runtime.ParserRuleContext

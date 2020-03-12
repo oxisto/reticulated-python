@@ -15,30 +15,35 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.expression.boolean_expr
+package io.github.oxisto.reticulated.ast.expression.booleanexpr
 
 import io.github.oxisto.reticulated.ast.CouldNotParseException
+import io.github.oxisto.reticulated.ast.expression.operator.ShiftExpr
 
 /**
- * The visitor for an xor_expr.
- * It´s EBNF representation is:
- *      xor_expr ::= and_expr | xor_expr "^" and_expr
+ * This class represents an and_expr.
+ * It´s EBNF definition is: and_expr ::= shift_expr | and_expr "&" shift_expr
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#binary-bitwise-operations}]
  */
-class XorExpr(val xorExpr: BaseBooleanExpr?, val andExpr: AndExpr): BaseBooleanExpr() {
+class AndExpr(val andExpr: BaseBooleanExpr?, val shiftExpr: ShiftExpr): BaseBooleanExpr() {
 
     init {
-        if(xorExpr != null && xorExpr !is XorExpr && xorExpr !is AndExpr) {
-            throw CouldNotParseException("The xorExpr=$xorExpr is unexpected.")
+        if (
+                andExpr != null &&
+                andExpr !is AndExpr &&
+                andExpr !is ShiftExpr
+        ){
+            throw CouldNotParseException("The andExpr=$andExpr is strange.")
         }
     }
 
     override fun toString(): String {
-        var result = "XorExpr(" + System.lineSeparator() + "\t"
-        if (xorExpr != null) {
-            result += "xorExpr=$xorExpr ^ "
+        var result = "AndExpr(" + System.lineSeparator() + "\t"
+
+        if (andExpr != null) {
+            result += "andExpr=$andExpr & "
         }
-        result += "andExpr=$andExpr" + System.lineSeparator() +
+        result += "shiftExpr=$shiftExpr" + System.lineSeparator() +
                 ")"
         return result
     }

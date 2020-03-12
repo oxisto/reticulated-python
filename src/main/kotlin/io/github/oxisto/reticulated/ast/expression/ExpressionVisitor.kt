@@ -20,7 +20,7 @@ package io.github.oxisto.reticulated.ast.expression
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.argument.CallTrailerVisitor
-import io.github.oxisto.reticulated.ast.expression.boolean_ops.BooleanOpVisitor
+import io.github.oxisto.reticulated.ast.expression.booleanops.BooleanOpVisitor
 import io.github.oxisto.reticulated.ast.expression.call.Call
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser

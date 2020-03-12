@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, Fraunhofer AISEC. All rights reserved.
+ * Copyright (c) 2020, Christian Banse and Andreas Hager. All rights reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,13 +15,13 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.expression.operator
+package io.github.oxisto.reticulated.ast.expression.booleanexpr
 
-import io.github.oxisto.reticulated.ast.expression.booleanexpr.BaseBooleanExpr
+import io.github.oxisto.reticulated.ast.Node
 
 /**
- * This class is the base for all operators, binary and unary expressions.
+ * The base class for all boolean expressions and all operators.
  */
-abstract class BaseOperator: BaseBooleanExpr() {
-    abstract override fun toString(): String
+abstract class BaseBooleanExpr: Node() {
+     abstract override fun toString(): String
 }

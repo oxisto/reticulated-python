@@ -15,16 +15,31 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.expression.boolean_ops
-import io.github.oxisto.reticulated.ast.expression.Expression
+package io.github.oxisto.reticulated.ast.expression.booleanops
+
+import io.github.oxisto.reticulated.ast.CouldNotParseException
 
 /**
- * This class is the base class for all boolean operations.
+ * This class represents an or_test.
+ * It´s EBNF definition is:
+ *      or_test ::= and_test | or_test "or" and_test
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#boolean-operations}]
  */
-abstract class BaseBooleanOp: Expression() {
-    abstract override fun toString(): String
-    override fun isCall(): Boolean {
-        return false
+class OrTest(val orTest: BaseBooleanOp?, val andTest:AndTest): BaseBooleanOp() {
+
+    init {
+        if(orTest != null && orTest !is OrTest && orTest !is AndTest){
+            throw CouldNotParseException()
+        }
+    }
+
+    override fun toString():String {
+        var result  = "OrTest(" + System.lineSeparator() + "\t"
+        if(orTest !== null) {
+            result += "orTest=$orTest or "
+        }
+        result += "andTest=$andTest" + System.lineSeparator() +
+                ")"
+        return result
     }
 }

@@ -21,7 +21,7 @@ import io.github.oxisto.reticulated.PythonParser
 import io.github.oxisto.reticulated.ast.expression.Identifier
 import io.github.oxisto.reticulated.ast.expression.Primary
 import io.github.oxisto.reticulated.ast.expression.argument.ArgumentList
-import io.github.oxisto.reticulated.ast.expression.boolean_ops.OrTest
+import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
 import io.github.oxisto.reticulated.ast.expression.call.Call
 import io.github.oxisto.reticulated.ast.expression.comprehension.CompIf
 import io.github.oxisto.reticulated.ast.expression.comprehension.Comprehension
@@ -29,10 +29,10 @@ import io.github.oxisto.reticulated.ast.expression.operator.PowerExpr
 import io.github.oxisto.reticulated.ast.simple.ExpressionStatement
 import io.github.oxisto.reticulated.ast.statement.StatementList
 import io.github.oxisto.reticulated.ast.expression.literal.Integer
-import io.github.oxisto.reticulated.ast.expression.boolean_expr.AndExpr
-import io.github.oxisto.reticulated.ast.expression.boolean_expr.XorExpr
-import io.github.oxisto.reticulated.ast.expression.boolean_ops.AndTest
-import io.github.oxisto.reticulated.ast.expression.boolean_ops.NotTest
+import io.github.oxisto.reticulated.ast.expression.booleanexpr.AndExpr
+import io.github.oxisto.reticulated.ast.expression.booleanexpr.XorExpr
+import io.github.oxisto.reticulated.ast.expression.booleanops.AndTest
+import io.github.oxisto.reticulated.ast.expression.booleanops.NotTest
 import io.github.oxisto.reticulated.ast.expression.call.EmptyCallTrailer
 import io.github.oxisto.reticulated.ast.expression.comparison.Comparison
 import io.github.oxisto.reticulated.ast.expression.operator.ShiftExpr

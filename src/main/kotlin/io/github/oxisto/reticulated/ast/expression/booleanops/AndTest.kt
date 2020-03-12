@@ -15,7 +15,7 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.expression.boolean_ops
+package io.github.oxisto.reticulated.ast.expression.booleanops
 
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 

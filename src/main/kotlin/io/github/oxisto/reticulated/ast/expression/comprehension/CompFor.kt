@@ -17,7 +17,7 @@
 
 package io.github.oxisto.reticulated.ast.expression.comprehension
 
-import io.github.oxisto.reticulated.ast.expression.boolean_ops.OrTest
+import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
 import io.github.oxisto.reticulated.ast.simple.target.TargetList
 
 /**

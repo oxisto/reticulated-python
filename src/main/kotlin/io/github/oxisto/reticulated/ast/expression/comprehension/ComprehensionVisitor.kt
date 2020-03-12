@@ -21,10 +21,8 @@ import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.ExpressionNoCond
 import io.github.oxisto.reticulated.ast.expression.ExpressionNoCondVisitor
-import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
-import io.github.oxisto.reticulated.ast.expression.boolean_ops.BooleanOpVisitor
-import io.github.oxisto.reticulated.ast.expression.boolean_ops.OrTest
-import io.github.oxisto.reticulated.ast.expression.lambda.LambdaNoCondVisitor
+import io.github.oxisto.reticulated.ast.expression.booleanops.BooleanOpVisitor
+import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
 import io.github.oxisto.reticulated.ast.simple.target.TargetList
 import io.github.oxisto.reticulated.ast.simple.target.TargetListVisitor
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor

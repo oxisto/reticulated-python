@@ -15,30 +15,30 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.expression.boolean_ops
+package io.github.oxisto.reticulated.ast.expression.booleanexpr
 
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 
 /**
- * This class represents an or_test.
- * It´s EBNF definition is:
- *      or_test ::= and_test | or_test "or" and_test
- * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#boolean-operations}]
+ * The visitor for an xor_expr.
+ * It´s EBNF representation is:
+ *      xor_expr ::= and_expr | xor_expr "^" and_expr
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#binary-bitwise-operations}]
  */
-class OrTest(val orTest: BaseBooleanOp?, val andTest:AndTest): BaseBooleanOp() {
+class XorExpr(val xorExpr: BaseBooleanExpr?, val andExpr: AndExpr): BaseBooleanExpr() {
 
     init {
-        if(orTest != null && orTest !is OrTest && orTest !is AndTest){
-            throw CouldNotParseException()
+        if(xorExpr != null && xorExpr !is XorExpr && xorExpr !is AndExpr) {
+            throw CouldNotParseException("The xorExpr=$xorExpr is unexpected.")
         }
     }
 
-    override fun toString():String {
-        var result  = "OrTest(" + System.lineSeparator() + "\t"
-        if(orTest !== null) {
-            result += "orTest=$orTest or "
+    override fun toString(): String {
+        var result = "XorExpr(" + System.lineSeparator() + "\t"
+        if (xorExpr != null) {
+            result += "xorExpr=$xorExpr ^ "
         }
-        result += "andTest=$andTest" + System.lineSeparator() +
+        result += "andExpr=$andExpr" + System.lineSeparator() +
                 ")"
         return result
     }

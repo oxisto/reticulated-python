@@ -18,7 +18,7 @@
 package io.github.oxisto.reticulated.ast.expression
 
 import io.github.oxisto.reticulated.ast.CouldNotParseException
-import io.github.oxisto.reticulated.ast.expression.boolean_ops.OrTest
+import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
 import io.github.oxisto.reticulated.ast.expression.lambda.LambdaNoCond
 
 class ExpressionNoCond(val orTest: OrTest?, val lambdaNoCond: LambdaNoCond?): Expression(){
