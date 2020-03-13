@@ -18,9 +18,10 @@
 package io.github.oxisto.reticulated.expression
 
 import io.github.oxisto.reticulated.PythonParser
+import io.github.oxisto.reticulated.ast.expression.ConditionalExpression
 import io.github.oxisto.reticulated.ast.expression.argument.ArgumentList
 import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
-import io.github.oxisto.reticulated.ast.expression.call.Call
+import io.github.oxisto.reticulated.ast.expression.primary.call.Call
 import io.github.oxisto.reticulated.ast.expression.operator.PowerExpr
 import io.github.oxisto.reticulated.ast.simple.ExpressionStatement
 import io.github.oxisto.reticulated.ast.statement.StatementList
@@ -34,18 +35,19 @@ class ExpressionsTest {
   @Test
   fun testAttributeRef() {
     val file = File(
-            javaClass
+        javaClass
             .classLoader
             .getResource("import.py")!!
             .file
     )
 
     val input = PythonParser()
-            .parse(file.path)
-            .root
+        .parse(file.path)
+        .root
     assertNotNull(input)
 
     val inputString = input.toString()
+    print(input)
     assertEquals(inputString, """FileInput(statements=[StatementList(
 	statements=[ImportStatement(
 	module=Identifier(
@@ -54,7 +56,8 @@ class ExpressionsTest {
 )]
 ), StatementList(
 	statements=[ExpressionStatement(
-	expression=OrTest(
+	expression=ConditionalExpression(
+	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
 	comparison=Comparison(
@@ -68,7 +71,8 @@ class ExpressionsTest {
 	name='print'
 ) callTrailer=ArgumentList(
 	argument=[Argument(
-	expression=OrTest(
+	expression=ConditionalExpression(
+	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
 	comparison=Comparison(
@@ -93,7 +97,9 @@ class ExpressionsTest {
 )
 )
 )
+)
 )]
+)
 )
 )
 )
@@ -111,7 +117,9 @@ class ExpressionsTest {
     val s1 = input.statements[1] as StatementList
     val expressionStatement = s1[0] as ExpressionStatement
     assertNotNull(expressionStatement)
-    val orTestCall = expressionStatement.expression as OrTest
+    val conditionalExpression = expressionStatement.expression as ConditionalExpression
+    assertNotNull(conditionalExpression)
+    val orTestCall = conditionalExpression.orTest as OrTest
     assertNotNull(orTestCall)
     val subOrTestCall = orTestCall.orTest
     assertNull(subOrTestCall)

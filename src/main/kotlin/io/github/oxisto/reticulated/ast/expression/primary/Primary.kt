@@ -15,10 +15,22 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.expression.call
+package io.github.oxisto.reticulated.ast.expression.primary
 
-class EmptyCallTrailer: CallTrailer() {
-    override fun toString(): String {
-        return "EmptyCallTrailer( '(' ')' )"
-    }
+import io.github.oxisto.reticulated.ast.expression.Expression
+import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
+
+/**
+ * A primary
+ *
+ * Reference: https://docs.python.org/3/reference/expressions.html#primaries
+ */
+abstract class Primary : Expression() {
+
+  fun asIdentifier(): Identifier {
+    return this as Identifier
+  }
+
+  abstract override fun toString(): String
+
 }

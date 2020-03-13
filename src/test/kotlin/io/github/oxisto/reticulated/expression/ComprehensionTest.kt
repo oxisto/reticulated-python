@@ -18,22 +18,23 @@
 package io.github.oxisto.reticulated.expression
 
 import io.github.oxisto.reticulated.PythonParser
-import io.github.oxisto.reticulated.ast.expression.Identifier
-import io.github.oxisto.reticulated.ast.expression.Primary
+import io.github.oxisto.reticulated.ast.expression.ConditionalExpression
+import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
+import io.github.oxisto.reticulated.ast.expression.primary.Primary
 import io.github.oxisto.reticulated.ast.expression.argument.ArgumentList
 import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
-import io.github.oxisto.reticulated.ast.expression.call.Call
+import io.github.oxisto.reticulated.ast.expression.primary.call.Call
 import io.github.oxisto.reticulated.ast.expression.comprehension.CompIf
 import io.github.oxisto.reticulated.ast.expression.comprehension.Comprehension
 import io.github.oxisto.reticulated.ast.expression.operator.PowerExpr
 import io.github.oxisto.reticulated.ast.simple.ExpressionStatement
 import io.github.oxisto.reticulated.ast.statement.StatementList
-import io.github.oxisto.reticulated.ast.expression.literal.Integer
+import io.github.oxisto.reticulated.ast.expression.primary.atom.literal.Integer
 import io.github.oxisto.reticulated.ast.expression.booleanexpr.AndExpr
 import io.github.oxisto.reticulated.ast.expression.booleanexpr.XorExpr
 import io.github.oxisto.reticulated.ast.expression.booleanops.AndTest
 import io.github.oxisto.reticulated.ast.expression.booleanops.NotTest
-import io.github.oxisto.reticulated.ast.expression.call.EmptyCallTrailer
+import io.github.oxisto.reticulated.ast.expression.primary.call.EmptyCallTrailer
 import io.github.oxisto.reticulated.ast.expression.comparison.Comparison
 import io.github.oxisto.reticulated.ast.expression.operator.ShiftExpr
 import org.junit.Assert
@@ -65,7 +66,9 @@ class ComprehensionTest {
     assertNotNull(statementList)
     val expressionStatement = statementList[0] as ExpressionStatement
     assertNotNull(expressionStatement)
-    val orTestCall = expressionStatement.expression as OrTest
+    val conditionalExpression = expressionStatement.expression as ConditionalExpression
+    assertNotNull(conditionalExpression)
+    val orTestCall = conditionalExpression.orTest as OrTest
     assertNotNull(orTestCall)
     val subOrTestCall = orTestCall.orTest
     assertNull(subOrTestCall)
@@ -124,7 +127,9 @@ class ComprehensionTest {
     val expression = (
         (
             (
-                comprehension.expression as OrTest
+                (
+                    comprehension.expression as ConditionalExpression
+                    ).orTest as OrTest
                 ).andTest
                 .notTest
                 .comparison as Comparison
@@ -199,7 +204,9 @@ class ComprehensionTest {
     val integer = (
         (
             (
-                arguments.expression as OrTest
+                (
+                    arguments.expression as ConditionalExpression
+                    ).orTest as OrTest
                 ).andTest
                 .notTest
                 .comparison as Comparison
@@ -233,7 +240,9 @@ class ComprehensionTest {
     assertNotNull(statementList)
     val expressionStatement = statementList[0] as ExpressionStatement
     assertNotNull(expressionStatement)
-    val orTestCall = expressionStatement.expression as OrTest
+    val conditionalExpression = expressionStatement.expression as ConditionalExpression
+    assertNotNull(conditionalExpression)
+    val orTestCall = conditionalExpression.orTest as OrTest
     assertNotNull(orTestCall)
     val subOrTestCall = orTestCall.orTest
     assertNull(subOrTestCall)
@@ -293,7 +302,9 @@ class ComprehensionTest {
     val expression = (
         (
             (
-                comprehension.expression as OrTest
+                (
+                    comprehension.expression as ConditionalExpression
+                    ).orTest as OrTest
                 ).andTest
                 .notTest
                 .comparison as Comparison
@@ -372,7 +383,9 @@ class ComprehensionTest {
     val integer = (
         (
             (
-                arguments.expression as OrTest
+                (
+                    arguments.expression as ConditionalExpression
+                    ).orTest as OrTest
                 ).andTest
                 .notTest
                 .comparison as Comparison
@@ -536,7 +549,9 @@ class ComprehensionTest {
     val firstArgExprCF = (
         (
             (
-                firstArgCF.expression as OrTest
+                (
+                    firstArgCF.expression as ConditionalExpression
+                    ).orTest as OrTest
                 ).andTest
                 .notTest
                 .comparison as Comparison
@@ -553,7 +568,9 @@ class ComprehensionTest {
     val secondArgExprCF = (
         (
             (
-                secondArgCF.expression as OrTest
+                (
+                    secondArgCF.expression as ConditionalExpression
+                    ).orTest as OrTest
                 ).andTest
                 .notTest
                 .comparison as Comparison
@@ -904,7 +921,9 @@ class ComprehensionTest {
     val callFFCFU = (
         (
             (
-                firstArgumentFCFU.expression as OrTest
+                (
+                    firstArgumentFCFU.expression as ConditionalExpression
+                    ).orTest as OrTest
                 ).andTest
                 .notTest
                 .comparison as Comparison
@@ -926,7 +945,9 @@ class ComprehensionTest {
     val callOfCCFFCFU = (
         (
             (
-                firstArgumentCFFCFU.expression as OrTest
+                (
+                    firstArgumentCFFCFU.expression as ConditionalExpression
+                    ).orTest as OrTest
                 ).andTest
                 .notTest
                 .comparison as Comparison
@@ -948,7 +969,9 @@ class ComprehensionTest {
     val callOfCCCFFCFU = (
         (
             (
-                firstArgumentOFCCFFCFU.expression as OrTest
+                (
+                    firstArgumentOFCCFFCFU.expression as ConditionalExpression
+                    ).orTest as OrTest
                 ).andTest
                 .notTest
                 .comparison as Comparison
@@ -970,7 +993,9 @@ class ComprehensionTest {
     val callOfFCFU = (
         (
             (
-                secondArgumentFCFU.expression as OrTest
+                (
+                    secondArgumentFCFU.expression as ConditionalExpression
+                    ).orTest as OrTest
                 ).andTest
                 .notTest
                 .comparison as Comparison
@@ -1108,7 +1133,8 @@ class ComprehensionTest {
         val inputString = input.toString()
         assertEquals(inputString, """FileInput(statements=[StatementList(
 	statements=[ExpressionStatement(
-	expression=OrTest(
+	expression=ConditionalExpression(
+	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
 	comparison=Comparison(
@@ -1121,7 +1147,8 @@ class ComprehensionTest {
 	primary=Identifier(
 	name='fun'
 ) callTrailer=Comprehension(
-	expression=OrTest(
+	expression=ConditionalExpression(
+	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
 	comparison=Comparison(
@@ -1132,6 +1159,7 @@ class ComprehensionTest {
 	additiveExpr=PowerExpr(
 	primary=Identifier(
 	name='x'
+)
 )
 )
 )
@@ -1162,7 +1190,8 @@ class ComprehensionTest {
 	name='range'
 ) callTrailer=ArgumentList(
 	argument=[Argument(
-	expression=OrTest(
+	expression=ConditionalExpression(
+	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
 	comparison=Comparison(
@@ -1183,7 +1212,9 @@ class ComprehensionTest {
 )
 )
 )
+)
 )]
+)
 )
 )
 )
@@ -1225,7 +1256,8 @@ class ComprehensionTest {
         val inputString = input.toString()
         assertEquals(inputString, """FileInput(statements=[StatementList(
 	statements=[ExpressionStatement(
-	expression=OrTest(
+	expression=ConditionalExpression(
+	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
 	comparison=Comparison(
@@ -1238,7 +1270,8 @@ class ComprehensionTest {
 	primary=Identifier(
 	name='fun'
 ) callTrailer=Comprehension(
-	expression=OrTest(
+	expression=ConditionalExpression(
+	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
 	comparison=Comparison(
@@ -1249,6 +1282,7 @@ class ComprehensionTest {
 	additiveExpr=PowerExpr(
 	primary=Identifier(
 	name='x'
+)
 )
 )
 )
@@ -1281,7 +1315,8 @@ class ComprehensionTest {
 	name='range'
 ) callTrailer=ArgumentList(
 	argument=[Argument(
-	expression=OrTest(
+	expression=ConditionalExpression(
+	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
 	comparison=Comparison(
@@ -1292,6 +1327,7 @@ class ComprehensionTest {
 	additiveExpr=PowerExpr(
 	primary=Integer(
 	value=10
+)
 )
 )
 )
@@ -1369,7 +1405,8 @@ class ComprehensionTest {
 	name='range'
 ) callTrailer=ArgumentList(
 	argument=[Argument(
-	expression=OrTest(
+	expression=ConditionalExpression(
+	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
 	comparison=Comparison(
@@ -1390,8 +1427,10 @@ class ComprehensionTest {
 )
 )
 )
+)
 ), Argument(
-	expression=OrTest(
+	expression=ConditionalExpression(
+	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
 	comparison=Comparison(
@@ -1402,6 +1441,7 @@ class ComprehensionTest {
 	additiveExpr=PowerExpr(
 	primary=Identifier(
 	name='z'
+)
 )
 )
 )
@@ -1600,7 +1640,8 @@ class ComprehensionTest {
 	name='fun'
 ) callTrailer=ArgumentList(
 	argument=[Argument(
-	expression=OrTest(
+	expression=ConditionalExpression(
+	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
 	comparison=Comparison(
@@ -1614,7 +1655,8 @@ class ComprehensionTest {
 	name='fun'
 ) callTrailer=ArgumentList(
 	argument=[Argument(
-	expression=OrTest(
+	expression=ConditionalExpression(
+	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
 	comparison=Comparison(
@@ -1628,7 +1670,8 @@ class ComprehensionTest {
 	name='fun'
 ) callTrailer=ArgumentList(
 	argument=[Argument(
-	expression=OrTest(
+	expression=ConditionalExpression(
+	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
 	comparison=Comparison(
@@ -1651,19 +1694,22 @@ class ComprehensionTest {
 )
 )
 )
-)]
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
 )
 )]
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)]
+)
 )
 )
 )
@@ -1676,7 +1722,8 @@ class ComprehensionTest {
 )
 )
 ), Argument(
-	expression=OrTest(
+	expression=ConditionalExpression(
+	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
 	comparison=Comparison(
@@ -1689,6 +1736,7 @@ class ComprehensionTest {
 	primary=Identifier(
 	name='this_is_a_function_call'
 ) callTrailer=EmptyCallTrailer( '(' ')' )
+)
 )
 )
 )
@@ -1743,6 +1791,7 @@ class ComprehensionTest {
 ) binaryOperator=<< additiveExpr=PowerExpr(
 	primary=Identifier(
 	name='x'
+)
 )
 )
 )

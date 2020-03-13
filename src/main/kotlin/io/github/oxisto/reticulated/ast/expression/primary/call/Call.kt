@@ -15,35 +15,31 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.expression
+package io.github.oxisto.reticulated.ast.expression.primary.call
 
-import io.github.oxisto.reticulated.ast.simple.target.Target
+import io.github.oxisto.reticulated.ast.expression.primary.Primary
 
-open class Identifier(val name: String) : Target, Atom() {
+/**
+ * This class represents a call
+ * It´s EBNF representation is:
+ *        call ::= primary "(" [argument_list [","] | comprehension] ")"
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#calls}]
+ */
+class Call(val primary: Primary, val callTrailer: CallTrailer) : Primary() {
 
-  override fun toString(): String {
-    return "Identifier(" + System.lineSeparator() +
-            "\tname='$name'" + System.lineSeparator() +
-            ")"
-  }
-
-  override fun equals(other: Any?): Boolean {
-    if (this === other) return true
-    if (javaClass != other?.javaClass) return false
-
-    other as Identifier
-
-    if (name != other.name) return false
-
-    return true
+  init {
+    primary.parent = this
+    callTrailer.parent = this
   }
 
   override fun isCall(): Boolean {
-    return false
+    return true
   }
 
-  override fun hashCode(): Int {
-    return name.hashCode()
+  override fun toString(): String {
+    return "Call(" + System.lineSeparator() +
+            "\tprimary=$primary callTrailer=$callTrailer" + System.lineSeparator() +
+            ")"
   }
 
 }

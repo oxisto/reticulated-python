@@ -17,7 +17,7 @@
 
 package io.github.oxisto.reticulated.ast.expression.comprehension
 
-import io.github.oxisto.reticulated.ast.expression.call.CallTrailer
+import io.github.oxisto.reticulated.ast.expression.primary.call.CallTrailer
 
 /**
  * This class is the base for all comparison´s.

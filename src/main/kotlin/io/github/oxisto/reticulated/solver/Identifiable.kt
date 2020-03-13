@@ -17,7 +17,7 @@
 
 package io.github.oxisto.reticulated.solver
 
-import io.github.oxisto.reticulated.ast.expression.Identifier
+import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
 
 interface Identifiable {
 

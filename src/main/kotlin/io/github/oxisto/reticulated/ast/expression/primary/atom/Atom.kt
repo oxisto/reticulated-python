@@ -15,10 +15,13 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.expression.call
+package io.github.oxisto.reticulated.ast.expression.primary.atom
 
-import io.github.oxisto.reticulated.ast.Node
+import io.github.oxisto.reticulated.ast.expression.primary.Primary
 
-abstract class CallTrailer: Node() {
+/**
+ * This class is the base for all atoms.
+ */
+abstract class Atom : Primary() {
     abstract override fun toString(): String
 }

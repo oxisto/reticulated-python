@@ -15,24 +15,27 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.expression.literal
+package io.github.oxisto.reticulated.ast.expression.primary.atom.literal
 
 /**
- * This class represents a floatnumber
+ * This class represents a bytesliteral
  * The EBNF representation is:
- *      floatnumber   ::=  pointfloat | exponentfloat
- *      pointfloat    ::=  [digitpart] fraction | digitpart "."
- *      exponentfloat ::=  (digitpart | pointfloat) exponent
- *      digitpart     ::=  digit (["_"] digit)*
- *      fraction      ::=  "." digitpart
- *      exponent      ::=  ("e" | "E") ["+" | "-"] digitpart
+ *      bytesliteral   ::=  bytesprefix ( shortbytes | longbytes )
+ *      bytesprefix    ::=  "b" | "B" | "br" | "Br" | "bR" | "BR" | "rb" | "rB" | "Rb" | "RB"
+ *      shortbytes     ::=  "'" shortbytesitem* "'" | '"' shortbytesitem* '"'
+ *      longbytes      ::=  "'''" longbytesitem* "'''" | '"""' longbytesitem* '"""'
+ *      shortbytesitem ::=  shortbyteschar | bytesescapeseq
+ *      longbytesitem  ::=  longbyteschar | bytesescapeseq
+ *      shortbyteschar ::=  <any ASCII character except "\" or newline or the quote>
+ *      longbyteschar  ::=  <any ASCII character except "\">
+ *      bytesescapeseq ::=  "\" <any ASCII character>
  *  [see: {@linktourl https://docs.python.org/3/reference/lexical_analysis.html#literals}]
  */
-class FloatNumber(val value: Float) : Literal<Float>() {
-
+class BytesLiteral(val value: Byte) : Literal<Byte>() {
     override fun toString(): String {
-        return "FloatNumber(" + System.lineSeparator() +
+        return "BytesLiteral(" + System.lineSeparator() +
                 "\tvalue=$value" + System.lineSeparator() +
                 ")"
     }
+
 }

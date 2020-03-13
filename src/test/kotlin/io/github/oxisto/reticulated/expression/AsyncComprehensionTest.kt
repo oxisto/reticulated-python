@@ -18,8 +18,9 @@
 package io.github.oxisto.reticulated.expression
 
 import io.github.oxisto.reticulated.PythonParser
+import io.github.oxisto.reticulated.ast.expression.ConditionalExpression
 import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
-import io.github.oxisto.reticulated.ast.expression.call.Call
+import io.github.oxisto.reticulated.ast.expression.primary.call.Call
 import io.github.oxisto.reticulated.ast.expression.comprehension.Comprehension
 import io.github.oxisto.reticulated.ast.expression.operator.PowerExpr
 import io.github.oxisto.reticulated.ast.simple.ExpressionStatement
@@ -49,9 +50,11 @@ class AsyncComprehensionTest {
                     (
                         (
                             (
-                                input.statements[0] as StatementList
-                                )[0] as ExpressionStatement
-                            ).expression as OrTest
+                                (
+                                    input.statements[0] as StatementList
+                                    )[0] as ExpressionStatement
+                                ).expression as ConditionalExpression
+                            ).orTest as OrTest
                         ).andTest
                         .notTest
                         .comparison!!
@@ -84,7 +87,8 @@ class AsyncComprehensionTest {
 	statements=[AssignmentExpression(
 	target=Identifier(
 	name='a'
-) expression=OrTest(
+) expression=ConditionalExpression(
+	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
 	comparison=Comparison(
@@ -119,12 +123,14 @@ class AsyncComprehensionTest {
 )
 )
 )
+)
 )]
 ), StatementList(
 	statements=[AssignmentExpression(
 	target=Identifier(
 	name='b'
-) expression=OrTest(
+) expression=ConditionalExpression(
+	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
 	comparison=Comparison(
@@ -153,12 +159,14 @@ class AsyncComprehensionTest {
 )
 )
 )
+)
 )]
 ), StatementList(
 	statements=[AssignmentExpression(
 	target=Identifier(
 	name='c'
-) expression=OrTest(
+) expression=ConditionalExpression(
+	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
 	comparison=Comparison(
@@ -185,12 +193,14 @@ class AsyncComprehensionTest {
 )
 )
 )
+)
 )]
 ), StatementList(
 	statements=[AssignmentExpression(
 	target=Identifier(
 	name='d'
-) expression=OrTest(
+) expression=ConditionalExpression(
+	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
 	comparison=Comparison(
@@ -221,12 +231,14 @@ class AsyncComprehensionTest {
 )
 )
 )
+)
 )]
 ), StatementList(
 	statements=[AssignmentExpression(
 	target=Identifier(
 	name='e'
-) expression=OrTest(
+) expression=ConditionalExpression(
+	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
 	comparison=Comparison(
@@ -248,6 +260,7 @@ class AsyncComprehensionTest {
 	value=FloatNumber(
 	value=0.1
 ) j
+)
 )
 )
 )

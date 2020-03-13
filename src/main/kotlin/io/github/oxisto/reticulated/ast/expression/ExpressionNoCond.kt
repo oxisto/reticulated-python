@@ -21,6 +21,12 @@ import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
 import io.github.oxisto.reticulated.ast.expression.lambda.LambdaNoCond
 
+/**
+ * This class represents an expression_nocond
+ * It´s EBNF representation is:
+ *      expression_nocond ::= or_test | lambda_expr_nocond
+ * [see: https://docs.python.org/3/reference/expressions.html#grammar-token-expression-nocond]
+ */
 class ExpressionNoCond(val orTest: OrTest?, val lambdaNoCond: LambdaNoCond?): Expression(){
     init {
         if ( orTest == null ) {

@@ -20,8 +20,8 @@ package io.github.oxisto.reticulated.ast.statement
 import io.github.oxisto.reticulated.ast.*
 import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
-import io.github.oxisto.reticulated.ast.expression.AtomVisitor
-import io.github.oxisto.reticulated.ast.expression.Identifier
+import io.github.oxisto.reticulated.ast.expression.primary.atom.AtomVisitor
+import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
 import io.github.oxisto.reticulated.ast.simple.SimpleStatement
 import io.github.oxisto.reticulated.ast.simple.SimpleStatementVisitor
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
@@ -67,9 +67,9 @@ class StatementVisitor(val scope: Scope) : Python3BaseVisitor<Statement>() {
 
     // second is the name
     val id = ctx.getChild(1).accept(
-      AtomVisitor(
-        this.scope
-      )
+        AtomVisitor(
+            this.scope
+        )
     ) as Identifier
 
     // create a new scope for this function

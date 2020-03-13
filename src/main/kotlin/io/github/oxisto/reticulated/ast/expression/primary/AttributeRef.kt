@@ -15,11 +15,26 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.expression
+package io.github.oxisto.reticulated.ast.expression.primary
 
-import io.github.oxisto.reticulated.ast.Node
+import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
 import io.github.oxisto.reticulated.ast.simple.target.Target
 
-class Slicing: Target, Node() {
-    // TODO: Implement: slicing ::= primary "[" slice_list "]"
+/**
+ * This class represents an attributeref.
+ * It´s EBNF representation is:
+ *        attributeref ::= primary "." identifier
+ */
+class AttributeRef(val primary: Primary, val id: Identifier) : Target, Primary() {
+
+  override fun isCall(): Boolean {
+    return false
+  }
+
+  override fun toString(): String {
+    return "AttributeRef(" + System.lineSeparator() +
+            "\tprimary=$primary\".\"identifier=$id" + System.lineSeparator() +
+            ")"
+  }
+
 }

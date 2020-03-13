@@ -17,6 +17,14 @@
 
 package io.github.oxisto.reticulated.ast.expression
 
+import io.github.oxisto.reticulated.ast.expression.primary.Primary
+
+/**
+ * This class represents an await_expr
+ * It´s EBNF representation is:
+ *      await_expr ::="await" primary
+ * [see: https://docs.python.org/3/reference/expressions.html#await-expression]
+ */
 class AwaitExpr(val primary: Primary): Expression(){
 
     override fun isCall(): Boolean {

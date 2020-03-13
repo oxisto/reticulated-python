@@ -15,7 +15,7 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.expression
+package io.github.oxisto.reticulated.ast.expression.primary.atom
 
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.solver.Identifiable

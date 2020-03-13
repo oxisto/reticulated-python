@@ -18,9 +18,16 @@
 package io.github.oxisto.reticulated.ast.expression
 
 import io.github.oxisto.reticulated.ast.CouldNotParseException
+import io.github.oxisto.reticulated.ast.expression.booleanops.BaseBooleanOp
 import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
 
-class ConditionalExpression(val orTest: OrTest, val orTestOptional: OrTest?, val expressionOptional: Expression?): Expression() {
+/**
+ * This class represents a conditional_expression
+ * It´s EBNF representation is:
+ *        conditional_expression ::= or_test ["if" or_test "else" expression]
+ * [see: https://docs.python.org/3/reference/expressions.html#conditional-expressions]
+ */
+class ConditionalExpression(val orTest: BaseBooleanOp, val orTestOptional: OrTest?, val expressionOptional: Expression?): Expression() {
 
   init {
     if(orTestOptional == null){

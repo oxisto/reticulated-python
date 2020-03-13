@@ -17,10 +17,11 @@
 
 package io.github.oxisto.reticulated
 
-import io.github.oxisto.reticulated.ast.expression.call.Call
-import io.github.oxisto.reticulated.ast.expression.Identifier
+import io.github.oxisto.reticulated.ast.expression.ConditionalExpression
+import io.github.oxisto.reticulated.ast.expression.primary.call.Call
+import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
 import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
-import io.github.oxisto.reticulated.ast.expression.literal.Integer
+import io.github.oxisto.reticulated.ast.expression.primary.atom.literal.Integer
 import io.github.oxisto.reticulated.ast.expression.operator.PowerExpr
 import io.github.oxisto.reticulated.ast.simple.AssignmentExpression
 import io.github.oxisto.reticulated.ast.simple.ExpressionStatement
@@ -51,7 +52,9 @@ class SimpleStatementTest {
 
     val assigned = (
           (
-              assign.expression as OrTest
+              (
+                  assign.expression as ConditionalExpression
+                  ).orTest as OrTest
               ).andTest
               .notTest
               .comparison!!
@@ -68,7 +71,8 @@ class SimpleStatementTest {
     val exprStatement = s1.first()
     assertTrue(exprStatement is ExpressionStatement)
 
-    val orTestCall = exprStatement.expression as OrTest
+    val conditionalExpression = exprStatement.expression as ConditionalExpression
+    val orTestCall = conditionalExpression.orTest as OrTest
     assertNotNull(orTestCall)
     val subOrTestCall = orTestCall.orTest
     assertNull(subOrTestCall)

@@ -15,19 +15,13 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.expression
+package io.github.oxisto.reticulated.ast.expression.primary.call
+
+import io.github.oxisto.reticulated.ast.Node
 
 /**
- * A primary
- *
- * Reference: https://docs.python.org/3/reference/expressions.html#primaries
+ * This class is the base for all call trailers
  */
-abstract class Primary : Expression() {
-
-  fun asIdentifier(): Identifier {
-    return this as Identifier
-  }
-
-  abstract override fun toString(): String
-
+abstract class CallTrailer: Node() {
+    abstract override fun toString(): String
 }

@@ -15,15 +15,18 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.expression
+package io.github.oxisto.reticulated.ast.expression.primary.atom
 
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
-import io.github.oxisto.reticulated.ast.expression.literal.*
+import io.github.oxisto.reticulated.ast.expression.primary.atom.literal.*
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 import org.antlr.v4.runtime.tree.TerminalNode
 
+/**
+ * This class offers visitors for all atoms (Identifier, Literal and Enclosure)
+ */
 class AtomVisitor(val scope: Scope) : Python3BaseVisitor<Atom>() {
 
   override fun visitAtom(ctx: Python3Parser.AtomContext): Atom {

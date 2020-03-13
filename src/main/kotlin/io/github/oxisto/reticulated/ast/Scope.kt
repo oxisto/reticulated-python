@@ -17,7 +17,7 @@
 
 package io.github.oxisto.reticulated.ast
 
-import io.github.oxisto.reticulated.ast.expression.Identifier
+import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
 import io.github.oxisto.reticulated.ast.statement.ParameterList
 import io.github.oxisto.reticulated.solver.ResolvedVariable
 

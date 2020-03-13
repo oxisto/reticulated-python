@@ -15,27 +15,27 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.expression.literal
+package io.github.oxisto.reticulated.ast.expression.primary.atom.literal
 
 /**
- * This class represents a bytesliteral
+ * This class represents a integer
  * The EBNF representation is:
- *      bytesliteral   ::=  bytesprefix ( shortbytes | longbytes )
- *      bytesprefix    ::=  "b" | "B" | "br" | "Br" | "bR" | "BR" | "rb" | "rB" | "Rb" | "RB"
- *      shortbytes     ::=  "'" shortbytesitem* "'" | '"' shortbytesitem* '"'
- *      longbytes      ::=  "'''" longbytesitem* "'''" | '"""' longbytesitem* '"""'
- *      shortbytesitem ::=  shortbyteschar | bytesescapeseq
- *      longbytesitem  ::=  longbyteschar | bytesescapeseq
- *      shortbyteschar ::=  <any ASCII character except "\" or newline or the quote>
- *      longbyteschar  ::=  <any ASCII character except "\">
- *      bytesescapeseq ::=  "\" <any ASCII character>
+ *      integer      ::=  decinteger | bininteger | octinteger | hexinteger
+ *      decinteger   ::=  nonzerodigit (["_"] digit)* | "0"+ (["_"] "0")*
+ *      bininteger   ::=  "0" ("b" | "B") (["_"] bindigit)+
+ *      octinteger   ::=  "0" ("o" | "O") (["_"] octdigit)+
+ *      hexinteger   ::=  "0" ("x" | "X") (["_"] hexdigit)+
+ *      nonzerodigit ::=  "1"..."9"
+ *      digit        ::=  "0"..."9"
+ *      bindigit     ::=  "0" | "1"
+ *      octdigit     ::=  "0"..."7"
+ *      hexdigit     ::=  digit | "a"..."f" | "A"..."F"
  *  [see: {@linktourl https://docs.python.org/3/reference/lexical_analysis.html#literals}]
  */
-class BytesLiteral(val value: Byte) : Literal<Byte>() {
+class Integer(val value: Int) : Literal<Int>() {
     override fun toString(): String {
-        return "BytesLiteral(" + System.lineSeparator() +
+        return "Integer(" + System.lineSeparator() +
                 "\tvalue=$value" + System.lineSeparator() +
                 ")"
     }
-
 }

@@ -19,8 +19,8 @@ package io.github.oxisto.reticulated.ast.expression.argument
 
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
-import io.github.oxisto.reticulated.ast.expression.call.CallTrailer
-import io.github.oxisto.reticulated.ast.expression.call.EmptyCallTrailer
+import io.github.oxisto.reticulated.ast.expression.primary.call.CallTrailer
+import io.github.oxisto.reticulated.ast.expression.primary.call.EmptyCallTrailer
 import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
 import io.github.oxisto.reticulated.ast.expression.comprehension.CompFor

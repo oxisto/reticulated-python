@@ -15,8 +15,11 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.expression
+package io.github.oxisto.reticulated.ast.expression.primary
 
-abstract class Atom : Primary() {
-    abstract override fun toString(): String
+import io.github.oxisto.reticulated.ast.Node
+import io.github.oxisto.reticulated.ast.simple.target.Target
+
+class Slicing: Target, Node() {
+    // TODO: Implement: slicing ::= primary "[" slice_list "]"
 }

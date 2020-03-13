@@ -18,7 +18,7 @@
 package io.github.oxisto.reticulated.ast.expression.argument
 
 import io.github.oxisto.reticulated.ast.expression.Expression
-import io.github.oxisto.reticulated.ast.expression.Identifier
+import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
 
 /**
  * This class represents the keyword_item.

@@ -20,8 +20,12 @@ package io.github.oxisto.reticulated.ast.expression
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.argument.CallTrailerVisitor
+import io.github.oxisto.reticulated.ast.expression.primary.atom.AtomVisitor
+import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
 import io.github.oxisto.reticulated.ast.expression.booleanops.BooleanOpVisitor
-import io.github.oxisto.reticulated.ast.expression.call.Call
+import io.github.oxisto.reticulated.ast.expression.primary.call.Call
+import io.github.oxisto.reticulated.ast.expression.primary.AttributeRef
+import io.github.oxisto.reticulated.ast.expression.primary.Primary
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 import org.antlr.v4.runtime.tree.TerminalNode
@@ -35,8 +39,8 @@ class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
     if(ctx.childCount != 1){
       throw CouldNotParseException("Currently not implemented.")
     }
-    // For now return a orTest
-    return ctx.getChild(0).accept(BooleanOpVisitor(this.scope))
+    // TODO: check if it is a conditional Expression
+    return ConditionalExpression(ctx.getChild(0).accept(BooleanOpVisitor(this.scope)), null, null)
   }
 
   /**
@@ -53,9 +57,9 @@ class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
       // It is an atom
       ctx.getChild(0)
         .accept(
-          AtomVisitor(
-            this.scope
-        )
+            AtomVisitor(
+                this.scope
+            )
       )
     } else {
       // first child is the primary

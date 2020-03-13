@@ -15,11 +15,11 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.expression.operator;
+package io.github.oxisto.reticulated.ast.expression.operator
 
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.expression.AwaitExpr
-import io.github.oxisto.reticulated.ast.expression.Primary
+import io.github.oxisto.reticulated.ast.expression.primary.Primary
 
 /**
  * This class represents power (expression).
@@ -29,9 +29,9 @@ import io.github.oxisto.reticulated.ast.expression.Primary
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#unary-arithmetic-and-bitwise-operations}]
  */
 class PowerExpr(
-        val awaitExpr: AwaitExpr?,
-        val primary: Primary?,
-        val baseOperator: BaseOperator?
+    val awaitExpr: AwaitExpr?,
+    val primary: Primary?,
+    val baseOperator: BaseOperator?
 ): BaseOperator() {
     init {
         if(awaitExpr == null) {

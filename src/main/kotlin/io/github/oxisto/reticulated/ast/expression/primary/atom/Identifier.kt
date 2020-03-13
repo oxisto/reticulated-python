@@ -15,25 +15,35 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.expression.call
+package io.github.oxisto.reticulated.ast.expression.primary.atom
 
-import io.github.oxisto.reticulated.ast.expression.Primary
+import io.github.oxisto.reticulated.ast.simple.target.Target
 
-class Call(val primary: Primary, val callTrailer: CallTrailer) : Primary() {
+open class Identifier(val name: String) : Target, Atom() {
 
-  init {
-    primary.parent = this
-    callTrailer.parent = this
+  override fun toString(): String {
+    return "Identifier(" + System.lineSeparator() +
+            "\tname='$name'" + System.lineSeparator() +
+            ")"
   }
 
-  override fun isCall(): Boolean {
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
+    if (javaClass != other?.javaClass) return false
+
+    other as Identifier
+
+    if (name != other.name) return false
+
     return true
   }
 
-  override fun toString(): String {
-    return "Call(" + System.lineSeparator() +
-            "\tprimary=$primary callTrailer=$callTrailer" + System.lineSeparator() +
-            ")"
+  override fun isCall(): Boolean {
+    return false
+  }
+
+  override fun hashCode(): Int {
+    return name.hashCode()
   }
 
 }

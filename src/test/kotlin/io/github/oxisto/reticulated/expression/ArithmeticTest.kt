@@ -18,9 +18,10 @@
 package io.github.oxisto.reticulated.expression
 
 import io.github.oxisto.reticulated.PythonParser
+import io.github.oxisto.reticulated.ast.expression.ConditionalExpression
 import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
 import io.github.oxisto.reticulated.ast.expression.comparison.Comparison
-import io.github.oxisto.reticulated.ast.expression.literal.*
+import io.github.oxisto.reticulated.ast.expression.primary.atom.literal.*
 import io.github.oxisto.reticulated.ast.expression.operator.*
 import io.github.oxisto.reticulated.ast.simple.AssignmentExpression
 import io.github.oxisto.reticulated.ast.simple.ExpressionStatement
@@ -48,9 +49,11 @@ class ArithmeticTest {
         (
             (
                 (
-                    input.statements[0] as StatementList
-                    )[0] as AssignmentExpression
-                ).expression as OrTest
+                    (
+                        input.statements[0] as StatementList
+                        )[0] as AssignmentExpression
+                    ).expression as ConditionalExpression
+                ).orTest as OrTest
             ).andTest
             .notTest
             .comparison as Comparison
@@ -88,9 +91,11 @@ class ArithmeticTest {
         (
             (
                 (
-                    input.statements[1] as StatementList
-                    )[0] as AssignmentExpression
-                ).expression as OrTest
+                    (
+                        input.statements[1] as StatementList
+                        )[0] as AssignmentExpression
+                    ).expression as ConditionalExpression
+                ).orTest as OrTest
             ).andTest
             .notTest
             .comparison as Comparison
@@ -120,9 +125,11 @@ class ArithmeticTest {
         (
             (
                 (
-                    input.statements[2] as StatementList
-                    )[0] as AssignmentExpression
-                ).expression as OrTest
+                    (
+                        input.statements[2] as StatementList
+                        )[0] as AssignmentExpression
+                    ).expression as ConditionalExpression
+                ).orTest as OrTest
             ).andTest
             .notTest
             .comparison as Comparison
@@ -150,9 +157,11 @@ class ArithmeticTest {
         (
             (
                 (
-                    input.statements[3] as StatementList
-                    )[0] as AssignmentExpression
-                ).expression as OrTest
+                    (
+                        input.statements[3] as StatementList
+                        )[0] as AssignmentExpression
+                    ).expression as ConditionalExpression
+                ).orTest as OrTest
             ).andTest
             .notTest
             .comparison as Comparison
@@ -190,9 +199,11 @@ class ArithmeticTest {
         (
             (
                 (
-                    input.statements[4] as StatementList
-                    )[0] as AssignmentExpression
-                ).expression as OrTest
+                    (
+                        input.statements[4] as StatementList
+                        )[0] as AssignmentExpression
+                    ).expression as ConditionalExpression
+                ).orTest as OrTest
             ).andTest
             .notTest
             .comparison as Comparison
@@ -241,13 +252,14 @@ class ArithmeticTest {
         .parse(file.path)
         .root
     assertNotNull(input)
-    print(input)
     val baseOperator = (
         (
             (
-                input.statements[0] as StatementList
-                )[0] as ExpressionStatement
-            ).expression as OrTest
+                (
+                    input.statements[0] as StatementList
+                    )[0] as ExpressionStatement
+                ).expression as ConditionalExpression
+            ).orTest as OrTest
         ).andTest
         .notTest
         .comparison!!
@@ -271,9 +283,11 @@ class ArithmeticTest {
     val baseOperatorSE = (
         (
             (
-                input.statements[1] as StatementList
-                )[0] as ExpressionStatement
-            ).expression as OrTest
+                (
+                    input.statements[1] as StatementList
+                    )[0] as ExpressionStatement
+                ).expression as ConditionalExpression
+            ).orTest as OrTest
         ).andTest
         .notTest
         .comparison!!
@@ -310,9 +324,11 @@ class ArithmeticTest {
     val baseOperatorTE = (
         (
             (
-                input.statements[2] as StatementList
-                )[0] as ExpressionStatement
-            ).expression as OrTest
+                (
+                    input.statements[2] as StatementList
+                    )[0] as ExpressionStatement
+                ).expression as ConditionalExpression
+            ).orTest as OrTest
         ).andTest
         .notTest
         .comparison!!
@@ -341,9 +357,11 @@ class ArithmeticTest {
     val baseOperatorFoE = (
         (
             (
-                input.statements[3] as StatementList
-                )[0] as ExpressionStatement
-            ).expression as OrTest
+                (
+                    input.statements[3] as StatementList
+                    )[0] as ExpressionStatement
+                ).expression as ConditionalExpression
+            ).orTest as OrTest
         ).andTest
         .notTest
         .comparison!!
@@ -370,9 +388,11 @@ class ArithmeticTest {
     val baseOperatorFiE = (
         (
             (
-                input.statements[4] as StatementList
-                )[0] as ExpressionStatement
-            ).expression as OrTest
+                (
+                    input.statements[4] as StatementList
+                    )[0] as ExpressionStatement
+                ).expression as ConditionalExpression
+            ).orTest as OrTest
         ).andTest
         .notTest
         .comparison!!
@@ -410,10 +430,10 @@ class ArithmeticTest {
         .root
     assertNotNull(input)
     val inputString = input.toString()
-    print(inputString)
     assertEquals(inputString, """FileInput(statements=[StatementList(
 	statements=[ExpressionStatement(
-	expression=OrTest(
+	expression=ConditionalExpression(
+	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
 	comparison=Comparison(
@@ -440,10 +460,12 @@ class ArithmeticTest {
 )
 )
 )
+)
 )]
 ), StatementList(
 	statements=[ExpressionStatement(
-	expression=OrTest(
+	expression=ConditionalExpression(
+	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
 	comparison=Comparison(
@@ -474,10 +496,12 @@ class ArithmeticTest {
 )
 )
 )
+)
 )]
 ), StatementList(
 	statements=[ExpressionStatement(
-	expression=OrTest(
+	expression=ConditionalExpression(
+	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
 	comparison=Comparison(
@@ -506,10 +530,12 @@ class ArithmeticTest {
 )
 )
 )
+)
 )]
 ), StatementList(
 	statements=[ExpressionStatement(
-	expression=OrTest(
+	expression=ConditionalExpression(
+	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
 	comparison=Comparison(
@@ -536,10 +562,12 @@ class ArithmeticTest {
 )
 )
 )
+)
 )]
 ), StatementList(
 	statements=[ExpressionStatement(
-	expression=OrTest(
+	expression=ConditionalExpression(
+	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
 	comparison=Comparison(
@@ -555,6 +583,7 @@ class ArithmeticTest {
 ) binaryOperator=MODULO unaryExpr=PowerExpr(
 	primary=FloatNumber(
 	value=0.5
+)
 )
 )
 )
@@ -587,7 +616,8 @@ class ArithmeticTest {
 	statements=[AssignmentExpression(
 	target=Identifier(
 	name='a'
-) expression=OrTest(
+) expression=ConditionalExpression(
+	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
 	comparison=Comparison(
@@ -622,12 +652,14 @@ class ArithmeticTest {
 )
 )
 )
+)
 )]
 ), StatementList(
 	statements=[AssignmentExpression(
 	target=Identifier(
 	name='b'
-) expression=OrTest(
+) expression=ConditionalExpression(
+	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
 	comparison=Comparison(
@@ -656,12 +688,14 @@ class ArithmeticTest {
 )
 )
 )
+)
 )]
 ), StatementList(
 	statements=[AssignmentExpression(
 	target=Identifier(
 	name='c'
-) expression=OrTest(
+) expression=ConditionalExpression(
+	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
 	comparison=Comparison(
@@ -688,12 +722,14 @@ class ArithmeticTest {
 )
 )
 )
+)
 )]
 ), StatementList(
 	statements=[AssignmentExpression(
 	target=Identifier(
 	name='d'
-) expression=OrTest(
+) expression=ConditionalExpression(
+	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
 	comparison=Comparison(
@@ -724,12 +760,14 @@ class ArithmeticTest {
 )
 )
 )
+)
 )]
 ), StatementList(
 	statements=[AssignmentExpression(
 	target=Identifier(
 	name='e'
-) expression=OrTest(
+) expression=ConditionalExpression(
+	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
 	comparison=Comparison(
@@ -751,6 +789,7 @@ class ArithmeticTest {
 	value=FloatNumber(
 	value=0.1
 ) j
+)
 )
 )
 )

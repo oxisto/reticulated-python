@@ -20,6 +20,8 @@ package io.github.oxisto.reticulated.ast.expression.argument
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.*
+import io.github.oxisto.reticulated.ast.expression.primary.atom.AtomVisitor
+import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 
@@ -69,9 +71,9 @@ class ArgumentVisitor(val scope: Scope) : Python3BaseVisitor<Argument>() {
         3 -> {
             // It is a keyword_item, (parent: keyword_arguments), in the form: identifier "=" expression
             val identifier = ctx.getChild(0).accept(
-                    AtomVisitor(
-                            this.scope
-                    )
+                AtomVisitor(
+                    this.scope
+                )
             ) as Identifier
             val expression = getExpressionByPosition(2)
             return KeywordItem(identifier, expression)

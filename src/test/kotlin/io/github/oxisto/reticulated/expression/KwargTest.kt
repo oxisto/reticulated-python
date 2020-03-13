@@ -18,9 +18,10 @@
 package io.github.oxisto.reticulated.expression
 
 import io.github.oxisto.reticulated.PythonParser
+import io.github.oxisto.reticulated.ast.expression.ConditionalExpression
 import io.github.oxisto.reticulated.ast.expression.argument.ArgumentList
 import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
-import io.github.oxisto.reticulated.ast.expression.call.Call
+import io.github.oxisto.reticulated.ast.expression.primary.call.Call
 import io.github.oxisto.reticulated.ast.expression.operator.PowerExpr
 import io.github.oxisto.reticulated.ast.simple.ExpressionStatement
 import io.github.oxisto.reticulated.ast.statement.FunctionDefinition
@@ -64,7 +65,9 @@ class KwargTest {
     assertNotNull(statementList)
     val expr = statementList.statements[0] as ExpressionStatement
     assertNotNull(expr)
-    val orTestCall = expr.expression as OrTest
+    val conditionalExpression = expr.expression as ConditionalExpression
+    assertNotNull(conditionalExpression)
+    val orTestCall = conditionalExpression.orTest as OrTest
     assertNotNull(orTestCall)
     val subOrTestCall = orTestCall.orTest
     assertNull(subOrTestCall)
@@ -159,7 +162,8 @@ class KwargTest {
 )
 )])), StatementList(
 	statements=[ExpressionStatement(
-	expression=OrTest(
+	expression=ConditionalExpression(
+	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
 	comparison=Comparison(
@@ -173,7 +177,8 @@ class KwargTest {
 	name='fun_func'
 ) callTrailer=ArgumentList(
 	argument=[Argument(
-	expression=OrTest(
+	expression=ConditionalExpression(
+	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
 	comparison=Comparison(
@@ -194,8 +199,10 @@ class KwargTest {
 )
 )
 )
+)
 ), Argument(
-	expression=OrTest(
+	expression=ConditionalExpression(
+	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
 	comparison=Comparison(
@@ -216,10 +223,12 @@ class KwargTest {
 )
 )
 )
+)
 ), KeywordItem(
 	keywordItem=(Identifier(
 	name='kwargs1'
-)=OrTest(
+)=ConditionalExpression(
+	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
 	comparison=Comparison(
@@ -239,11 +248,13 @@ class KwargTest {
 )
 )
 )
+)
 ))
 ), KeywordItem(
 	keywordItem=(Identifier(
 	name='kwargs2'
-)=OrTest(
+)=ConditionalExpression(
+	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
 	comparison=Comparison(
@@ -263,8 +274,10 @@ class KwargTest {
 )
 )
 )
+)
 ))
 )]
+)
 )
 )
 )

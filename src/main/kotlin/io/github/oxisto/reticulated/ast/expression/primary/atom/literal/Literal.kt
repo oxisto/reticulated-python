@@ -15,9 +15,9 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.expression.literal
+package io.github.oxisto.reticulated.ast.expression.primary.atom.literal
 
-import io.github.oxisto.reticulated.ast.expression.Atom
+import io.github.oxisto.reticulated.ast.expression.primary.atom.Atom
 
 /**
  * This class is the base for all literals

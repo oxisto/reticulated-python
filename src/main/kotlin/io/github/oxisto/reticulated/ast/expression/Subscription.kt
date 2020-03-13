@@ -17,10 +17,16 @@
 
 package io.github.oxisto.reticulated.ast.expression
 
+import io.github.oxisto.reticulated.ast.expression.primary.Primary
 import io.github.oxisto.reticulated.ast.simple.target.Target
 
+/**
+ * This class represents a subscription.
+ * It´s EBNF representation is:
+ *        subscription ::= primary "[" expression_list "]"
+ */
 class Subscription(val primary: Primary, val expressionList: List<Expression>) : Target, Primary() {
-
+  // TODO: Write relating visitor (primary_visitor)
   override fun isCall(): Boolean {
     return false
   }

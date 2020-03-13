@@ -19,8 +19,9 @@
  */
 package io.github.oxisto.reticulated
 
-import io.github.oxisto.reticulated.ast.expression.Identifier
-import io.github.oxisto.reticulated.ast.expression.call.Call
+import io.github.oxisto.reticulated.ast.expression.ConditionalExpression
+import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
+import io.github.oxisto.reticulated.ast.expression.primary.call.Call
 import io.github.oxisto.reticulated.ast.expression.argument.ArgumentList
 import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
 import io.github.oxisto.reticulated.ast.expression.comparison.Comparison
@@ -99,7 +100,9 @@ class PythonParserTest {
     val stmt = func.suite.statements[0].asStatementList().statements[0]
     assertTrue(stmt is ExpressionStatement)
 
-    val orTestCall = stmt.expression as OrTest
+    val conditionalExpression = stmt.expression as ConditionalExpression
+    assertNotNull(conditionalExpression)
+    val orTestCall = conditionalExpression.orTest as OrTest
     assertNotNull(orTestCall)
     val subOrTestCall = orTestCall.orTest
     assertNull(subOrTestCall)
@@ -151,7 +154,9 @@ class PythonParserTest {
     val name = (
         (
             (
-                arg0.expression as OrTest
+                (
+                    arg0.expression as ConditionalExpression
+                    ).orTest as OrTest
                 ).andTest
                 .notTest
                 .comparison as Comparison

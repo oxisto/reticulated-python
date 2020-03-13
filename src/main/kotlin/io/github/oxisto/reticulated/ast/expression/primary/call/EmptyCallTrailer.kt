@@ -15,20 +15,16 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.expression
+package io.github.oxisto.reticulated.ast.expression.primary.call
 
-import io.github.oxisto.reticulated.ast.simple.target.Target
-
-class AttributeRef(val primary: Primary, val id: Identifier) : Target, Primary() {
-
-  override fun isCall(): Boolean {
-    return false
-  }
-
-  override fun toString(): String {
-    return "AttributeRef(" + System.lineSeparator() +
-            "\tprimary=$primary\".\"identifier=$id" + System.lineSeparator() +
-            ")"
-  }
-
+/**
+ * This class represents an empty call.
+ * It´s EBNF representation is:
+ *        call ::= primary "(" ")"
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#calls}]
+ */
+class EmptyCallTrailer: CallTrailer() {
+    override fun toString(): String {
+        return "EmptyCallTrailer( '(' ')' )"
+    }
 }

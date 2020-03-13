@@ -18,7 +18,7 @@
 package io.github.oxisto.reticulated.ast.expression
 
 import io.github.oxisto.reticulated.ast.Node
-import io.github.oxisto.reticulated.ast.expression.call.Call
+import io.github.oxisto.reticulated.ast.expression.primary.call.Call
 
 abstract class Expression : Node() {
 

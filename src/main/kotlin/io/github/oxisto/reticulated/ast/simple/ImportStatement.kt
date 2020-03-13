@@ -17,7 +17,7 @@
 
 package io.github.oxisto.reticulated.ast.simple
 
-import io.github.oxisto.reticulated.ast.expression.Identifier
+import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
 
 class ImportStatement(val module: Identifier) : SimpleStatement() {
 

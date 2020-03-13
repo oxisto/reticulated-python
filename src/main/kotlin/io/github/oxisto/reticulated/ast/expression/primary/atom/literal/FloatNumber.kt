@@ -15,26 +15,23 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.expression.literal
+package io.github.oxisto.reticulated.ast.expression.primary.atom.literal
 
 /**
- * This class represents a integer
+ * This class represents a floatnumber
  * The EBNF representation is:
- *      integer      ::=  decinteger | bininteger | octinteger | hexinteger
- *      decinteger   ::=  nonzerodigit (["_"] digit)* | "0"+ (["_"] "0")*
- *      bininteger   ::=  "0" ("b" | "B") (["_"] bindigit)+
- *      octinteger   ::=  "0" ("o" | "O") (["_"] octdigit)+
- *      hexinteger   ::=  "0" ("x" | "X") (["_"] hexdigit)+
- *      nonzerodigit ::=  "1"..."9"
- *      digit        ::=  "0"..."9"
- *      bindigit     ::=  "0" | "1"
- *      octdigit     ::=  "0"..."7"
- *      hexdigit     ::=  digit | "a"..."f" | "A"..."F"
+ *      floatnumber   ::=  pointfloat | exponentfloat
+ *      pointfloat    ::=  [digitpart] fraction | digitpart "."
+ *      exponentfloat ::=  (digitpart | pointfloat) exponent
+ *      digitpart     ::=  digit (["_"] digit)*
+ *      fraction      ::=  "." digitpart
+ *      exponent      ::=  ("e" | "E") ["+" | "-"] digitpart
  *  [see: {@linktourl https://docs.python.org/3/reference/lexical_analysis.html#literals}]
  */
-class Integer(val value: Int) : Literal<Int>() {
+class FloatNumber(val value: Float) : Literal<Float>() {
+
     override fun toString(): String {
-        return "Integer(" + System.lineSeparator() +
+        return "FloatNumber(" + System.lineSeparator() +
                 "\tvalue=$value" + System.lineSeparator() +
                 ")"
     }
