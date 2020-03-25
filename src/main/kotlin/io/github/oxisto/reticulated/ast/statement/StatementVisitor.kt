@@ -1,9 +1,27 @@
+/*
+ * Copyright (c) 2020, Christian Banse and Andreas Hager. All rights reserved.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ *
+ */
+
 package io.github.oxisto.reticulated.ast.statement
 
 import io.github.oxisto.reticulated.ast.*
 import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
-import io.github.oxisto.reticulated.ast.expression.IdentifierVisitor
+import io.github.oxisto.reticulated.ast.expression.primary.atom.AtomVisitor
+import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
 import io.github.oxisto.reticulated.ast.simple.SimpleStatement
 import io.github.oxisto.reticulated.ast.simple.SimpleStatementVisitor
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
@@ -49,19 +67,24 @@ class StatementVisitor(val scope: Scope) : Python3BaseVisitor<Statement>() {
 
     // second is the name
     val id = ctx.getChild(1).accept(
-      IdentifierVisitor(
-        this.scope
-      )
-    )
+        AtomVisitor(
+            this.scope
+        )
+    ) as Identifier
 
     // create a new scope for this function
     val functionScope = Scope(
       this.scope,
       ScopeType.FUNCTION
-    );
+    )
 
     // third is the parameter list
-    val parameterList = ctx.getChild(2).accept(Visitor(functionScope)) as ParameterList;
+    val parameterList = ctx.getChild(2)
+        .accept(
+            Visitor(
+                functionScope
+            )
+        ) as ParameterList
 
     // forth is ':' or '->'
     val op = ctx.getChild(3)
@@ -80,7 +103,7 @@ class StatementVisitor(val scope: Scope) : Python3BaseVisitor<Statement>() {
       Visitor(
         functionScope
       )
-    ) as Suite;
+    ) as Suite
 
     // create a new function definition
     val def = FunctionDefinition(id, parameterList, suite, expression)
@@ -88,7 +111,7 @@ class StatementVisitor(val scope: Scope) : Python3BaseVisitor<Statement>() {
     // add it to the function scope
     functionScope.handleParameterList(parameterList)
 
-    return def;
+    return def
   }
 
 }
