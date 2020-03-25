@@ -19,7 +19,7 @@ plugins {
   idea
 
   id("org.sonarqube") version "2.8"
-  id("net.researchgate.release") version "2.6.0"
+  id("net.researchgate.release") version "2.8.1"
 }
 
 idea {
