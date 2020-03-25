@@ -37,7 +37,7 @@ repositories {
 }
 
 dependencies {
-  antlr("org.antlr:antlr4:4.7.2")
+  antlr("org.antlr:antlr4:4.8-1")
 
   // Align versions of all Kotlin components
   implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
