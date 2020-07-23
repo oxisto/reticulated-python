@@ -15,25 +15,14 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.expression
+package io.github.oxisto.reticulated.ast.expression.primary.slice
 
-import io.github.oxisto.reticulated.ast.expression.primary.Primary
+import io.github.oxisto.reticulated.ast.expression.Expression
 
-/**
- * This class represents an await_expr
- * It´s EBNF representation is:
- *      await_expr ::="await" primary
- * [see: https://docs.python.org/3/reference/expressions.html#await-expression]
- */
-class AwaitExpr(val primary: Primary): Expression(){
-
-    override fun isCall(): Boolean {
-        return false
-    }
-
-    override fun toString(): String {
-        return "AwaitExpr(" + System.lineSeparator() +
-                "\tawait primary=$primary" + System.lineSeparator() +
-                ")"
-    }
+class UpperBound(val expression: Expression): Slice() {
+  override fun toString(): String {
+    return "UpperBound(" + System.lineSeparator() +
+        "\tExpression=$expression " + System.lineSeparator() +
+        ")"
+  }
 }

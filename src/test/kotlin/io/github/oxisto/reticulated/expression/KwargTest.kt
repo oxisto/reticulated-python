@@ -18,6 +18,7 @@
 package io.github.oxisto.reticulated.expression
 
 import io.github.oxisto.reticulated.PythonParser
+import io.github.oxisto.reticulated.TestUtils.Companion.beautifyResult
 import io.github.oxisto.reticulated.ast.expression.ConditionalExpression
 import io.github.oxisto.reticulated.ast.expression.argument.ArgumentList
 import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
@@ -65,7 +66,7 @@ class KwargTest {
     assertNotNull(statementList)
     val expr = statementList.statements[0] as ExpressionStatement
     assertNotNull(expr)
-    val conditionalExpression = expr.expression as ConditionalExpression
+    val conditionalExpression = expr.starredExpression.expression as ConditionalExpression
     assertNotNull(conditionalExpression)
     val orTestCall = conditionalExpression.orTest as OrTest
     assertNotNull(orTestCall)
@@ -136,6 +137,7 @@ class KwargTest {
         assertNotNull(input)
 
         val inputString = input.toString()
+        // print(beautifyResult(inputString))
         assertEquals(inputString, """FileInput(statements=[FunctionDefinition(id=Identifier(
 	name='func'
 ), parameters=ParameterList(parameters=[Parameter(
@@ -162,7 +164,8 @@ class KwargTest {
 )
 )])), StatementList(
 	statements=[ExpressionStatement(
-	expression=ConditionalExpression(
+	StarredExpression=StarredExpression(
+	Expression=ConditionalExpression(
 	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
@@ -277,6 +280,7 @@ class KwargTest {
 )
 ))
 )]
+)
 )
 )
 )

@@ -32,10 +32,6 @@ class Call(val primary: Primary, val callTrailer: CallTrailer) : Primary() {
     callTrailer.parent = this
   }
 
-  override fun isCall(): Boolean {
-    return true
-  }
-
   override fun toString(): String {
     return "Call(" + System.lineSeparator() +
             "\tprimary=$primary callTrailer=$callTrailer" + System.lineSeparator() +

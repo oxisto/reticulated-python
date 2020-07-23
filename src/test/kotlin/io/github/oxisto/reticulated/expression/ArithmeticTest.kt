@@ -258,7 +258,7 @@ class ArithmeticTest {
                 (
                     input.statements[0] as StatementList
                     )[0] as ExpressionStatement
-                ).expression as ConditionalExpression
+                ).starredExpression.expression as ConditionalExpression
             ).orTest as OrTest
         ).andTest
         .notTest
@@ -286,7 +286,7 @@ class ArithmeticTest {
                 (
                     input.statements[1] as StatementList
                     )[0] as ExpressionStatement
-                ).expression as ConditionalExpression
+                ).starredExpression.expression as ConditionalExpression
             ).orTest as OrTest
         ).andTest
         .notTest
@@ -327,7 +327,7 @@ class ArithmeticTest {
                 (
                     input.statements[2] as StatementList
                     )[0] as ExpressionStatement
-                ).expression as ConditionalExpression
+                ).starredExpression.expression as ConditionalExpression
             ).orTest as OrTest
         ).andTest
         .notTest
@@ -360,7 +360,7 @@ class ArithmeticTest {
                 (
                     input.statements[3] as StatementList
                     )[0] as ExpressionStatement
-                ).expression as ConditionalExpression
+                ).starredExpression.expression as ConditionalExpression
             ).orTest as OrTest
         ).andTest
         .notTest
@@ -391,7 +391,7 @@ class ArithmeticTest {
                 (
                     input.statements[4] as StatementList
                     )[0] as ExpressionStatement
-                ).expression as ConditionalExpression
+                ).starredExpression.expression as ConditionalExpression
             ).orTest as OrTest
         ).andTest
         .notTest
@@ -432,7 +432,8 @@ class ArithmeticTest {
     val inputString = input.toString()
     assertEquals(inputString, """FileInput(statements=[StatementList(
 	statements=[ExpressionStatement(
-	expression=ConditionalExpression(
+	StarredExpression=StarredExpression(
+	Expression=ConditionalExpression(
 	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
@@ -461,10 +462,12 @@ class ArithmeticTest {
 )
 )
 )
+)
 )]
 ), StatementList(
 	statements=[ExpressionStatement(
-	expression=ConditionalExpression(
+	StarredExpression=StarredExpression(
+	Expression=ConditionalExpression(
 	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
@@ -497,10 +500,12 @@ class ArithmeticTest {
 )
 )
 )
+)
 )]
 ), StatementList(
 	statements=[ExpressionStatement(
-	expression=ConditionalExpression(
+	StarredExpression=StarredExpression(
+	Expression=ConditionalExpression(
 	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
@@ -531,10 +536,12 @@ class ArithmeticTest {
 )
 )
 )
+)
 )]
 ), StatementList(
 	statements=[ExpressionStatement(
-	expression=ConditionalExpression(
+	StarredExpression=StarredExpression(
+	Expression=ConditionalExpression(
 	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
@@ -563,10 +570,12 @@ class ArithmeticTest {
 )
 )
 )
+)
 )]
 ), StatementList(
 	statements=[ExpressionStatement(
-	expression=ConditionalExpression(
+	StarredExpression=StarredExpression(
+	Expression=ConditionalExpression(
 	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
@@ -583,6 +592,7 @@ class ArithmeticTest {
 ) binaryOperator=MODULO unaryExpr=PowerExpr(
 	primary=FloatNumber(
 	value=0.5
+)
 )
 )
 )

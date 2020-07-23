@@ -25,17 +25,17 @@ class AssignmentExpression(
         val expression: Expression
 ) : SimpleStatement() {
 
-  override fun isExpressionStatement(): Boolean {
-    return false
-  }
-
-  override fun isAssignmentStatement(): Boolean {
-    return false
-  }
-
-  override fun isImportStatement(): Boolean {
-    return false
-  }
+//  override fun isExpressionStatement(): Boolean {
+//    return false
+//  }
+//
+//  override fun isAssignmentStatement(): Boolean {
+//    return false
+//  }
+//
+//  override fun isImportStatement(): Boolean {
+//    return false
+//  }
 
   override fun toString(): String {
     return "AssignmentExpression(" + System.lineSeparator() +

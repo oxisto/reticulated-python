@@ -53,7 +53,7 @@ class AsyncComprehensionTest {
                                 (
                                     input.statements[0] as StatementList
                                     )[0] as ExpressionStatement
-                                ).expression as ConditionalExpression
+                                ).starredExpression.expression as ConditionalExpression
                             ).orTest as OrTest
                         ).andTest
                         .notTest

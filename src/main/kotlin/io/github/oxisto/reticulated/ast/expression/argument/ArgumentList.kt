@@ -36,7 +36,7 @@ class ArgumentList(private val arguments: List<Argument> = ArrayList()) : CallTr
 
   override fun toString(): String {
     return "ArgumentList(" + System.lineSeparator() +
-            "\targument=$arguments" + System.lineSeparator() +
-            ")"
+        "\targument=$arguments" + System.lineSeparator() +
+        ")"
   }
 }

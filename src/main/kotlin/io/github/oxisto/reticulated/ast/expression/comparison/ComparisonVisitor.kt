@@ -57,7 +57,7 @@ class ComparisonVisitor(val scope: io.github.oxisto.reticulated.ast.Scope): Pyth
             val compOperator: CompOperator = CompOperator
                     .getCompOperatorBySymbol(compSymbol)
                     ?: throw CouldNotParseException(
-                            "The compOperator should be an element of the enum CompOperator."
+                            "The compOperator=$compSymbol should be an element of the enum CompOperator."
                     )
             val pair = Pair(
                     compOperator,

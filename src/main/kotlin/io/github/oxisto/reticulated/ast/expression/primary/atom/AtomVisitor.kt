@@ -19,7 +19,13 @@ package io.github.oxisto.reticulated.ast.expression.primary.atom
 
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
+import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
+import io.github.oxisto.reticulated.ast.expression.comprehension.CompFor
+import io.github.oxisto.reticulated.ast.expression.comprehension.Comprehension
+import io.github.oxisto.reticulated.ast.expression.comprehension.ComprehensionVisitor
+import io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure.*
 import io.github.oxisto.reticulated.ast.expression.primary.atom.literal.*
+import io.github.oxisto.reticulated.ast.expression.starred.*
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 import org.antlr.v4.runtime.tree.TerminalNode
@@ -30,10 +36,70 @@ import org.antlr.v4.runtime.tree.TerminalNode
 class AtomVisitor(val scope: Scope) : Python3BaseVisitor<Atom>() {
 
   override fun visitAtom(ctx: Python3Parser.AtomContext): Atom {
-  // TODO: check if it is a enclosure
-    val atom = ctx.getChild(0).accept(this)
+    // TODO Implement enclosureVisitor
 
-    return atom
+    return when (ctx.childCount) {
+      1 -> ctx.getChild(0).accept(this)
+      2 -> when (ctx.getChild(0).text) { // it is a enclosure
+        "(" -> ParentForm(null)
+        "[" -> ListDisplay(null, null)
+        "{" -> DictDisplay(null, null)
+        else -> throw CouldNotParseException("Could not parse Enclosure")
+      }
+      3 -> when (ctx.getChild(0).text) { // it is a enclosure
+        "(" -> {
+          if (ctx.getChild(1) is Python3Parser.Testlist_star_exprContext)
+            ParentForm(
+                ctx.getChild(1)
+                    .accept(
+                        StarredVisitor(this.scope)
+                    ) as StarredExpression
+            )
+          else
+          // if (ctx.getChild(1) is Python3Parser.Yield_exprContext)
+            YieldAtom(
+                ctx.getChild(0)
+                    .accept(
+                        YieldExpressionVisitor(this.scope)
+                    ) as YieldExpression
+            )
+        }
+        "[" -> {
+          if (ctx.getChild(1) is Python3Parser.Testlist_compContext)
+            ListDisplay(
+                ctx.getChild(1)
+                    .accept(
+                        StarredVisitor(this.scope)
+                    ) as StarredList,
+                null
+            )
+          else // check if it is a comprehension
+            ListDisplay(
+                null,
+                ctx.getChild(1)
+                    .accept(
+                        ComprehensionVisitor(this.scope)
+                    ) as Comprehension
+
+            )
+        }
+        "{" -> {
+          throw CouldNotParseException("Could not parse Enclosure")
+        }
+        else -> throw CouldNotParseException("Could not parse Enclosure")
+      }
+      4 -> GeneratorExpression(
+          ctx.getChild(1)
+              .accept(
+                  ExpressionVisitor(this.scope)
+              ),
+          ctx.getChild(2)
+              .accept(
+                  ComprehensionVisitor(this.scope)
+              ) as CompFor
+      )
+      else -> throw CouldNotParseException("Could not parse Atom")
+    }
   }
 
 

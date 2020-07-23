@@ -17,16 +17,10 @@
 
 package io.github.oxisto.reticulated.ast.expression
 
-import io.github.oxisto.reticulated.ast.Node
-import io.github.oxisto.reticulated.ast.expression.primary.call.Call
+import io.github.oxisto.reticulated.ast.expression.starred.Starred
 
-abstract class Expression : Node() {
+abstract class Expression : Starred() {
 
-  fun asCall(): Call {
-    return this as Call
-  }
-
-  abstract fun isCall(): Boolean
   abstract override fun toString(): String
 
 }

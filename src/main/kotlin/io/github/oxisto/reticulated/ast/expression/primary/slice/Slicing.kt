@@ -15,11 +15,17 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.expression.primary
+package io.github.oxisto.reticulated.ast.expression.primary.slice
 
-import io.github.oxisto.reticulated.ast.Node
+import io.github.oxisto.reticulated.ast.expression.primary.Primary
 import io.github.oxisto.reticulated.ast.simple.target.Target
 
-class Slicing: Target, Node() {
-    // TODO: Implement: slicing ::= primary "[" slice_list "]"
+class Slicing(val primary: Primary, val sliceList: SliceList): Target, Slice() {
+
+
+  override fun toString(): String {
+    return "Slicing(" + System.lineSeparator() +
+        "\t primary=$primary \"[\" slice_list=$sliceList  \"]\"" + System.lineSeparator() +
+        ")"
+  }
 }

@@ -18,7 +18,6 @@
 package io.github.oxisto.reticulated.ast.expression.operator
 
 import io.github.oxisto.reticulated.ast.CouldNotParseException
-import io.github.oxisto.reticulated.ast.expression.AwaitExpr
 import io.github.oxisto.reticulated.ast.expression.primary.Primary
 
 /**

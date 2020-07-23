@@ -38,10 +38,6 @@ open class Identifier(val name: String) : Target, Atom() {
     return true
   }
 
-  override fun isCall(): Boolean {
-    return false
-  }
-
   override fun hashCode(): Int {
     return name.hashCode()
   }

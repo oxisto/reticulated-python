@@ -66,7 +66,7 @@ class ComprehensionTest {
     assertNotNull(statementList)
     val expressionStatement = statementList[0] as ExpressionStatement
     assertNotNull(expressionStatement)
-    val conditionalExpression = expressionStatement.expression as ConditionalExpression
+    val conditionalExpression = expressionStatement.starredExpression.expression as ConditionalExpression
     assertNotNull(conditionalExpression)
     val orTestCall = conditionalExpression.orTest as OrTest
     assertNotNull(orTestCall)
@@ -240,7 +240,7 @@ class ComprehensionTest {
     assertNotNull(statementList)
     val expressionStatement = statementList[0] as ExpressionStatement
     assertNotNull(expressionStatement)
-    val conditionalExpression = expressionStatement.expression as ConditionalExpression
+    val conditionalExpression = expressionStatement.starredExpression.expression as ConditionalExpression
     assertNotNull(conditionalExpression)
     val orTestCall = conditionalExpression.orTest as OrTest
     assertNotNull(orTestCall)
@@ -1133,7 +1133,8 @@ class ComprehensionTest {
         val inputString = input.toString()
         assertEquals(inputString, """FileInput(statements=[StatementList(
 	statements=[ExpressionStatement(
-	expression=ConditionalExpression(
+	StarredExpression=StarredExpression(
+	Expression=ConditionalExpression(
 	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
@@ -1238,6 +1239,7 @@ class ComprehensionTest {
 )
 )
 )
+)
 )]
 )])""".replace("\n", System.lineSeparator()))
     }
@@ -1256,7 +1258,8 @@ class ComprehensionTest {
         val inputString = input.toString()
         assertEquals(inputString, """FileInput(statements=[StatementList(
 	statements=[ExpressionStatement(
-	expression=ConditionalExpression(
+	StarredExpression=StarredExpression(
+	Expression=ConditionalExpression(
 	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
@@ -1791,6 +1794,7 @@ class ComprehensionTest {
 ) binaryOperator=<< additiveExpr=PowerExpr(
 	primary=Identifier(
 	name='x'
+)
 )
 )
 )

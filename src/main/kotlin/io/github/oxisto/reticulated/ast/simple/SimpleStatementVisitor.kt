@@ -23,6 +23,8 @@ import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
 import io.github.oxisto.reticulated.ast.expression.primary.atom.AtomVisitor
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Name
+import io.github.oxisto.reticulated.ast.expression.starred.StarredExpression
+import io.github.oxisto.reticulated.ast.expression.starred.StarredVisitor
 import io.github.oxisto.reticulated.ast.simple.target.TargetVisitor
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
@@ -65,14 +67,13 @@ class SimpleStatementVisitor(val scope: Scope) : Python3BaseVisitor<SimpleStatem
   }
 
   override fun visitExpr_stmt(ctx: Python3Parser.Expr_stmtContext): SimpleStatement {
-
     // need some kind of logic here how to decide what exactly this is
     if (ctx.childCount == 1) {
-      val expression = ctx.getChild(0).accept(
-        ExpressionVisitor(this.scope)
-      )
+      val starredExpression = ctx.getChild(0).accept(
+        StarredVisitor(this.scope)
+      ) as StarredExpression
 
-      return ExpressionStatement(expression)
+      return ExpressionStatement(starredExpression)
     } else if (ctx.childCount == 3) {
 
       // probably an assignment statement, but there are cases when an assignment has more than 3 children e.g. a = b = 123

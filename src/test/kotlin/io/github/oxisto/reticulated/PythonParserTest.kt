@@ -20,12 +20,14 @@
 package io.github.oxisto.reticulated
 
 import io.github.oxisto.reticulated.ast.expression.ConditionalExpression
+import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
 import io.github.oxisto.reticulated.ast.expression.primary.call.Call
 import io.github.oxisto.reticulated.ast.expression.argument.ArgumentList
 import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
 import io.github.oxisto.reticulated.ast.expression.comparison.Comparison
 import io.github.oxisto.reticulated.ast.expression.operator.PowerExpr
+import io.github.oxisto.reticulated.ast.expression.starred.StarredExpression
 import io.github.oxisto.reticulated.ast.simple.ExpressionStatement
 import io.github.oxisto.reticulated.ast.statement.FunctionDefinition
 import java.io.File
@@ -100,7 +102,9 @@ class PythonParserTest {
     val stmt = func.suite.statements[0].asStatementList().statements[0]
     assertTrue(stmt is ExpressionStatement)
 
-    val conditionalExpression = stmt.expression as ConditionalExpression
+    val starredExpression = stmt.starredExpression
+
+    val conditionalExpression = starredExpression.expression as ConditionalExpression
     assertNotNull(conditionalExpression)
     val orTestCall = conditionalExpression.orTest as OrTest
     assertNotNull(orTestCall)

@@ -29,7 +29,7 @@ class OrTest(val orTest: BaseBooleanOp?, val andTest:AndTest): BaseBooleanOp() {
 
     init {
         if(orTest != null && orTest !is OrTest && orTest !is AndTest){
-            throw CouldNotParseException()
+            throw CouldNotParseException("The orTest=$orTest is strange.")
         }
     }
 

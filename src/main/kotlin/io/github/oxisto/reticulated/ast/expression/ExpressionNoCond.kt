@@ -40,10 +40,6 @@ class ExpressionNoCond(val orTest: OrTest?, val lambdaNoCond: LambdaNoCond?): Ex
         }
     }
 
-    override fun isCall(): Boolean {
-        return false
-    }
-
     override fun toString(): String {
         val result:String
         if(orTest == null){

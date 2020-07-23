@@ -71,7 +71,10 @@ class SimpleStatementTest {
     val exprStatement = s1.first()
     assertTrue(exprStatement is ExpressionStatement)
 
-    val conditionalExpression = exprStatement.expression as ConditionalExpression
+    val starredExpression = exprStatement.starredExpression
+
+    val conditionalExpression = starredExpression.expression as ConditionalExpression
+
     val orTestCall = conditionalExpression.orTest as OrTest
     assertNotNull(orTestCall)
     val subOrTestCall = orTestCall.orTest

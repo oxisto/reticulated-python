@@ -17,25 +17,26 @@
 
 package io.github.oxisto.reticulated.ast.simple
 
-import io.github.oxisto.reticulated.ast.expression.Expression
+import io.github.oxisto.reticulated.ast.expression.starred.StarredExpression
 
-class ExpressionStatement(val expression: Expression) : SimpleStatement() {
+// TODO: Should be a StarredExpression
+class ExpressionStatement(val starredExpression: StarredExpression) : SimpleStatement() {
 
-  override fun isExpressionStatement(): Boolean {
-    return true
-  }
-
-  override fun isAssignmentStatement(): Boolean {
-    return false
-  }
-
-  override fun isImportStatement(): Boolean {
-    return false
-  }
+//  override fun isExpressionStatement(): Boolean {
+//    return true
+//  }
+//
+//  override fun isAssignmentStatement(): Boolean {
+//    return false
+//  }
+//
+//  override fun isImportStatement(): Boolean {
+//    return false
+//  }
 
   override fun toString(): String {
     return "ExpressionStatement(" + System.lineSeparator() +
-            "\texpression=$expression" + System.lineSeparator() +
+            "\tStarredExpression=$starredExpression" + System.lineSeparator() +
             ")"
   }
 

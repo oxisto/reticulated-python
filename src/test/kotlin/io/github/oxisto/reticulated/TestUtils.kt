@@ -25,7 +25,7 @@ class TestUtils {
       for ( line in input.split( System.lineSeparator() ) ) {
         val isClosingBracket = line.isNotEmpty() && line[0] == ')'
         if ( isClosingBracket ) {
-          count --
+          count--
         }
         var tmp = count
         while ( tmp > 0 ) {

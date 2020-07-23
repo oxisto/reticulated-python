@@ -24,7 +24,4 @@ import io.github.oxisto.reticulated.ast.expression.Expression
  */
 abstract class BaseBooleanOp: Expression() {
     abstract override fun toString(): String
-    override fun isCall(): Boolean {
-        return false
-    }
 }

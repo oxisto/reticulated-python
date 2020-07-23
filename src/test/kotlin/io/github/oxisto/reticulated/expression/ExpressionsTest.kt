@@ -47,7 +47,7 @@ class ExpressionsTest {
     assertNotNull(input)
 
     val inputString = input.toString()
-    print(input)
+    // print(input)
     assertEquals(inputString, """FileInput(statements=[StatementList(
 	statements=[ImportStatement(
 	module=Identifier(
@@ -56,7 +56,8 @@ class ExpressionsTest {
 )]
 ), StatementList(
 	statements=[ExpressionStatement(
-	expression=ConditionalExpression(
+	StarredExpression=StarredExpression(
+	Expression=ConditionalExpression(
 	orTest=OrTest(
 	andTest=AndTest(
 	notTest=NotTest(
@@ -111,13 +112,14 @@ class ExpressionsTest {
 )
 )
 )
+)
 )]
 )])""".replace("\n", System.lineSeparator()))
 
     val s1 = input.statements[1] as StatementList
     val expressionStatement = s1[0] as ExpressionStatement
     assertNotNull(expressionStatement)
-    val conditionalExpression = expressionStatement.expression as ConditionalExpression
+    val conditionalExpression = expressionStatement.starredExpression.expression as ConditionalExpression
     assertNotNull(conditionalExpression)
     val orTestCall = conditionalExpression.orTest as OrTest
     assertNotNull(orTestCall)

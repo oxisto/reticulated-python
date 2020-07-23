@@ -21,17 +21,17 @@ import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
 
 class ImportStatement(val module: Identifier) : SimpleStatement() {
 
-  override fun isExpressionStatement(): Boolean {
-    return false
-  }
-
-  override fun isAssignmentStatement(): Boolean {
-    return false
-  }
-
-  override fun isImportStatement(): Boolean {
-    return true
-  }
+//  override fun isExpressionStatement(): Boolean {
+//    return false
+//  }
+//
+//  override fun isAssignmentStatement(): Boolean {
+//    return false
+//  }
+//
+//  override fun isImportStatement(): Boolean {
+//    return true
+//  }
 
   override fun toString(): String {
     return "ImportStatement(" + System.lineSeparator() +

@@ -19,10 +19,9 @@ package io.github.oxisto.reticulated.ast.expression.operator
 
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
-import io.github.oxisto.reticulated.ast.expression.AwaitExpr
-import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
 import io.github.oxisto.reticulated.ast.expression.primary.Primary
 import io.github.oxisto.reticulated.ast.expression.booleanexpr.BaseBooleanExpr
+import io.github.oxisto.reticulated.ast.expression.primary.PrimaryVisitor
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 import org.antlr.v4.runtime.ParserRuleContext
@@ -147,6 +146,7 @@ class OperatorVisitor(val scope: Scope): Python3BaseVisitor<BaseOperator>() {
     }
 
     override fun visitPower(ctx: Python3Parser.PowerContext): PowerExpr {
+        // TODO: check for a awaitExpr
         if(ctx.childCount != 1 && ctx.childCount != 3 ){
             throw CouldNotParseException()
         }
@@ -156,7 +156,7 @@ class OperatorVisitor(val scope: Scope): Python3BaseVisitor<BaseOperator>() {
         if(child.childCount == 2 && child.getChild(0).text == "await"){
             // It is an AwaitExpr
             awaitExpr = child.accept(
-                ExpressionVisitor(
+                PrimaryVisitor(
                     this.scope
                 )
             ) as AwaitExpr
@@ -166,7 +166,7 @@ class OperatorVisitor(val scope: Scope): Python3BaseVisitor<BaseOperator>() {
             awaitExpr = null
             primary =
                 child.accept(
-                    ExpressionVisitor(
+                    PrimaryVisitor(
                         this.scope
                     )
                 ) as Primary

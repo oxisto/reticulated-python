@@ -41,9 +41,6 @@ class ConditionalExpression(val orTest: BaseBooleanOp, val orTestOptional: OrTes
     }
   }
 
-  override fun isCall(): Boolean {
-    return false
-  }
 
   override fun toString(): String {
     var result = "ConditionalExpression(" + System.lineSeparator() +
