@@ -21,6 +21,8 @@ import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
+import io.github.oxisto.reticulated.ast.expression.booleanexpr.BooleanExprVisitor
+import io.github.oxisto.reticulated.ast.expression.booleanexpr.OrExpr
 import io.github.oxisto.reticulated.ast.expression.comprehension.CompFor
 import io.github.oxisto.reticulated.ast.expression.comprehension.Comprehension
 import io.github.oxisto.reticulated.ast.expression.comprehension.ComprehensionVisitor
@@ -37,8 +39,6 @@ import org.antlr.v4.runtime.tree.TerminalNode
 class AtomVisitor(val scope: Scope) : Python3BaseVisitor<Atom>() {
 
   override fun visitAtom(ctx: Python3Parser.AtomContext): Atom {
-    // TODO Implement enclosureVisitor
-
     return when (ctx.childCount) {
       1 -> ctx.getChild(0).accept(this)
       2 -> when (ctx.getChild(0).text) { // it is a enclosure
@@ -102,14 +102,24 @@ class AtomVisitor(val scope: Scope) : Python3BaseVisitor<Atom>() {
             )
         }
         "{" -> {
-          throw CouldNotParseException("Could not parse Enclosure")
+          if (ctx.getChild(1) is Python3Parser.DictorsetmakerContext) {
+            if (ctx.getChild(1).childCount == 4 &&
+                ctx.getChild(1).getChild(3) is Python3Parser.Comp_forContext)
+              DictDisplay(
+                  null,
+                  ctx.getChild(1).accept(this) as DictComprehension)
+            else
+              DictDisplay(
+                ctx.getChild(1).accept(this) as KeyDatumList,
+                null)
+          } else
+            throw CouldNotParseException("Could not parse Enclosure")
         }
         else -> throw CouldNotParseException("Could not parse Enclosure")
       }
       else -> throw CouldNotParseException("Could not parse Atom")
     }
   }
-
 
   override fun visitTerminal(node: TerminalNode): Atom {
     // check for some literals now
@@ -164,4 +174,47 @@ class AtomVisitor(val scope: Scope) : Python3BaseVisitor<Atom>() {
     }
   }
 
+  override fun visitDictorsetmaker(ctx: Python3Parser.DictorsetmakerContext): Enclosure {
+    return if (ctx.childCount == 4 &&
+        ctx.getChild(3) is Python3Parser.Comp_forContext) {
+      DictComprehension(
+          ctx.getChild(0).accept(ExpressionVisitor(this.scope)),
+          ctx.getChild(2).accept(ExpressionVisitor(this.scope)),
+          ctx.getChild(3).accept(ComprehensionVisitor(this.scope)) as CompFor
+      )
+    } else {
+      val keyDatums = ArrayList<KeyDatum>()
+      var index = 0
+      do {
+        if (ctx.getChild(index) is Python3Parser.TestContext) {
+          keyDatums.add(
+              KeyDatum(
+                ctx.getChild(index)
+                    .accept(
+                        ExpressionVisitor(this.scope)
+                    ),
+                ctx.getChild(index + 2)
+                    .accept(
+                        ExpressionVisitor(this.scope)
+                    ),
+                null
+              )
+          )
+          index += 4
+        } else {
+          keyDatums.add(
+              KeyDatum(
+                  null, null,
+                  ctx.getChild(index + 1)
+                      .accept(
+                          BooleanExprVisitor(this.scope)
+                      ) as OrExpr
+              )
+          )
+          index += 3
+        }
+      } while (index < ctx.childCount)
+      KeyDatumList(keyDatums)
+    }
+  }
 }

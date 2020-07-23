@@ -20,12 +20,13 @@ package io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure
 
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.expression.Expression
+import io.github.oxisto.reticulated.ast.expression.booleanexpr.OrExpr
 import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
 
-class KeyDatum(val key: Expression?, val datum: Expression?, val orTest: OrTest?): Enclosure() {
+class KeyDatum(val key: Expression?, val datum: Expression?, val orExpr: OrExpr?): Enclosure() {
 
   init {
-    if (orTest == null) {
+    if (orExpr == null) {
       if (key == null || datum == null)
         throw CouldNotParseException(
             "A KeyDatum should contain a OrTest or a key-Expression and a datum-Expression."
@@ -33,7 +34,7 @@ class KeyDatum(val key: Expression?, val datum: Expression?, val orTest: OrTest?
     } else {
       if (key != null || datum != null)
         throw CouldNotParseException(
-            "A KeyDatum should not contain a OrTest=$orTest and a Key-Expr=$key and a datum-Expr=$datum."
+            "A KeyDatum should not contain a orExpr=$orExpr and a Key-Expr=$key and a datum-Expr=$datum."
         )
     }
   }
@@ -42,8 +43,8 @@ class KeyDatum(val key: Expression?, val datum: Expression?, val orTest: OrTest?
     var result = "KeyDatum(" + System.lineSeparator() + "\t"
     if (key != null)
       result += "key=$key \":\" datum=$datum"
-    if (orTest != null)
-      result += "\"\"**\"\" orTest=$orTest"
+    if (orExpr != null)
+      result += "\"\"**\"\" orExpr=$orExpr"
     return result + System.lineSeparator() + ")"
   }
 }

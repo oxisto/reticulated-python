@@ -1,1 +1,1 @@
-{x:1 for x in ['a', 'b']}
+{x:1 for x in range(10)}
