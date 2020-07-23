@@ -19,7 +19,6 @@ package io.github.oxisto.reticulated.ast.simple
 
 import io.github.oxisto.reticulated.ast.expression.starred.StarredExpression
 
-// TODO: Should be a StarredExpression
 class ExpressionStatement(val starredExpression: StarredExpression) : SimpleStatement() {
 
 //  override fun isExpressionStatement(): Boolean {
