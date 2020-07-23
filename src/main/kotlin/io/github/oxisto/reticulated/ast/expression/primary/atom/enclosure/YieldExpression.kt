@@ -21,7 +21,7 @@ package io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.ExpressionList
-
+// TODO: Testing, as soon as funcdefs are implemented
 class YieldExpression(val expressionList: ExpressionList?, val expression: Expression?) : Enclosure() {
 
   init {

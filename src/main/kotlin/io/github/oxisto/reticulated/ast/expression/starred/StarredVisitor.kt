@@ -57,7 +57,7 @@ class StarredVisitor(val scope: Scope) : Python3BaseVisitor<Starred>() {
             )
         )
       else
-        throw CouldNotParseException("A StarredItem sould be a Expression or a \"*\" OrExpr.")
+        throw CouldNotParseException("A StarredItem should be a Expression or a \"*\" OrExpr.")
     }
     return StarredList(list)
   }

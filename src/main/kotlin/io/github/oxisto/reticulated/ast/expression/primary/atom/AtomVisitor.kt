@@ -19,6 +19,7 @@ package io.github.oxisto.reticulated.ast.expression.primary.atom
 
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
+import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
 import io.github.oxisto.reticulated.ast.expression.comprehension.CompFor
 import io.github.oxisto.reticulated.ast.expression.comprehension.Comprehension
@@ -48,24 +49,50 @@ class AtomVisitor(val scope: Scope) : Python3BaseVisitor<Atom>() {
       }
       3 -> when (ctx.getChild(0).text) { // it is a enclosure
         "(" -> {
-          if (ctx.getChild(1) is Python3Parser.Testlist_star_exprContext)
-            ParentForm(
+          when {
+            ctx.getChild(1).childCount == 2 -> GeneratorExpression(
+                ctx.getChild(1)
+                    .getChild(0)
+                    .accept(
+                        ExpressionVisitor(this.scope)
+                    ),
+                ctx.getChild(1)
+                    .getChild(1)
+                    .accept(
+                        ComprehensionVisitor(this.scope)
+                    ) as CompFor
+            )
+            ctx.getChild(1) is Python3Parser.Testlist_compContext -> ParentForm(
                 ctx.getChild(1)
                     .accept(
                         StarredVisitor(this.scope)
-                    ) as StarredExpression
+                    )
             )
-          else
-          // if (ctx.getChild(1) is Python3Parser.Yield_exprContext)
-            YieldAtom(
+            else -> YieldAtom( // if (ctx.getChild(1) is Python3Parser.Yield_exprContext)
                 ctx.getChild(0)
                     .accept(
                         YieldExpressionVisitor(this.scope)
                     ) as YieldExpression
             )
+          }
         }
         "[" -> {
-          if (ctx.getChild(1) is Python3Parser.Testlist_compContext)
+          if (ctx.getChild(1).childCount == 2 &&
+              ctx.getChild(1).getChild(1) is Python3Parser.Comp_forContext)
+            ListDisplay(
+                null,
+                Comprehension(
+                    ctx.getChild(1).getChild(0)
+                        .accept(
+                            ExpressionVisitor(this.scope)
+                        ) as Expression,
+                    ctx.getChild(1).getChild(1)
+                    .accept(
+                        ComprehensionVisitor(this.scope)
+                    ) as CompFor
+                )
+            )
+          else
             ListDisplay(
                 ctx.getChild(1)
                     .accept(
@@ -73,31 +100,12 @@ class AtomVisitor(val scope: Scope) : Python3BaseVisitor<Atom>() {
                     ) as StarredList,
                 null
             )
-          else // check if it is a comprehension
-            ListDisplay(
-                null,
-                ctx.getChild(1)
-                    .accept(
-                        ComprehensionVisitor(this.scope)
-                    ) as Comprehension
-
-            )
         }
         "{" -> {
           throw CouldNotParseException("Could not parse Enclosure")
         }
         else -> throw CouldNotParseException("Could not parse Enclosure")
       }
-      4 -> GeneratorExpression(
-          ctx.getChild(1)
-              .accept(
-                  ExpressionVisitor(this.scope)
-              ),
-          ctx.getChild(2)
-              .accept(
-                  ComprehensionVisitor(this.scope)
-              ) as CompFor
-      )
       else -> throw CouldNotParseException("Could not parse Atom")
     }
   }

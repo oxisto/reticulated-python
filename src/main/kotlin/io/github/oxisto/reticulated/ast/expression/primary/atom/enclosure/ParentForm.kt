@@ -18,9 +18,9 @@
 
 package io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure
 
-import io.github.oxisto.reticulated.ast.expression.starred.StarredExpression
+import io.github.oxisto.reticulated.ast.expression.starred.Starred
 
-class ParentForm(val starredExpression: StarredExpression?): Enclosure(){
+class ParentForm(val starredExpression: Starred?): Enclosure(){
 
   override fun toString(): String {
     var result = "StarredExpression(" + System.lineSeparator() +
