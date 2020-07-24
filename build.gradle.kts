@@ -8,7 +8,7 @@ import kotlin.math.sign
 
 plugins {
   // Apply the Kotlin JVM plugin to add support for Kotlin.
-  id("org.jetbrains.kotlin.jvm") version "1.3.41"
+  id("org.jetbrains.kotlin.jvm") version "1.3.72"
 
   // Apply the java-library plugin for API and implementation separation.
   `java-library`
@@ -18,8 +18,8 @@ plugins {
   jacoco
   idea
 
-  id("org.sonarqube") version "2.8"
-  id("net.researchgate.release") version "2.6.0"
+  id("org.sonarqube") version "3.0"
+  id("net.researchgate.release") version "2.8.1"
 }
 
 idea {
@@ -37,7 +37,7 @@ repositories {
 }
 
 dependencies {
-  antlr("org.antlr:antlr4:4.7.2")
+  antlr("org.antlr:antlr4:4.8-1")
 
   // Align versions of all Kotlin components
   implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
