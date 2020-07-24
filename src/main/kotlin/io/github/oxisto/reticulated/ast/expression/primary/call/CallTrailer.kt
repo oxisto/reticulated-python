@@ -17,11 +17,11 @@
 
 package io.github.oxisto.reticulated.ast.expression.primary.call
 
-import io.github.oxisto.reticulated.ast.Node
+import io.github.oxisto.reticulated.ast.expression.Expression
 
 /**
  * This class is the base for all call trailers
  */
-abstract class CallTrailer: Node() {
+abstract class CallTrailer: Expression() {
     abstract override fun toString(): String
 }

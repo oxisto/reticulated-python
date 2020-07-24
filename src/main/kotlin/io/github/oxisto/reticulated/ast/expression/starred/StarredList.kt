@@ -20,8 +20,9 @@ package io.github.oxisto.reticulated.ast.expression.starred
 
 import io.github.oxisto.reticulated.ast.Container
 import io.github.oxisto.reticulated.ast.CouldNotParseException
+import io.github.oxisto.reticulated.ast.expression.Expression
 
-class StarredList(private val starredItems: List<StarredItem> = ArrayList()): Starred(), Container<StarredItem> {
+class StarredList(private val starredItems: List<StarredItem> = ArrayList()): Expression(), Container<StarredItem> {
 
   init {
     if (starredItems.isEmpty())
