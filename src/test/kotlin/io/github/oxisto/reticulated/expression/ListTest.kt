@@ -54,26 +54,8 @@ class ListTest {
         .root
     assertNotNull(input)
     // print(input.toString())
-    val list = (
-        (
-            (
-                (
-                    (
-                        (
-                            input.statements[0] as StatementList
-                            )[0] as ExpressionStatement
-                        ).starredExpression
-                        .expression as ConditionalExpression
-                    ).orTest as OrTest
-                ).andTest
-                .notTest
-                .comparison as Comparison
-            ).orExpr
-            .xorExpr
-            .andExpr
-            .shiftExpr
-            .baseOperator as PowerExpr
-        ).primary as ListDisplay
+
+    val list = input.statements[0] as ListDisplay
     assertNotNull(list)
     assertNull(list.starredList)
     assertNull(list.comprehension)
@@ -93,82 +75,18 @@ class ListTest {
         .root
     assertNotNull(input)
     // print(input.toString())
-    val list = (
-        (
-            (
-                (
-                    (
-                        (
-                            input.statements[0] as StatementList
-                            )[0] as ExpressionStatement
-                        ).starredExpression
-                        .expression as ConditionalExpression
-                    ).orTest as OrTest
-                ).andTest
-                .notTest
-                .comparison as Comparison
-            ).orExpr
-            .xorExpr
-            .andExpr
-            .shiftExpr
-            .baseOperator as PowerExpr
-        ).primary as ListDisplay
+    val list = input.statements[0] as ListDisplay
     assertNotNull(list)
     assertNull(list.comprehension)
-    val firstElement = (
-        (
-            (
-                (
-                  (
-                      list.starredList as StarredList
-                      )[0].expression as ConditionalExpression
-                  ).orTest as OrTest
-                ).andTest
-                .notTest
-                .comparison as Comparison
-            ).orExpr
-            .xorExpr
-            .andExpr
-            .shiftExpr
-            .baseOperator as PowerExpr
-        ).primary as Integer
+    val starredList = list.starredList as StarredList
+    assertNotNull(starredList)
+    val firstElement = starredList[0] as Integer
     assertEquals(firstElement.value, 1)
-    val secondElement = (
-        (
-            (
-                (
-                    (
-                        list.starredList as StarredList
-                        )[1].expression as ConditionalExpression
-                    ).orTest as OrTest
-                ).andTest
-                .notTest
-                .comparison as Comparison
-            ).orExpr
-            .xorExpr
-            .andExpr
-            .shiftExpr
-            .baseOperator as PowerExpr
-        ).primary as ListDisplay
+    val secondElement = starredList[1] as ListDisplay
     assertNotNull(secondElement)
-    val valueOfSecondElement = (
-        (
-            (
-                (
-                    (
-                        secondElement.starredList as StarredList
-                        )[0].expression as ConditionalExpression
-                    ).orTest as OrTest
-                ).andTest
-                .notTest
-                .comparison as Comparison
-            ).orExpr
-            .xorExpr
-            .andExpr
-            .shiftExpr
-            .baseOperator as PowerExpr
-        ).primary as StringLiteral
+    val valueOfSecondElement = secondElement.starredList as StringLiteral
     assertEquals(valueOfSecondElement.value, "a")
+
   }
 
   @Test
@@ -185,82 +103,22 @@ class ListTest {
         .root
     assertNotNull(input)
     // print(input.toString())
-    val list = (
-        (
-            (
-                (
-                    (
-                        (
-                            input.statements[0] as StatementList
-                            )[0] as ExpressionStatement
-                        ).starredExpression
-                        .expression as ConditionalExpression
-                    ).orTest as OrTest
-                ).andTest
-                .notTest
-                .comparison as Comparison
-            ).orExpr
-            .xorExpr
-            .andExpr
-            .shiftExpr
-            .baseOperator as PowerExpr
-        ).primary as ListDisplay
+    val list = input.statements[0] as ListDisplay
     assertNotNull(list)
     assertNull(list.starredList)
     val comprehension = list.comprehension
     assertNotNull(comprehension)
-    val compIdentifier = (
-        (
-            (
-                (
-                    comprehension.expression as ConditionalExpression
-                    ).orTest as OrTest
-                ).andTest
-                .notTest
-                .comparison as Comparison
-            ).orExpr
-            .xorExpr
-            .andExpr
-            .shiftExpr
-            .baseOperator as PowerExpr
-        ).primary as Identifier
+    val compIdentifier = comprehension.expression as Identifier
     assertEquals(compIdentifier.name, "x")
     val compFor = comprehension.compFor
     assertFalse(compFor.isAsync)
-    val targetIdentifier = compFor.targetList[0] as Identifier
+    val targetIdentifier = compFor.targetList as Identifier
     assertEquals(targetIdentifier.name, "x")
-    val call = (
-        (
-            compFor.orTest
-                .andTest
-                .notTest
-                .comparison as Comparison
-            ).orExpr
-            .xorExpr
-            .andExpr
-            .shiftExpr
-            .baseOperator as PowerExpr
-        ).primary as Call
+    val call = compFor.orTest as Call
     assertNotNull(call)
     val callName = call.primary as Identifier
     assertEquals(callName.name, "range")
-    val callArgument = (
-        (
-            (
-                (
-                    (
-                        call.callTrailer as ArgumentList
-                        )[0].expression as ConditionalExpression
-                    ).orTest as OrTest
-                ).andTest
-                .notTest
-                .comparison as Comparison
-            ).orExpr
-            .xorExpr
-            .andExpr
-            .shiftExpr
-            .baseOperator as PowerExpr
-        ).primary as Integer
+    val callArgument = call.callTrailer as Integer
     assertEquals(callArgument.value, 10)
   }
 
@@ -279,36 +137,11 @@ class ListTest {
 
     val inputString = input.toString()
     // print(beautifyResult(inputString))
-    assertEquals(inputString, """FileInput(statements=[StatementList(
-	statements=[ExpressionStatement(
-	StarredExpression=StarredExpression(
-	Expression=ConditionalExpression(
-	orTest=OrTest(
-	andTest=AndTest(
-	notTest=NotTest(
-	comparison=Comparison(
-	orExpr=OrExpr(
-	xorExpr=XorExpr(
-	andExpr=AndExpr(
-	shiftExpr=ShiftExpr(
-	additiveExpr=PowerExpr(
-	primary=ListDisplay(
+    assertEquals(inputString, """FileInput(statements=[ListDisplay(
 	 "["  "]"
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)]
 )])""".replace("\n", System.lineSeparator()))
   }
+
   @Test fun starredListToStringTest() {
     val file = File(
         javaClass
@@ -324,110 +157,16 @@ class ListTest {
 
     val inputString = input.toString()
     // print(beautifyResult(inputString))
-    assertEquals(inputString, """FileInput(statements=[StatementList(
-	statements=[ExpressionStatement(
-	StarredExpression=StarredExpression(
-	Expression=ConditionalExpression(
-	orTest=OrTest(
-	andTest=AndTest(
-	notTest=NotTest(
-	comparison=Comparison(
-	orExpr=OrExpr(
-	xorExpr=XorExpr(
-	andExpr=AndExpr(
-	shiftExpr=ShiftExpr(
-	additiveExpr=PowerExpr(
-	primary=ListDisplay(
+    assertEquals(inputString, """FileInput(statements=[ListDisplay(
 	 "[" starredList=StarredList(
-	starredItems=[StarredItem(
-	Expression=ConditionalExpression(
-	orTest=OrTest(
-	andTest=AndTest(
-	notTest=NotTest(
-	comparison=Comparison(
-	orExpr=OrExpr(
-	xorExpr=XorExpr(
-	andExpr=AndExpr(
-	shiftExpr=ShiftExpr(
-	additiveExpr=PowerExpr(
-	primary=Integer(
+	starredItems=[Integer(
 	value=1
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-), StarredItem(
-	Expression=ConditionalExpression(
-	orTest=OrTest(
-	andTest=AndTest(
-	notTest=NotTest(
-	comparison=Comparison(
-	orExpr=OrExpr(
-	xorExpr=XorExpr(
-	andExpr=AndExpr(
-	shiftExpr=ShiftExpr(
-	additiveExpr=PowerExpr(
-	primary=ListDisplay(
-	 "[" starredList=StarredList(
-	starredItems=[StarredItem(
-	Expression=ConditionalExpression(
-	orTest=OrTest(
-	andTest=AndTest(
-	notTest=NotTest(
-	comparison=Comparison(
-	orExpr=OrExpr(
-	xorExpr=XorExpr(
-	andExpr=AndExpr(
-	shiftExpr=ShiftExpr(
-	additiveExpr=PowerExpr(
-	primary=StringLiteral(
+), ListDisplay(
+	 "[" starredList=StringLiteral(
 	value=a
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
+) "]"
 )]
 ) "]"
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)]
-) "]"
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)]
 )])""".replace("\n", System.lineSeparator()))
   }
 
@@ -446,112 +185,22 @@ class ListTest {
 
     val inputString = input.toString()
     // print(beautifyResult(inputString))
-    assertEquals(inputString, """FileInput(statements=[StatementList(
-	statements=[ExpressionStatement(
-	StarredExpression=StarredExpression(
-	Expression=ConditionalExpression(
-	orTest=OrTest(
-	andTest=AndTest(
-	notTest=NotTest(
-	comparison=Comparison(
-	orExpr=OrExpr(
-	xorExpr=XorExpr(
-	andExpr=AndExpr(
-	shiftExpr=ShiftExpr(
-	additiveExpr=PowerExpr(
-	primary=ListDisplay(
+    assertEquals(inputString, """FileInput(statements=[ListDisplay(
 	 "[" comprehension=Comprehension(
-	expression=ConditionalExpression(
-	orTest=OrTest(
-	andTest=AndTest(
-	notTest=NotTest(
-	comparison=Comparison(
-	orExpr=OrExpr(
-	xorExpr=XorExpr(
-	andExpr=AndExpr(
-	shiftExpr=ShiftExpr(
-	additiveExpr=PowerExpr(
-	primary=Identifier(
+	expression=Identifier(
 	name='x'
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
 ) compFor=CompFor(
-	compFor=for targetList=TargetList(
-	targets=[Identifier(
+	"for" targetList=Identifier(
 	name='x'
-)]
-) in orTest=OrTest(
-	andTest=AndTest(
-	notTest=NotTest(
-	comparison=Comparison(
-	orExpr=OrExpr(
-	xorExpr=XorExpr(
-	andExpr=AndExpr(
-	shiftExpr=ShiftExpr(
-	additiveExpr=PowerExpr(
-	primary=Call(
+)  "in" orTest=Call(
 	primary=Identifier(
 	name='range'
-) callTrailer=ArgumentList(
-	argument=[Argument(
-	expression=ConditionalExpression(
-	orTest=OrTest(
-	andTest=AndTest(
-	notTest=NotTest(
-	comparison=Comparison(
-	orExpr=OrExpr(
-	xorExpr=XorExpr(
-	andExpr=AndExpr(
-	shiftExpr=ShiftExpr(
-	additiveExpr=PowerExpr(
-	primary=Integer(
+) callTrailer=Integer(
 	value=10
 )
 )
 )
-)
-)
-)
-)
-)
-)
-)
-)
-)]
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
 ) "]"
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)]
 )])""".replace("\n", System.lineSeparator()))
   }
 }

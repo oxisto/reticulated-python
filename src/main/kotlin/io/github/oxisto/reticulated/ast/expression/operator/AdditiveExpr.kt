@@ -17,8 +17,6 @@
 
 package io.github.oxisto.reticulated.ast.expression.operator
 
-import io.github.oxisto.reticulated.ast.CouldNotParseException
-
 /**
  * This class represents an a_expr.
  * It´s EBNF representations are:
@@ -27,36 +25,18 @@ import io.github.oxisto.reticulated.ast.CouldNotParseException
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#unary-arithmetic-and-bitwise-operations}]
  */
 class AdditiveExpr(
-        val additiveExpr: BaseOperator?,
-        val binaryOperator: BinaryOperator?,
+        val additiveExpr: BaseOperator,
+        val binaryOperator: BinaryOperator,
         val multiplicativeExpr: BaseOperator
 ): BaseOperator(){
 
-    init {
-        if(binaryOperator == null){
-            if(additiveExpr != null){
-                throw CouldNotParseException()
-            }
-        }else{
-            if(additiveExpr == null || (
-                            binaryOperator != BinaryOperator.ADDITION &&
-                                    binaryOperator != BinaryOperator.SUBTRACTION
-                            )
-            ){
-                throw CouldNotParseException()
-            }
-        }
-    }
-
-
     override fun toString(): String {
-        var result = "AdditiveExpr(" + System.lineSeparator() + "\t"
-        if (additiveExpr != null) {
-            result += "additiveExpr=$additiveExpr binaryOperator=$binaryOperator "
-        }
-        result += "multiplicativeExpr=$multiplicativeExpr" + System.lineSeparator() +
-                ")"
-        return result
+        return "AdditiveExpr(" + System.lineSeparator() +
+            "\tadditiveExpr=$additiveExpr " +
+            "binaryOperator=$binaryOperator " +
+            "multiplicativeExpr=$multiplicativeExpr" +
+            System.lineSeparator() +
+            ")"
     }
 
 }

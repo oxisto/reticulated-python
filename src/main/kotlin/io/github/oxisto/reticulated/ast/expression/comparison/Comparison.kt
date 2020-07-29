@@ -20,6 +20,9 @@ package io.github.oxisto.reticulated.ast.expression.comparison
 import io.github.oxisto.reticulated.ast.Node
 import io.github.oxisto.reticulated.ast.expression.booleanexpr.OrExpr
 import io.github.oxisto.reticulated.Pair
+import io.github.oxisto.reticulated.ast.CouldNotParseException
+import io.github.oxisto.reticulated.ast.expression.booleanexpr.BaseBooleanExpr
+import io.github.oxisto.reticulated.ast.expression.booleanops.BaseBooleanOp
 
 /**
  * This class represents a comparison.
@@ -27,12 +30,17 @@ import io.github.oxisto.reticulated.Pair
  *      comparison ::= or_expr ( comp_operator or_expr )*
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#comparisons}]
  */
-class Comparison(val orExpr: OrExpr, val comparisons: List<Pair<CompOperator, OrExpr>>): Node() {
+class Comparison(val orExpr: BaseBooleanExpr, val comparisons: List<Pair<CompOperator, BaseBooleanExpr>>): BaseComparison() {
+
+    init {
+        if (comparisons.isEmpty())
+            throw CouldNotParseException("A Comparison should contain a comparison not only a OrExpr=$orExpr.")
+    }
 
     override fun toString(): String {
         var result = "Comparison(" + System.lineSeparator() +
                 "\torExpr=$orExpr"
-        for(elem:Pair<CompOperator, OrExpr> in comparisons){
+        for(elem:Pair<CompOperator, BaseBooleanExpr> in comparisons){
             val compOperatorOfElem = elem.getFirst()
             val orExprOfElem = elem.getSecond()
             result += " compOperator=$compOperatorOfElem orEpr=$orExprOfElem"

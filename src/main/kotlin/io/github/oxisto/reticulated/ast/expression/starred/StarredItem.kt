@@ -18,33 +18,14 @@
 
 package io.github.oxisto.reticulated.ast.expression.starred
 
-import io.github.oxisto.reticulated.ast.CouldNotParseException
-import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.booleanexpr.OrExpr
-import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
 
-class StarredItem(val expression: Expression?, val orExpr: OrExpr?): Starred() {
-
-  init {
-    if (expression == null) {
-      if (orExpr == null)
-        throw CouldNotParseException(
-            "In a StarredItem can´t be the Expression and the OrExpr be null."
-        )
-    } else {
-      if (orExpr != null)
-        throw CouldNotParseException(
-            "In a StarredItem should be either the Expression=$expression or the OrExpr=$orExpr be null."
-        )
-    }
-  }
+class StarredItem(val orExpr: OrExpr): Starred() {
+  // TODO: StarredItem tests
 
   override fun toString(): String {
-    var result = "StarredItem(" + System.lineSeparator() + "\t"
-    result += if (expression == null)
-      "\"*\" OrExpr=$orExpr"
-    else
-      "Expression=$expression"
-    return result + System.lineSeparator() + ")"
+    return "StarredItem(" + System.lineSeparator() +
+        "\t\"*\" OrExpr=$orExpr" + System.lineSeparator() +
+        ")"
   }
 }

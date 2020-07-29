@@ -18,9 +18,8 @@
 package io.github.oxisto.reticulated.ast.simple.target
 
 import io.github.oxisto.reticulated.ast.Container
-import io.github.oxisto.reticulated.ast.Node
 
-class TargetList(val targets: List<Target>) : Node(), Container<Target> {
+class TargetList(val targets: List<Target>) : Target(), Container<Target> {
   override val children: List<Target>
     get() = targets
   override fun toString(): String {

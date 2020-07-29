@@ -27,29 +27,6 @@ import io.github.oxisto.reticulated.ast.expression.lambda.LambdaNoCond
  *      expression_nocond ::= or_test | lambda_expr_nocond
  * [see: https://docs.python.org/3/reference/expressions.html#grammar-token-expression-nocond]
  */
-class ExpressionNoCond(val orTest: OrTest?, val lambdaNoCond: LambdaNoCond?): Expression(){
-    init {
-        if ( orTest == null ) {
-            if ( lambdaNoCond == null ) {
-                throw CouldNotParseException()
-            }
-        } else {
-            if ( lambdaNoCond != null) {
-                throw CouldNotParseException()
-            }
-        }
-    }
-
-    override fun toString(): String {
-        val result:String
-        if(orTest == null){
-            result = "lambdaNoCond=$lambdaNoCond"
-        } else {
-            result = "ortest=$orTest"
-        }
-        return "ExpressionNoCond(" + System.lineSeparator() +
-                "\t$result" + System.lineSeparator() +
-                ")"
-    }
+abstract class ExpressionNoCond: Expression(){
 
 }

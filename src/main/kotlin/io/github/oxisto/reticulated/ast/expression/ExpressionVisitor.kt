@@ -41,7 +41,7 @@ class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
       throw CouldNotParseException("Currently not implemented.")
     }
     // TODO: check if it is a conditional Expression
-    return ConditionalExpression(ctx.getChild(0).accept(BooleanOpVisitor(this.scope)), null, null)
+    return ctx.getChild(0).accept(BooleanOpVisitor(this.scope))
   }
 
   override fun visitExprlist(ctx: Python3Parser.ExprlistContext): Expression {

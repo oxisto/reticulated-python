@@ -17,7 +17,6 @@
 
 package io.github.oxisto.reticulated.ast.expression.argument
 
-import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.primary.call.CallTrailer
 import io.github.oxisto.reticulated.ast.expression.primary.call.EmptyCallTrailer
@@ -29,48 +28,42 @@ import io.github.oxisto.reticulated.ast.expression.comprehension.ComprehensionVi
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 
-class CallTrailerVisitor(val scope: Scope) : Python3BaseVisitor<CallTrailer>() {
+class CallTrailerVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
 
   /**
    * It is the trailer form the call in the EBNF form:
    *      call_trailer ::= "(" [ argument_list [","] | comprehension ] ")"
    * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#calls }]
    */
-  override fun visitTrailer(ctx: Python3Parser.TrailerContext): CallTrailer {
-      if(ctx.childCount < 2 || ctx.childCount > 3){
-          throw CouldNotParseException("The childCount of the ctx=$ctx was not expected.")
-      }
+  override fun visitTrailer(ctx: Python3Parser.TrailerContext): Expression {
     return if(ctx.childCount == 3) {
         val trailer = ctx.getChild(1)
-        if (trailer.childCount == 1) {
-            val argumentContext = trailer.getChild(0)
-            if (argumentContext.getChild(1) is Python3Parser.Comp_forContext) {
+        if (trailer.childCount == 1 &&
+            trailer.getChild(0).getChild(1) is Python3Parser.Comp_forContext) {
                 // The trailer is a comprehension
-                val expression: Expression = argumentContext
+                val expression: Expression = trailer.getChild(0)
                         .getChild(0)
                         .accept(
                                 ExpressionVisitor(
                                         this.scope
                                 )
                         )
-                val compFor: CompFor = argumentContext
+                val compFor: CompFor = trailer.getChild(0)
                         .getChild(1)
                         .accept(
                                 ComprehensionVisitor(
                                         this.scope
                                 )
                         ) as CompFor
-                return Comprehension(expression, compFor)
-            }
+                Comprehension(expression, compFor)
+        } else {
+          // The trailer is a argument_list
+          trailer.accept(
+              ArgumentListVisitor(
+                  this.scope
+              )
+          )
         }
-        // The trailer is a argument_list
-        trailer.accept(
-                ArgumentListVisitor(
-                        this.scope
-                )
-        )
-    } else {
-        EmptyCallTrailer()
-    }
+    } else EmptyCallTrailer()
   }
 }

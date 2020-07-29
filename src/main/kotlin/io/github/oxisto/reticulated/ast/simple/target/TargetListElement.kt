@@ -17,10 +17,11 @@
 
 package io.github.oxisto.reticulated.ast.simple.target
 
-class TargetListElement(targetList:TargetList): TargetCollectionElement(targetList) {
+class TargetListElement(var targetList: TargetList): Target() {
+
     override fun toString(): String{
         return "TargetListElement(" + System.lineSeparator() +
-                "\ttargetList=[ $targetList ]" + System.lineSeparator() +
+                "\ttargetList=$targetList" + System.lineSeparator() +
                 ")"
     }
 }

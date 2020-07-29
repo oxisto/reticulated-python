@@ -34,7 +34,7 @@ class KeywordItem(val identifier: Identifier, expression: Expression): KeywordAr
 
     override fun toString(): String{
         return "KeywordItem(" + System.lineSeparator() +
-                "\tkeywordItem=($identifier=$expression)" +System.lineSeparator() +
+                "\t Identifier=$identifier \"=\" Expression=$expression " + System.lineSeparator() +
                 ")"
     }
 }

@@ -18,9 +18,8 @@
 package io.github.oxisto.reticulated.ast.expression.primary.slice
 
 import io.github.oxisto.reticulated.ast.expression.primary.Primary
-import io.github.oxisto.reticulated.ast.simple.target.Target
 
-class Slicing(val primary: Primary, val sliceList: SliceList): Target, Slice() {
+class Slicing(val primary: Primary, val sliceList: Primary): Slice() {
 
 
   override fun toString(): String {

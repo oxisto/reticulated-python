@@ -21,6 +21,8 @@ import io.github.oxisto.reticulated.ast.Node
 
 abstract class Statement() : Node() {
 
+  /*
+
   fun asCompoundStatement(): CompoundStatement {
     return this as CompoundStatement
   }
@@ -31,5 +33,6 @@ abstract class Statement() : Node() {
 
   abstract fun isCompoundStatement(): Boolean
   abstract fun isStatementList(): Boolean
-
+   */
+  abstract override fun toString(): String
 }

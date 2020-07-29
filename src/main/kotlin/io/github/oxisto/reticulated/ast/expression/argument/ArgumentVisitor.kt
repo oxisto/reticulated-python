@@ -34,12 +34,9 @@ import io.github.oxisto.reticulated.grammar.Python3Parser
  *      keyword_items,  ( identifier "=" expression )
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#calls}]
  */
-class ArgumentVisitor(val scope: Scope) : Python3BaseVisitor<Argument>() {
+class ArgumentVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
 
-  override fun visitArgument(ctx: Python3Parser.ArgumentContext): Argument {
-    if(ctx.childCount < 1 || ctx.childCount > 3){
-        throw CouldNotParseException("The childCount of the ctx=$ctx was not expected.")
-    }
+  override fun visitArgument(ctx: Python3Parser.ArgumentContext): Expression {
     val getExpressionByPosition = {
       positionOfTheExpression: Int -> ctx
         .getChild(positionOfTheExpression)
@@ -50,23 +47,13 @@ class ArgumentVisitor(val scope: Scope) : Python3BaseVisitor<Argument>() {
         )
     }
 
-    when (ctx.childCount) {
-        1 -> {
-            // It is a "normal" argument with the form: expression
-            val expression = getExpressionByPosition(0)
-            return Argument(expression)
-        }
+    return when (ctx.childCount) {
+        1 -> getExpressionByPosition(0)    // It is a "normal" argument with the form: expression
         2 -> {
-
-            // It is a kwarg, (parent: keyword_arguments), in the form: "**" kwargs or "*" posArgs
-            val expression = getExpressionByPosition(1)
-            val stars = ctx.getChild(0).text
-            if(stars == "*"){
-                return PositionalArgument(expression)
-            } else if(stars == "**") {
-                return Kwarg(expression)
-            }
-            throw CouldNotParseException("Firs child of $ctx does not begin with '*' or '**'.")
+          // It is a kwarg, (parent: keyword_arguments), in the form: "**" kwargs or "*" posArgs
+          val expression = getExpressionByPosition(1)
+          if(ctx.getChild(0).text == "*") PositionalArgument(expression)
+          else Kwarg(expression)
         }
         3 -> {
             // It is a keyword_item, (parent: keyword_arguments), in the form: identifier "=" expression
@@ -76,7 +63,7 @@ class ArgumentVisitor(val scope: Scope) : Python3BaseVisitor<Argument>() {
                 )
             ) as Identifier
             val expression = getExpressionByPosition(2)
-            return KeywordItem(identifier, expression)
+            KeywordItem(identifier, expression)
         }
         else -> throw CouldNotParseException("ctx: $ctx has ${ctx.childCount} children!")
     }

@@ -21,7 +21,7 @@ import io.github.oxisto.reticulated.ast.Container
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 
 class ExpressionList(val expressions: List<Expression>): Expression(), Container<Expression> {
-
+// TODO: write ExpressionList tests
   init {
     if (expressions.isEmpty())
       throw CouldNotParseException("The ExpressionList should contain elements.")

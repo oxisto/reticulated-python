@@ -18,18 +18,14 @@
 package io.github.oxisto.reticulated.expression
 
 import io.github.oxisto.reticulated.PythonParser
-import io.github.oxisto.reticulated.ast.expression.ConditionalExpression
-import io.github.oxisto.reticulated.ast.expression.argument.ArgumentList
-import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
 import io.github.oxisto.reticulated.ast.expression.primary.call.Call
-import io.github.oxisto.reticulated.ast.expression.operator.PowerExpr
-import io.github.oxisto.reticulated.ast.simple.ExpressionStatement
-import io.github.oxisto.reticulated.ast.statement.StatementList
+import io.github.oxisto.reticulated.ast.expression.primary.AttributeRef
+import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
+import io.github.oxisto.reticulated.ast.simple.ImportStatement
 import org.junit.Test
 import java.io.File
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
-import kotlin.test.assertNull
 
 class ExpressionsTest {
   @Test
@@ -46,129 +42,57 @@ class ExpressionsTest {
         .root
     assertNotNull(input)
 
+    // print(input)
+
+    val importStatement = input.statements[0] as ImportStatement
+    assertNotNull(importStatement)
+    val module = importStatement.module
+    assertEquals(module.name, "os")
+
+    val call = input.statements[1] as Call
+    assertNotNull(call)
+    val prim = call.primary as Identifier
+    assertEquals(prim.name, "print")
+    val trailer = call.callTrailer as AttributeRef
+    assertNotNull(call)
+    val primary = trailer.primary as Identifier
+    assertEquals(primary.name, "os")
+    val id = trailer.identifier
+    assertEquals(id.name, "name")
+  }
+
+
+  @Test fun testAttributeRefString () {
+    val file = File(
+        javaClass
+            .classLoader
+            .getResource("import.py")!!
+            .file
+    )
+
+    val input = PythonParser()
+        .parse(file.path)
+        .root
+    assertNotNull(input)
+
     val inputString = input.toString()
     // print(input)
-    assertEquals(inputString, """FileInput(statements=[StatementList(
-	statements=[ImportStatement(
+    assertEquals(inputString, """FileInput(statements=[ImportStatement(
 	module=Identifier(
 	name='os'
 )
-)]
-), StatementList(
-	statements=[ExpressionStatement(
-	StarredExpression=StarredExpression(
-	Expression=ConditionalExpression(
-	orTest=OrTest(
-	andTest=AndTest(
-	notTest=NotTest(
-	comparison=Comparison(
-	orExpr=OrExpr(
-	xorExpr=XorExpr(
-	andExpr=AndExpr(
-	shiftExpr=ShiftExpr(
-	additiveExpr=PowerExpr(
-	primary=Call(
+), Call(
 	primary=Identifier(
 	name='print'
-) callTrailer=ArgumentList(
-	argument=[Argument(
-	expression=ConditionalExpression(
-	orTest=OrTest(
-	andTest=AndTest(
-	notTest=NotTest(
-	comparison=Comparison(
-	orExpr=OrExpr(
-	xorExpr=XorExpr(
-	andExpr=AndExpr(
-	shiftExpr=ShiftExpr(
-	additiveExpr=PowerExpr(
-	primary=AttributeRef(
+) callTrailer=AttributeRef(
 	primary=Identifier(
 	name='os'
 )"."identifier=Identifier(
 	name='name'
 )
 )
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)]
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)]
 )])""".replace("\n", System.lineSeparator()))
-
-    val s1 = input.statements[1] as StatementList
-    val expressionStatement = s1[0] as ExpressionStatement
-    assertNotNull(expressionStatement)
-    val conditionalExpression = expressionStatement.starredExpression.expression as ConditionalExpression
-    assertNotNull(conditionalExpression)
-    val orTestCall = conditionalExpression.orTest as OrTest
-    assertNotNull(orTestCall)
-    val subOrTestCall = orTestCall.orTest
-    assertNull(subOrTestCall)
-    val andTestCall = orTestCall.andTest
-    assertNotNull(andTestCall)
-    val subAndTestCall = andTestCall.andTest
-    assertNull(subAndTestCall)
-    val notTestCall = andTestCall.notTest
-    assertNotNull(notTestCall)
-    val subNotTestCall = notTestCall.notTest
-    assertNull(subNotTestCall)
-    val comparisonCall = notTestCall.comparison
-    assertNotNull(comparisonCall)
-    val comparisonsCall = comparisonCall.comparisons
-    assertNotNull(comparisonsCall)
-    assertEquals(comparisonsCall.size, 0)
-    val orExprCall = comparisonCall.orExpr
-    assertNotNull(orExprCall)
-    val subOrExprCall = orExprCall.orExpr
-    assertNull(subOrExprCall)
-    val xorExprCall = orExprCall.xorExpr
-    assertNotNull(xorExprCall)
-    val subXorExprCall = xorExprCall.xorExpr
-    assertNull(subXorExprCall)
-    val andExprCall = xorExprCall.andExpr
-    assertNotNull(andExprCall)
-    val subAndExprCall = andExprCall.andExpr
-    assertNull(subAndExprCall)
-    val shiftExprCall = andExprCall.shiftExpr
-    assertNotNull(shiftExprCall)
-    val subShiftExprCall = shiftExprCall.shiftExpr
-    assertNull(subShiftExprCall)
-    val binaryOperatorCall = shiftExprCall.binaryOperator
-    assertNull(binaryOperatorCall)
-    val baseOperatorCall = shiftExprCall.baseOperator as PowerExpr
-    assertNotNull(baseOperatorCall)
-    val awaitExprCall = baseOperatorCall.awaitExpr
-    assertNull(awaitExprCall)
-    val subBaseOperatorCall = baseOperatorCall.baseOperator
-    assertNull(subBaseOperatorCall)
-    val call = baseOperatorCall.primary as Call
-    val arg = call.callTrailer as ArgumentList
-    val arg0 = arg[0]
-    assertNotNull(arg0)
   }
-
-
 
 
 }

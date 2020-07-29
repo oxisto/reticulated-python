@@ -29,8 +29,11 @@ class UnaryExpr(
 ): BaseOperator() {
 
     override fun toString(): String {
-        return "UnaryExpr(" + System.lineSeparator() +
-                "\tunaryOperator=${unaryOperator}UnaryExpr=$baseOperator" + System.lineSeparator() +
-                ")"
+        return "UnaryExpr(" + 
+            System.lineSeparator() +
+            "\tunaryOperator=${unaryOperator} " +
+            "UnaryExpr=$baseOperator" +
+            System.lineSeparator() +
+            ")"
     }
 }

@@ -20,9 +20,9 @@ package io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure
 
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.expression.comprehension.Comprehension
-import io.github.oxisto.reticulated.ast.expression.starred.StarredList
+import io.github.oxisto.reticulated.ast.expression.starred.Starred
 
-class ListDisplay(val starredList: StarredList?, val comprehension: Comprehension?) : Enclosure() {
+class ListDisplay(val starredList: Starred?, val comprehension: Comprehension?) : Enclosure() {
 
   init {
     if (starredList != null && comprehension != null)

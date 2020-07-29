@@ -17,8 +17,8 @@
 
 package io.github.oxisto.reticulated.ast.expression.comprehension
 
-import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
-import io.github.oxisto.reticulated.ast.simple.target.TargetList
+import io.github.oxisto.reticulated.ast.expression.Expression
+import io.github.oxisto.reticulated.ast.simple.target.Target
 
 /**
  * This class represents a comp_for.
@@ -27,20 +27,16 @@ import io.github.oxisto.reticulated.ast.simple.target.TargetList
  *
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#displays-for-lists-sets-and-dictionaries}]
  */
-class CompFor(val isAsync: Boolean, val targetList: TargetList, val orTest: OrTest, val compIter: CompIter?) : BaseComprehension() {
+class CompFor(val isAsync: Boolean, val targetList: Target, val orTest: Expression, val compIter: CompIter?) : CompIter() {
 
     override fun toString(): String {
-        var result = String()
-        if ( isAsync ) {
-            result += "async "
-        }
-        result += "for targetList=$targetList in orTest=$orTest"
-        if ( compIter != null ) {
+        var result = "CompFor(" + System.lineSeparator() + "\t"
+        if ( isAsync )
+            result += "\"async\" "
+        result += "\"for\" targetList=$targetList  \"in\" orTest=$orTest"
+        if ( compIter != null )
             result += " compIter=$compIter"
-        }
-        return "CompFor(" + System.lineSeparator() +
-                "\tcompFor=$result" + System.lineSeparator() +
-                ")"
+        return result + System.lineSeparator() + ")"
     }
 
 }

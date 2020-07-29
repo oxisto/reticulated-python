@@ -19,6 +19,7 @@ package io.github.oxisto.reticulated.ast.expression.argument
 
 import io.github.oxisto.reticulated.ast.Node
 import io.github.oxisto.reticulated.ast.expression.Expression
+import io.github.oxisto.reticulated.ast.expression.primary.call.CallTrailer
 
 /**
  * This class represents the argument.
@@ -27,11 +28,6 @@ import io.github.oxisto.reticulated.ast.expression.Expression
  *
  *
  */
-open class Argument(val expression: Expression) : Node() {
-
-    override fun toString(): String {
-        return "Argument(" + System.lineSeparator() +
-                "\texpression=$expression" + System.lineSeparator() +
-                ")"
-    }
+abstract class Argument(val expression: Expression) : CallTrailer() {
+    abstract override fun toString(): String
 }

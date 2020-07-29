@@ -18,7 +18,9 @@
 package io.github.oxisto.reticulated.ast
 
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
-import io.github.oxisto.reticulated.ast.statement.ParameterList
+import io.github.oxisto.reticulated.ast.statement.parameter.BaseParameter
+import io.github.oxisto.reticulated.ast.statement.parameter.ParameterList
+import io.github.oxisto.reticulated.solver.Identifiable
 import io.github.oxisto.reticulated.solver.ResolvedVariable
 
 enum class ScopeType {
@@ -44,18 +46,21 @@ class Scope(val parent: Scope? = null, val type: ScopeType = ScopeType.GLOBAL) {
     val variable = this.variables[id]
 
     // forward to parent scope, if there is any
-    return if (variable == null && this.parent != null) {
+    return if (variable == null && this.parent != null)
       this.parent.resolveByIdentifier(id)
-    } else {
-      variable
-    }
+    else variable
   }
 
-  fun handleParameterList(parameterList: ParameterList) {
-    parameterList.parameters.forEach { parameter ->
-      val variable = ResolvedVariable(parameter)
-
-      this.addVariable(variable)
+  fun handleParameterList(parameterList: BaseParameter) {
+    if (parameterList is ParameterList) {
+      parameterList.parameters.forEach { parameter ->
+        val variable = ResolvedVariable(parameter as Identifiable)
+        this.addVariable(variable)
+      }
+    } else {
+      this.addVariable(
+          ResolvedVariable(parameterList as Identifiable)
+      )
     }
   }
 

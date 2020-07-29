@@ -17,7 +17,6 @@
 
 package io.github.oxisto.reticulated.ast.expression.primary
 
-import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
@@ -37,11 +36,8 @@ class PrimaryVisitor(val scope: Scope): Python3BaseVisitor<Primary>() {
    *
    */
   override fun visitAtom_expr(ctx: Python3Parser.Atom_exprContext): Primary {
-
     return if (ctx.childCount == 1) {
       // It is an atom
-      // TODO: check if an atom really have in every case a childCount from 1
-
       ctx.getChild(0)
           .accept(
               AtomVisitor(
@@ -78,10 +74,7 @@ class PrimaryVisitor(val scope: Scope): Python3BaseVisitor<Primary>() {
           }
 
           attributeRef
-        } else if(
-            trailer.getChild(0).text == "(" &&
-            trailer.getChild(1).text == ")"
-        ) {
+        } else {
           // It is a call without arguments
           // parse the trailer
           val argumentList =
@@ -91,14 +84,10 @@ class PrimaryVisitor(val scope: Scope): Python3BaseVisitor<Primary>() {
                   )
               )
           Call(primary, argumentList)
-        } else {
-          throw Exception("could not parse")
         }
-      } else if (trailer.childCount == 3) {
-        when (trailer.getChild(TerminalNode::class.java, 0).text) {
-          "(" -> {
+      } else {
+        if (trailer.getChild(TerminalNode::class.java, 0).text == "(") {
             // it is a call
-
             // parse the trailer
             val argumentList =
                 trailer.accept(
@@ -108,48 +97,39 @@ class PrimaryVisitor(val scope: Scope): Python3BaseVisitor<Primary>() {
                 )
 
             Call(primary, argumentList)
+        } else { // "["
+          // it is s Slicing or a subscription. Parse all trailers
+          var res = primary
+          for (index in 1 until ctx.childCount) {
+            res = Slicing(
+                res,
+                ctx.getChild(index).getChild(1).accept(this) as Primary
+                )
           }
-          "[" -> {
-            // it is s Slicing or a subscription. Parse all trailers
-            var res = primary
-            for (index in 1 until ctx.childCount) {
-              res = Slicing(
-                  res,
-                  ctx.getChild(index).getChild(1).accept(this) as SliceList
-                  )
-            }
-            res
-          }
-          else -> {
-            throw CouldNotParseException()
-          }
+          res
         }
-      } else {
-        throw CouldNotParseException()
       }
     }
   }
 
   override fun visitSubscriptlist(ctx: Python3Parser.SubscriptlistContext): Primary {
-    val sliceItems = ArrayList<SliceItem>()
+    val sliceItems = ArrayList<Primary>()
     for (index in 0 until ctx.childCount)
-      sliceItems.add(ctx.getChild(index).accept(this) as SliceItem)
-    return SliceList(sliceItems)
+      sliceItems.add(ctx.getChild(index).accept(this))
+    return if (sliceItems.size == 1)
+      sliceItems[0]
+    else
+      SliceList(sliceItems)
   }
 
   override fun visitSubscript(ctx: Python3Parser.SubscriptContext): Primary {
     return if (ctx.childCount == 1 && ctx.getChild(0) is Python3Parser.TestContext)
-      SliceItem(
-          ctx.getChild(0)
-              .accept(ExpressionVisitor(this.scope)),
-          null
-      )
-    else SliceItem(null, handleProperSlice(ctx))
+      ctx.getChild(0)
+          .accept(ExpressionVisitor(this.scope)) as Primary
+    else handleProperSlice(ctx)
   }
 
   override fun visitSliceop(ctx: Python3Parser.SliceopContext): Primary {
-    if (ctx.getChild(0).text != ":")
-      throw CouldNotParseException("Expected a stride but got: " + ctx.getChild(0) + ".")
     var expression: Expression? = null
     if (ctx.childCount == 2)
         expression = ctx.getChild(1).accept(ExpressionVisitor(this.scope))

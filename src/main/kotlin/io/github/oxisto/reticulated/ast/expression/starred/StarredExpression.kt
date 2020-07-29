@@ -24,33 +24,17 @@ import io.github.oxisto.reticulated.ast.expression.Expression
 
 
 class StarredExpression(
-    val expression: Expression?,
     val starredItems: List<StarredItem> = ArrayList()
 ): Starred(), Container<StarredItem> {
 
+  // TODO: Write StarredExpression Tests
+
   override val children get() = this.starredItems
 
-  init {
-    if (expression == null) {
-      if (starredItems.isEmpty())
-        throw CouldNotParseException(
-            "In a StarredExpression there can´t be the Expression and the starred Items null and empty."
-        )
-    } else {
-      if (starredItems.isNotEmpty())
-        throw CouldNotParseException(
-            "In a StarredExpression there should be either the starredItems=$starredItems or the expression=$expression be null or empty."
-        )
-    }
-  }
-
   override fun toString(): String {
-    var result = "StarredExpression(" + System.lineSeparator() + "\t"
-    result += if (expression != null)
-      "Expression=$expression"
-    else
-      "StarredItems=$starredItems"
-    return result + System.lineSeparator() + ")"
+    return "StarredExpression(" + System.lineSeparator() +
+        "\tStarredItems=$starredItems" + System.lineSeparator() +
+        ")"
   }
 
 }

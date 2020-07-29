@@ -30,7 +30,7 @@ class DictDisplay(val keyDatumList: KeyDatumList?, var dictComprehension: DictCo
   }
 
   override fun toString(): String {
-    var result = "DictDisplay(" + System.lineSeparator() +"\t \"{\""
+    var result = "DictDisplay(" + System.lineSeparator() +"\t \"{\" "
     if (keyDatumList != null)
       result += "keyDatumList=$keyDatumList"
     if (dictComprehension != null)

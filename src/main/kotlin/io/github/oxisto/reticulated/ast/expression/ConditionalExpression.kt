@@ -27,29 +27,21 @@ import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
  *        conditional_expression ::= or_test ["if" or_test "else" expression]
  * [see: https://docs.python.org/3/reference/expressions.html#conditional-expressions]
  */
-class ConditionalExpression(val orTest: BaseBooleanOp, val orTestOptional: OrTest?, val expressionOptional: Expression?): Expression() {
-
-  init {
-    if(orTestOptional == null){
-      if(expressionOptional != null){
-        throw CouldNotParseException()
-      }
-    }else{
-      if(expressionOptional == null){
-        throw CouldNotParseException()
-      }
-    }
-  }
+class ConditionalExpression(val orTest: BaseBooleanOp, val orTestOptional: OrTest, val expressionOptional: Expression): Expression() {
+// TODO: write conditional Test
 
 
   override fun toString(): String {
     var result = "ConditionalExpression(" + System.lineSeparator() +
             "\torTest=$orTest"
-    if(orTestOptional != null){
       result += " if orTest=$orTestOptional else expression=$expressionOptional"
-    }
     result += System.lineSeparator() + ")"
-    return result
+    return "ConditionalExpression(" + System.lineSeparator() +
+        "\torTest=$orTest \"if\" " +
+        "orTest=$orTestOptional \"else\" " +
+        "expression=$expressionOptional" +
+        System.lineSeparator() +
+        ")"
   }
 
 }

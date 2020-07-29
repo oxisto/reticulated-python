@@ -39,26 +39,7 @@ class DictTest {
         .root
     assertNotNull(input)
     // print(input.toString())
-    val dict = (
-        (
-            (
-                (
-                    (
-                        (
-                            input.statements[0] as StatementList
-                            )[0] as ExpressionStatement
-                        ).starredExpression
-                        .expression as ConditionalExpression
-                    ).orTest as OrTest
-                ).andTest
-                .notTest
-                .comparison as Comparison
-            ).orExpr
-            .xorExpr
-            .andExpr
-            .shiftExpr
-            .baseOperator as PowerExpr
-        ).primary as DictDisplay
+    val dict = input.statements[0] as DictDisplay
     assertNotNull(dict)
     assertNull(dict.dictComprehension)
     assertNull(dict.keyDatumList)
@@ -77,99 +58,24 @@ class DictTest {
         .parse(file.path)
         .root
     assertNotNull(input)
-    print(input.toString())
-    val dict = (
-        (
-            (
-                (
-                    (
-                        (
-                            input.statements[0] as StatementList
-                            )[0] as ExpressionStatement
-                        ).starredExpression
-                        .expression as ConditionalExpression
-                    ).orTest as OrTest
-                ).andTest
-                .notTest
-                .comparison as Comparison
-            ).orExpr
-            .xorExpr
-            .andExpr
-            .shiftExpr
-            .baseOperator as PowerExpr
-        ).primary as DictDisplay
+    // print(input.toString())
+    val dict = input.statements[0] as DictDisplay
     assertNotNull(dict)
     assertNull(dict.dictComprehension)
     val firstElement = (
         dict.keyDatumList as KeyDatumList
         ).keyDatums[0]
-    val firstKey = (
-        (
-            (
-                (
-                    firstElement.key as ConditionalExpression
-                    ).orTest as OrTest
-                ).andTest
-                .notTest
-                .comparison as Comparison
-            ).orExpr
-            .xorExpr
-            .andExpr
-            .shiftExpr
-            .baseOperator as PowerExpr
-        ).primary as StringLiteral
+    val firstKey = firstElement.key  as StringLiteral
     assertEquals(firstKey.value, "a")
-    val firstValue = (
-        (
-            (
-                (
-                    firstElement.datum as ConditionalExpression
-                    ).orTest as OrTest
-                ).andTest
-                .notTest
-                .comparison as Comparison
-            ).orExpr
-            .xorExpr
-            .andExpr
-            .shiftExpr
-            .baseOperator as PowerExpr
-        ).primary as Integer
+    val firstValue = firstElement.datum as Integer
     assertEquals(firstValue.value, 1)
 
     val secondElement = (
         dict.keyDatumList as KeyDatumList
         ).keyDatums[1]
-    val secondKey = (
-        (
-            (
-                (
-                    secondElement.key as ConditionalExpression
-                    ).orTest as OrTest
-                ).andTest
-                .notTest
-                .comparison as Comparison
-            ).orExpr
-            .xorExpr
-            .andExpr
-            .shiftExpr
-            .baseOperator as PowerExpr
-        ).primary as StringLiteral
+    val secondKey = secondElement.key as StringLiteral
     assertEquals(secondKey.value, "b")
-    val secondValue = (
-        (
-            (
-                (
-                    secondElement.datum as ConditionalExpression
-                    ).orTest as OrTest
-                ).andTest
-                .notTest
-                .comparison as Comparison
-            ).orExpr
-            .xorExpr
-            .andExpr
-            .shiftExpr
-            .baseOperator as PowerExpr
-        ).primary as Integer
+    val secondValue = secondElement.datum as Integer
     assertEquals(secondValue.value, 2)
   }
 
@@ -186,99 +92,26 @@ class DictTest {
         .parse(file.path)
         .root
     assertNotNull(input)
-    print(input.toString())
-    val dict = (
-        (
-            (
-                (
-                    (
-                        (
-                            input.statements[0] as StatementList
-                            )[0] as ExpressionStatement
-                        ).starredExpression
-                        .expression as ConditionalExpression
-                    ).orTest as OrTest
-                ).andTest
-                .notTest
-                .comparison as Comparison
-            ).orExpr
-            .xorExpr
-            .andExpr
-            .shiftExpr
-            .baseOperator as PowerExpr
-        ).primary as DictDisplay
+    // print(input.toString())
+
+    val dict = input.statements[0] as DictDisplay
     assertNotNull(dict)
     assertNull(dict.keyDatumList)
     val comprehension = dict.dictComprehension as DictComprehension
     assertNotNull(comprehension)
-    val compIdentifier = (
-        (
-            (
-                (
-                    comprehension.key as ConditionalExpression
-                    ).orTest as OrTest
-                ).andTest
-                .notTest
-                .comparison as Comparison
-            ).orExpr
-            .xorExpr
-            .andExpr
-            .shiftExpr
-            .baseOperator as PowerExpr
-        ).primary as Identifier
+    val compIdentifier = comprehension.key as Identifier
     assertEquals(compIdentifier.name, "x")
-    val compValue = (
-        (
-            (
-                (
-                    comprehension.datum as ConditionalExpression
-                    ).orTest as OrTest
-                ).andTest
-                .notTest
-                .comparison as Comparison
-            ).orExpr
-            .xorExpr
-            .andExpr
-            .shiftExpr
-            .baseOperator as PowerExpr
-        ).primary as Integer
+    val compValue = comprehension.datum as Integer
     assertEquals(compValue.value, 1)
     val compFor = comprehension.compFor
     assertFalse(compFor.isAsync)
-    val targetIdentifier = compFor.targetList[0] as Identifier
+    val targetIdentifier = compFor.targetList as Identifier
     assertEquals(targetIdentifier.name, "x")
-    val call = (
-        (
-            compFor.orTest
-                .andTest
-                .notTest
-                .comparison as Comparison
-            ).orExpr
-            .xorExpr
-            .andExpr
-            .shiftExpr
-            .baseOperator as PowerExpr
-        ).primary as Call
+    val call = compFor.orTest as Call
     assertNotNull(call)
     val callName = call.primary as Identifier
     assertEquals(callName.name, "range")
-    val callArgument = (
-        (
-            (
-                (
-                    (
-                        call.callTrailer as ArgumentList
-                        )[0].expression as ConditionalExpression
-                    ).orTest as OrTest
-                ).andTest
-                .notTest
-                .comparison as Comparison
-            ).orExpr
-            .xorExpr
-            .andExpr
-            .shiftExpr
-            .baseOperator as PowerExpr
-        ).primary as Integer
+    val callArgument = call.callTrailer as Integer
     assertEquals(callArgument.value, 10)
   }
 
@@ -298,34 +131,8 @@ class DictTest {
 
     val inputString = input.toString()
     // print(beautifyResult(inputString))
-    assertEquals(inputString, """FileInput(statements=[StatementList(
-	statements=[ExpressionStatement(
-	StarredExpression=StarredExpression(
-	Expression=ConditionalExpression(
-	orTest=OrTest(
-	andTest=AndTest(
-	notTest=NotTest(
-	comparison=Comparison(
-	orExpr=OrExpr(
-	xorExpr=XorExpr(
-	andExpr=AndExpr(
-	shiftExpr=ShiftExpr(
-	additiveExpr=PowerExpr(
-	primary=DictDisplay(
-	 "{" "}"
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)]
+    assertEquals(inputString, """FileInput(statements=[DictDisplay(
+	 "{"  "}"
 )])""".replace("\n", System.lineSeparator()))
   }
 
@@ -345,128 +152,22 @@ class DictTest {
 
     val inputString = input.toString()
     // print(beautifyResult(inputString))
-    assertEquals(inputString, """FileInput(statements=[StatementList(
-	statements=[ExpressionStatement(
-	StarredExpression=StarredExpression(
-	Expression=ConditionalExpression(
-	orTest=OrTest(
-	andTest=AndTest(
-	notTest=NotTest(
-	comparison=Comparison(
-	orExpr=OrExpr(
-	xorExpr=XorExpr(
-	andExpr=AndExpr(
-	shiftExpr=ShiftExpr(
-	additiveExpr=PowerExpr(
-	primary=DictDisplay(
-	 "{"keyDatumList=KeyDatumList(
+    assertEquals(inputString, """FileInput(statements=[DictDisplay(
+	 "{" keyDatumList=KeyDatumList(
 	keyDatumList=[KeyDatum(
-	key=ConditionalExpression(
-	orTest=OrTest(
-	andTest=AndTest(
-	notTest=NotTest(
-	comparison=Comparison(
-	orExpr=OrExpr(
-	xorExpr=XorExpr(
-	andExpr=AndExpr(
-	shiftExpr=ShiftExpr(
-	additiveExpr=PowerExpr(
-	primary=StringLiteral(
+	key=StringLiteral(
 	value=a
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-) ":" datum=ConditionalExpression(
-	orTest=OrTest(
-	andTest=AndTest(
-	notTest=NotTest(
-	comparison=Comparison(
-	orExpr=OrExpr(
-	xorExpr=XorExpr(
-	andExpr=AndExpr(
-	shiftExpr=ShiftExpr(
-	additiveExpr=PowerExpr(
-	primary=Integer(
+) ":" datum=Integer(
 	value=1
 )
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
 ), KeyDatum(
-	key=ConditionalExpression(
-	orTest=OrTest(
-	andTest=AndTest(
-	notTest=NotTest(
-	comparison=Comparison(
-	orExpr=OrExpr(
-	xorExpr=XorExpr(
-	andExpr=AndExpr(
-	shiftExpr=ShiftExpr(
-	additiveExpr=PowerExpr(
-	primary=StringLiteral(
+	key=StringLiteral(
 	value=b
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-) ":" datum=ConditionalExpression(
-	orTest=OrTest(
-	andTest=AndTest(
-	notTest=NotTest(
-	comparison=Comparison(
-	orExpr=OrExpr(
-	xorExpr=XorExpr(
-	andExpr=AndExpr(
-	shiftExpr=ShiftExpr(
-	additiveExpr=PowerExpr(
-	primary=Integer(
+) ":" datum=Integer(
 	value=2
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
 )
 )]
 ) "}"
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)]
 )])""".replace("\n", System.lineSeparator()))
   }
 
@@ -486,134 +187,24 @@ class DictTest {
 
     val inputString = input.toString()
     // print(beautifyResult(inputString))
-    assertEquals(inputString, """FileInput(statements=[StatementList(
-	statements=[ExpressionStatement(
-	StarredExpression=StarredExpression(
-	Expression=ConditionalExpression(
-	orTest=OrTest(
-	andTest=AndTest(
-	notTest=NotTest(
-	comparison=Comparison(
-	orExpr=OrExpr(
-	xorExpr=XorExpr(
-	andExpr=AndExpr(
-	shiftExpr=ShiftExpr(
-	additiveExpr=PowerExpr(
-	primary=DictDisplay(
-	 "{"dictComprehension=DictComprehension(
-	key=ConditionalExpression(
-	orTest=OrTest(
-	andTest=AndTest(
-	notTest=NotTest(
-	comparison=Comparison(
-	orExpr=OrExpr(
-	xorExpr=XorExpr(
-	andExpr=AndExpr(
-	shiftExpr=ShiftExpr(
-	additiveExpr=PowerExpr(
-	primary=Identifier(
+    assertEquals(inputString, """FileInput(statements=[DictDisplay(
+	 "{" dictComprehension=DictComprehension(
+	key=Identifier(
 	name='x'
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-) ":" datum=ConditionalExpression(
-	orTest=OrTest(
-	andTest=AndTest(
-	notTest=NotTest(
-	comparison=Comparison(
-	orExpr=OrExpr(
-	xorExpr=XorExpr(
-	andExpr=AndExpr(
-	shiftExpr=ShiftExpr(
-	additiveExpr=PowerExpr(
-	primary=Integer(
+) ":" datum=Integer(
 	value=1
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
 ) compFor=CompFor(
-	compFor=for targetList=TargetList(
-	targets=[Identifier(
+	"for" targetList=Identifier(
 	name='x'
-)]
-) in orTest=OrTest(
-	andTest=AndTest(
-	notTest=NotTest(
-	comparison=Comparison(
-	orExpr=OrExpr(
-	xorExpr=XorExpr(
-	andExpr=AndExpr(
-	shiftExpr=ShiftExpr(
-	additiveExpr=PowerExpr(
-	primary=Call(
+)  "in" orTest=Call(
 	primary=Identifier(
 	name='range'
-) callTrailer=ArgumentList(
-	argument=[Argument(
-	expression=ConditionalExpression(
-	orTest=OrTest(
-	andTest=AndTest(
-	notTest=NotTest(
-	comparison=Comparison(
-	orExpr=OrExpr(
-	xorExpr=XorExpr(
-	andExpr=AndExpr(
-	shiftExpr=ShiftExpr(
-	additiveExpr=PowerExpr(
-	primary=Integer(
+) callTrailer=Integer(
 	value=10
 )
 )
 )
-)
-)
-)
-)
-)
-)
-)
-)
-)]
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
 ) "}"
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)]
 )])""".replace("\n", System.lineSeparator()))
   }
 }

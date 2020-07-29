@@ -17,9 +17,8 @@
 
 package io.github.oxisto.reticulated.ast.simple
 
-import io.github.oxisto.reticulated.ast.expression.starred.StarredExpression
 
-class ExpressionStatement(val starredExpression: StarredExpression) : SimpleStatement() {
+abstract class ExpressionStatement : SimpleStatement() {
 
 //  override fun isExpressionStatement(): Boolean {
 //    return true
@@ -33,10 +32,6 @@ class ExpressionStatement(val starredExpression: StarredExpression) : SimpleStat
 //    return false
 //  }
 
-  override fun toString(): String {
-    return "ExpressionStatement(" + System.lineSeparator() +
-            "\tStarredExpression=$starredExpression" + System.lineSeparator() +
-            ")"
-  }
+  abstract override fun toString(): String
 
 }

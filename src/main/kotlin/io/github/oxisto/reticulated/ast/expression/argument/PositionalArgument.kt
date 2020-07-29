@@ -30,7 +30,7 @@ class PositionalArgument(expression: Expression) : Argument(expression) {
 
     override fun toString(): String{
         return "PositionalArgument(" + System.lineSeparator() +
-                "positionalArgument=*$expression" + System.lineSeparator() +
+                "\t\"*\" Expression=$expression" + System.lineSeparator() +
                 ")"
     }
 }

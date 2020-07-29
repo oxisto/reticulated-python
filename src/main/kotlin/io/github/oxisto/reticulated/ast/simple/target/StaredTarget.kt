@@ -17,9 +17,8 @@
 
 package io.github.oxisto.reticulated.ast.simple.target
 
-import io.github.oxisto.reticulated.ast.Node
 
-class StaredTarget(val target: Target): Target, Node() {
+class StaredTarget(val target: Target): Target() {
     override fun toString(): String {
         return "StaredTarget(" + System.lineSeparator() +
                 "\ttarget=*$target" + System.lineSeparator() +

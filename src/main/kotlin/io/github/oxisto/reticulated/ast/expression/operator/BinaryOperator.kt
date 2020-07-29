@@ -17,6 +17,8 @@
 
 package io.github.oxisto.reticulated.ast.expression.operator
 
+import io.github.oxisto.reticulated.ast.CouldNotParseException
+
 enum class BinaryOperator(val symbol: String) {
     SHIFT_RIGHT(">>"), SHIFT_LEFT("<<"), ADDITION("+"),
     SUBTRACTION("-"), MULTIPLICATION("*"), DIVISION("/"),
@@ -24,7 +26,7 @@ enum class BinaryOperator(val symbol: String) {
     MODULO("%"), POWER("**");
 
     companion object {
-        fun getBinaryOperator(symbolToFind: String): BinaryOperator? {
+        fun getBinaryOperator(symbolToFind: String): BinaryOperator {
             var result: BinaryOperator? = null
             for (binaryOperator in values()) {
                 if (binaryOperator.symbol == symbolToFind) {
@@ -32,7 +34,9 @@ enum class BinaryOperator(val symbol: String) {
                     break
                 }
             }
-            return result
+            return result ?: throw CouldNotParseException(
+                "The BinaryOperator=$symbolToFind should be a valid operator"
+            )
         }
     }
 }

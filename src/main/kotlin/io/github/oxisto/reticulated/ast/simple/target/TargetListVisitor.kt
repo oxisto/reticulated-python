@@ -22,9 +22,9 @@ import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 import org.antlr.v4.runtime.tree.TerminalNodeImpl
 
-class TargetListVisitor(val scope: Scope) : Python3BaseVisitor<TargetList>() {
+class TargetListVisitor(val scope: Scope) : Python3BaseVisitor<Target>() {
 
-  override fun visitExprlist(ctx: Python3Parser.ExprlistContext): TargetList {
+  override fun visitExprlist(ctx: Python3Parser.ExprlistContext): Target {
     val targets = ArrayList<Target>()
     for(child in ctx.children){
       if(child !is TerminalNodeImpl) {
@@ -37,7 +37,8 @@ class TargetListVisitor(val scope: Scope) : Python3BaseVisitor<TargetList>() {
         )
       }
     }
-    return TargetList(targets)
+    return if (targets.size == 1) targets[0]
+    else TargetList(targets)
   }
 
 }

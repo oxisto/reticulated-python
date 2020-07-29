@@ -19,8 +19,11 @@ package io.github.oxisto.reticulated.ast.expression.primary.slice
 
 import io.github.oxisto.reticulated.ast.Container
 import io.github.oxisto.reticulated.ast.CouldNotParseException
+import io.github.oxisto.reticulated.ast.expression.primary.Primary
 
-class SliceList(private val items: List<SliceItem> = ArrayList()) : Slice(), Container<SliceItem> {
+class SliceList(private val items: List<Primary> = ArrayList()) : Slice(), Container<Primary> {
+
+  // TODO: WriteSliceList tests
 
   init {
     if (items.isEmpty())

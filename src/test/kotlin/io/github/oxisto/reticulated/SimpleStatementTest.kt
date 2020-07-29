@@ -23,11 +23,13 @@ import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
 import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
 import io.github.oxisto.reticulated.ast.expression.primary.atom.literal.Integer
 import io.github.oxisto.reticulated.ast.expression.operator.PowerExpr
+import io.github.oxisto.reticulated.ast.expression.primary.AttributeRef
 import io.github.oxisto.reticulated.ast.simple.AssignmentExpression
 import io.github.oxisto.reticulated.ast.simple.ExpressionStatement
 import io.github.oxisto.reticulated.ast.simple.ImportStatement
 import io.github.oxisto.reticulated.ast.statement.StatementList
 import org.junit.Test
+import org.w3c.dom.Attr
 import java.io.File
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -41,84 +43,23 @@ class SimpleStatementTest {
 
     val input = PythonParser().parse(file.path).root
     assertNotNull(input)
-
     assertEquals(2, input.statements.size)
 
-    val s0 = input.statements[0] as StatementList
-    val assign = s0.first()
+    // println(input.toString())
+
+    val assign = input.statements[0]
     assertTrue(assign is AssignmentExpression)
     val identifier = assign.target as Identifier
     assertEquals("i", identifier.name)
-
-    val assigned = (
-          (
-              (
-                  assign.expression as ConditionalExpression
-                  ).orTest as OrTest
-              ).andTest
-              .notTest
-              .comparison!!
-              .orExpr
-              .xorExpr
-              .andExpr
-              .shiftExpr
-              .baseOperator as PowerExpr
-        ).primary
+    val assigned = assign.expression
     assertTrue(assigned is Integer)
     assertEquals(4, assigned.value)
 
-    val s1 = input.statements[1] as StatementList
-    val exprStatement = s1.first()
-    assertTrue(exprStatement is ExpressionStatement)
-
-    val starredExpression = exprStatement.starredExpression
-
-    val conditionalExpression = starredExpression.expression as ConditionalExpression
-
-    val orTestCall = conditionalExpression.orTest as OrTest
-    assertNotNull(orTestCall)
-    val subOrTestCall = orTestCall.orTest
-    assertNull(subOrTestCall)
-    val andTestCall = orTestCall.andTest
-    assertNotNull(andTestCall)
-    val subAndTestCall = andTestCall.andTest
-    assertNull(subAndTestCall)
-    val notTestCall = andTestCall.notTest
-    assertNotNull(notTestCall)
-    val subNotTestCall = notTestCall.notTest
-    assertNull(subNotTestCall)
-    val comparisonCall = notTestCall.comparison
-    assertNotNull(comparisonCall)
-    val comparisonsCall = comparisonCall.comparisons
-    assertNotNull(comparisonsCall)
-    assertEquals(comparisonsCall.size, 0)
-    val orExprCall = comparisonCall.orExpr
-    assertNotNull(orExprCall)
-    val subOrExprCall = orExprCall.orExpr
-    assertNull(subOrExprCall)
-    val xorExprCall = orExprCall.xorExpr
-    assertNotNull(xorExprCall)
-    val subXorExprCall = xorExprCall.xorExpr
-    assertNull(subXorExprCall)
-    val andExprCall = xorExprCall.andExpr
-    assertNotNull(andExprCall)
-    val subAndExprCall = andExprCall.andExpr
-    assertNull(subAndExprCall)
-    val shiftExprCall = andExprCall.shiftExpr
-    assertNotNull(shiftExprCall)
-    val subShiftExprCall = shiftExprCall.shiftExpr
-    assertNull(subShiftExprCall)
-    val binaryOperatorCall = shiftExprCall.binaryOperator
-    assertNull(binaryOperatorCall)
-    val baseOperatorCall = shiftExprCall.baseOperator as PowerExpr
-    assertNotNull(baseOperatorCall)
-    val awaitExprCall = baseOperatorCall.awaitExpr
-    assertNull(awaitExprCall)
-    val subBaseOperatorCall = baseOperatorCall.baseOperator
-    assertNull(subBaseOperatorCall)
-    val call = baseOperatorCall.primary
+    val call = input.statements[1]
     assertTrue(call is Call)
     assertEquals("print", call.primary.asIdentifier().name)
+    val param = call.callTrailer as Identifier
+    assertEquals("i", param.name)
   }
 
   @Test
@@ -128,9 +69,61 @@ class SimpleStatementTest {
     val input = PythonParser().parse(file.path).root
     assertNotNull(input)
 
-    val s0 = input.statements[0] as StatementList
-    val import = s0.first()
+    // println(input)
+
+    val import = input.statements[0]
     assertTrue(import is ImportStatement)
     assertEquals("os", import.module.name)
+
+    val call = input.statements[1] as Call
+    val callName = call.primary as Identifier
+    assertEquals(callName.name, "print")
+    val attributeRef = call.callTrailer as AttributeRef
+    val mod = attributeRef.primary as Identifier
+    assertEquals(mod.name, "os")
+    val id = attributeRef.identifier
+    assertEquals(id.name, "name")
+  }
+
+  @Test fun parseToStringTest () {
+    val file = File(javaClass.classLoader.getResource("simple_stmt.py")!!.file)
+
+    val input = PythonParser().parse(file.path).root
+    assertNotNull(input)
+    assertEquals(input.toString(), """FileInput(statements=[AssignmentExpression(
+	target=Identifier(
+	name='i'
+) expression=Integer(
+	value=4
+)
+), Call(
+	primary=Identifier(
+	name='print'
+) callTrailer=Identifier(
+	name='i'
+)
+)])""".replace("\n", System.lineSeparator()))
+  }
+
+  @Test fun importToStringTest () {
+    val file = File(javaClass.classLoader.getResource("import.py")!!.file)
+
+    val input = PythonParser().parse(file.path).root
+    assertNotNull(input)
+    assertEquals(input.toString(), """FileInput(statements=[ImportStatement(
+	module=Identifier(
+	name='os'
+)
+), Call(
+	primary=Identifier(
+	name='print'
+) callTrailer=AttributeRef(
+	primary=Identifier(
+	name='os'
+)"."identifier=Identifier(
+	name='name'
+)
+)
+)])""".replace("\n", System.lineSeparator()))
   }
 }

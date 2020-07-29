@@ -51,83 +51,24 @@ class GeneratorTest {
         .parse(file.path)
         .root
     assertNotNull(input)
-    print(
+    // print(
         // beautifyResult(
-            input.toString()
+            // input.toString()
         // )
-    )
-    val generatorExpression = (
-        (
-            (
-                (
-                    (
-                        (
-                            input.statements[0] as StatementList
-                            ).statements[0] as ExpressionStatement
-                        ).starredExpression
-                        .expression as ConditionalExpression
-                    ).orTest as OrTest
-                ).andTest
-                .notTest
-                .comparison as Comparison
-            ).orExpr
-            .xorExpr
-            .andExpr
-            .shiftExpr
-            .baseOperator as PowerExpr
-        ).primary as GeneratorExpression
-    val condIdentifier = (
-        (
-            (
-                (
-                    generatorExpression.expression as ConditionalExpression
-                    ).orTest as OrTest
-                ).andTest
-                .notTest
-                .comparison as Comparison
-            ).orExpr
-            .xorExpr
-            .andExpr
-            .shiftExpr
-            .baseOperator as PowerExpr
-        ).primary as Identifier
+    // )
+
+    val generatorExpression = input.statements[0] as GeneratorExpression
+    val condIdentifier = generatorExpression.expression as Identifier
     assertEquals(condIdentifier.name, "x")
     val compFor = generatorExpression.compFor
     assertFalse(compFor.isAsync)
-    val targetIdentifier = compFor.targetList[0] as Identifier
+    val targetIdentifier = compFor.targetList as Identifier
     assertEquals(targetIdentifier.name, "x")
-    val call = (
-        (
-            compFor.orTest
-                .andTest
-                .notTest
-                .comparison as Comparison
-            ).orExpr
-            .xorExpr
-            .andExpr
-            .shiftExpr
-            .baseOperator as PowerExpr
-        ).primary as Call
+    val call = compFor.orTest as Call
     assertNotNull(call)
     val name = call.primary as Identifier
     assertEquals(name.name, "range")
-    val arg = (
-        (
-            (
-                (
-                    (
-                        call.callTrailer as ArgumentList
-                        )[0].expression as ConditionalExpression
-                    ).orTest as OrTest
-                ).andTest
-                .notTest
-                .comparison as Comparison
-            ).orExpr
-            .xorExpr
-            .andExpr
-            .shiftExpr
-            .baseOperator as PowerExpr
-        ).primary as Integer
+    val arg = call.callTrailer as Integer
     assertEquals(arg.value, 10)
   }
 
@@ -146,110 +87,20 @@ class GeneratorTest {
 
     val inputString = input.toString()
     // print(beautifyResult(inputString))
-    assertEquals(inputString, """FileInput(statements=[StatementList(
-	statements=[ExpressionStatement(
-	StarredExpression=StarredExpression(
-	Expression=ConditionalExpression(
-	orTest=OrTest(
-	andTest=AndTest(
-	notTest=NotTest(
-	comparison=Comparison(
-	orExpr=OrExpr(
-	xorExpr=XorExpr(
-	andExpr=AndExpr(
-	shiftExpr=ShiftExpr(
-	additiveExpr=PowerExpr(
-	primary=GeneratorExpression(
-	 "(" expression=ConditionalExpression(
-	orTest=OrTest(
-	andTest=AndTest(
-	notTest=NotTest(
-	comparison=Comparison(
-	orExpr=OrExpr(
-	xorExpr=XorExpr(
-	andExpr=AndExpr(
-	shiftExpr=ShiftExpr(
-	additiveExpr=PowerExpr(
-	primary=Identifier(
+    assertEquals(inputString, """FileInput(statements=[GeneratorExpression(
+	 "(" expression=Identifier(
 	name='x'
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
 ) compFor=CompFor(
-	compFor=for targetList=TargetList(
-	targets=[Identifier(
+	"for" targetList=Identifier(
 	name='x'
-)]
-) in orTest=OrTest(
-	andTest=AndTest(
-	notTest=NotTest(
-	comparison=Comparison(
-	orExpr=OrExpr(
-	xorExpr=XorExpr(
-	andExpr=AndExpr(
-	shiftExpr=ShiftExpr(
-	additiveExpr=PowerExpr(
-	primary=Call(
+)  "in" orTest=Call(
 	primary=Identifier(
 	name='range'
-) callTrailer=ArgumentList(
-	argument=[Argument(
-	expression=ConditionalExpression(
-	orTest=OrTest(
-	andTest=AndTest(
-	notTest=NotTest(
-	comparison=Comparison(
-	orExpr=OrExpr(
-	xorExpr=XorExpr(
-	andExpr=AndExpr(
-	shiftExpr=ShiftExpr(
-	additiveExpr=PowerExpr(
-	primary=Integer(
+) callTrailer=Integer(
 	value=10
 )
 )
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)]
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
 ) ")"
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)]
 )])""".replace("\n", System.lineSeparator()))
   }
 }

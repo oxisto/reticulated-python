@@ -26,11 +26,13 @@ import io.github.oxisto.reticulated.ast.expression.primary.Primary
  *      await_expr ::="await" primary
  * [see: https://docs.python.org/3/reference/expressions.html#await-expression]
  */
-class AwaitExpr(val primary: Primary): Expression(){
+class AwaitExpr(val primary: Primary): BaseOperator(){
+
+    // TODO: Write AwaitExpr tests
 
     override fun toString(): String {
         return "AwaitExpr(" + System.lineSeparator() +
-                "\tawait primary=$primary" + System.lineSeparator() +
+                "\t\"await\" primary=$primary" + System.lineSeparator() +
                 ")"
     }
 }

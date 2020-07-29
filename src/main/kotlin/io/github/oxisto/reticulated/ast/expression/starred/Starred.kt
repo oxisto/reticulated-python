@@ -15,10 +15,9 @@
  *
  */
 
-
 package io.github.oxisto.reticulated.ast.expression.starred
 
-import io.github.oxisto.reticulated.ast.simple.SimpleStatement
+import io.github.oxisto.reticulated.ast.simple.target.Target
 
-abstract class Starred : SimpleStatement() {
+abstract class Starred : Target() {
 }

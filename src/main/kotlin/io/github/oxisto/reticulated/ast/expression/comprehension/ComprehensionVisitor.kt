@@ -19,11 +19,13 @@ package io.github.oxisto.reticulated.ast.expression.comprehension
 
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
+import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.ExpressionNoCond
 import io.github.oxisto.reticulated.ast.expression.ExpressionNoCondVisitor
 import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
 import io.github.oxisto.reticulated.ast.expression.booleanops.BooleanOpVisitor
 import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
+import io.github.oxisto.reticulated.ast.simple.target.Target
 import io.github.oxisto.reticulated.ast.simple.target.TargetList
 import io.github.oxisto.reticulated.ast.simple.target.TargetListVisitor
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
@@ -41,12 +43,9 @@ import io.github.oxisto.reticulated.grammar.Python3Parser
 class ComprehensionVisitor(val scope: Scope) : Python3BaseVisitor<BaseComprehension>() {
 
     override fun visitComp_for(ctx: Python3Parser.Comp_forContext): BaseComprehension {
-        if(ctx.childCount < 4 || ctx.childCount > 6){
-            throw CouldNotParseException("The ctx=$ctx child count is unexpected.")
-        }
         val isAsync: Boolean
-        val targetList: TargetList
-        val orTest: OrTest
+        val targetList: Target
+        val orTest: Expression
         val compIter: CompIter?
 
         val getTargetListByPosition = {
@@ -56,7 +55,7 @@ class ComprehensionVisitor(val scope: Scope) : Python3BaseVisitor<BaseComprehens
                         TargetListVisitor(
                                 this.scope
                         )
-                ) as TargetList
+                ) as Target
         }
         val getOrTestByPosition = {
             position:Int -> ctx
@@ -65,7 +64,7 @@ class ComprehensionVisitor(val scope: Scope) : Python3BaseVisitor<BaseComprehens
                         BooleanOpVisitor(
                                 this.scope
                         )
-                ) as OrTest
+                )
         }
         val getCompIterByPosition = {
             position:Int -> ctx
@@ -105,26 +104,14 @@ class ComprehensionVisitor(val scope: Scope) : Python3BaseVisitor<BaseComprehens
     }
 
     override fun visitComp_iter(ctx: Python3Parser.Comp_iterContext): CompIter {
-        if(ctx.childCount != 1){
-            throw CouldNotParseException("The childCount of the ctx=$ctx was unexpected.")
-        }
         val child = ctx.getChild(0)
-        if(child !is Python3Parser.Comp_forContext && child !is Python3Parser.Comp_ifContext) {
-            throw CouldNotParseException("")
-        }
-        return if(ctx.getChild(0).getChild(0).text == "if"){
-            CompIter(null, child.accept(this) as CompIf)
-        }else {
-            CompIter(child.accept(this) as CompFor, null)
-        }
+        return if(ctx.getChild(0).getChild(0).text == "if")
+            child.accept(this) as CompIf
+        else child.accept(this) as CompFor
     }
 
     override fun visitComp_if(ctx: Python3Parser.Comp_ifContext): CompIf {
-        if(ctx.childCount < 2 || ctx.childCount > 3){
-            throw CouldNotParseException("The childCount of the ctx=$ctx was unexpected.")
-        }
-
-        val expressionNoCond: ExpressionNoCond = ctx
+        val expressionNoCond = ctx
                 .getChild(1)
                 .accept(
                         ExpressionNoCondVisitor(
@@ -134,7 +121,7 @@ class ComprehensionVisitor(val scope: Scope) : Python3BaseVisitor<BaseComprehens
 
         val compIter: CompIter? = if ( ctx.childCount == 3 ) {
             ctx.getChild(2).accept(this) as CompIter
-        } else { null }
+        } else null
 
         return CompIf(expressionNoCond, compIter)
     }

@@ -22,7 +22,7 @@ import io.github.oxisto.reticulated.ast.Container
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.expression.Expression
 
-class StarredList(private val starredItems: List<StarredItem> = ArrayList()): Expression(), Container<StarredItem> {
+class StarredList(private val starredItems: List<Starred> = ArrayList()): Expression(), Container<Starred> {
 
   init {
     if (starredItems.isEmpty())

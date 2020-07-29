@@ -28,7 +28,7 @@ open class Kwarg(expression: Expression) : KeywordArgument(expression) {
 
     override fun toString(): String {
         return "Kwarg(" + System.lineSeparator() +
-                "\tkwarg=**$expression" + System.lineSeparator() +
+                "\t\"**\" Expression=$expression" + System.lineSeparator() +
                 ")"
     }
 }

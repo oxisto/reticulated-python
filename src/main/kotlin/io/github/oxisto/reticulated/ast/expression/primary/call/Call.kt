@@ -17,6 +17,7 @@
 
 package io.github.oxisto.reticulated.ast.expression.primary.call
 
+import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.primary.Primary
 
 /**
@@ -25,7 +26,7 @@ import io.github.oxisto.reticulated.ast.expression.primary.Primary
  *        call ::= primary "(" [argument_list [","] | comprehension] ")"
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#calls}]
  */
-class Call(val primary: Primary, val callTrailer: CallTrailer) : Primary() {
+class Call(val primary: Primary, val callTrailer: Expression) : Primary() {
 
   init {
     primary.parent = this

@@ -17,7 +17,6 @@
 
 package io.github.oxisto.reticulated.ast.expression.primary.atom
 
-import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
@@ -42,11 +41,10 @@ class AtomVisitor(val scope: Scope) : Python3BaseVisitor<Atom>() {
       2 -> when (ctx.getChild(0).text) { // it is a enclosure
         "(" -> ParentForm(null)
         "[" -> ListDisplay(null, null)
-        "{" -> DictDisplay(null, null)
-        else -> throw CouldNotParseException("Could not parse Enclosure")
+        else -> DictDisplay(null, null) // firsChild is "{"
       }
-      3 -> when (ctx.getChild(0).text) { // it is a enclosure
 
+      else -> when (ctx.getChild(0).text) { // it is a enclosure, childCount == 3
         "(" -> {
           when {
             ctx.getChild(1).childCount == 2 -> GeneratorExpression(
@@ -97,12 +95,12 @@ class AtomVisitor(val scope: Scope) : Python3BaseVisitor<Atom>() {
                 ctx.getChild(1)
                     .accept(
                         StarredVisitor(this.scope)
-                    ) as StarredList,
+                    ),
                 null
             )
         }
 
-        "{" -> {
+        else -> { //  "{"
           when (val elem = ctx.getChild(1).accept(SetMakerVisitor(this.scope))) {
             is DictComprehension -> DictDisplay(null, elem )
             is KeyDatumList ->  DictDisplay( elem,null)
@@ -110,9 +108,7 @@ class AtomVisitor(val scope: Scope) : Python3BaseVisitor<Atom>() {
             else -> SetDisplay(null, elem as Comprehension)
           }
         }
-        else -> throw CouldNotParseException("Could not parse Enclosure")
       }
-      else -> throw CouldNotParseException("Could not parse Atom")
     }
   }
 
@@ -132,42 +128,31 @@ class AtomVisitor(val scope: Scope) : Python3BaseVisitor<Atom>() {
     } else { null }
 
     return when {
-      intOrNull != null -> {
-        Integer(intOrNull)
-      }
+      intOrNull != null -> Integer(intOrNull)
+
       text.startsWith("\"") || text.startsWith("\'") -> {
         StringLiteral(
             text.replace("\"", "")
                 .replace("\'", "")
         )
       }
-      floatOrNull != null -> {
-        FloatNumber(floatOrNull)
-      }
+
+      floatOrNull != null -> FloatNumber(floatOrNull)
+
       isImagNumber -> {
         val textWithoutLast = text.substring(0, text.lastIndex)
         val intOrNullOfImag = textWithoutLast.toIntOrNull()
         val floatOrNullOfImag = textWithoutLast.toFloatOrNull()
-        when {
-          intOrNullOfImag != null -> {
-            ImagNumber(null, Integer(intOrNullOfImag))
-          }
-          floatOrNullOfImag != null -> {
-            ImagNumber(FloatNumber(floatOrNullOfImag), null)
-          }
-          else -> {
-            throw CouldNotParseException()
-          }
-        }
+        if(intOrNullOfImag != null)
+          ImagNumber(null, Integer(intOrNullOfImag))
+        else
+          ImagNumber(FloatNumber(floatOrNullOfImag as Float), null)
       }
-      byteValue != null -> {
-        BytesLiteral(byteValue)
-      }
-      else -> {
-        Identifier(node.text)
-      }
+
+      byteValue != null -> BytesLiteral(byteValue)
+
+      else -> Identifier(node.text)
     }
   }
-
-
+  
 }

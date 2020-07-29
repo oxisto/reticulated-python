@@ -15,8 +15,22 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.simple.target
+package io.github.oxisto.reticulated.ast.statement.parameter
 
-import io.github.oxisto.reticulated.ast.Node
+import io.github.oxisto.reticulated.ast.Container
 
-abstract class TargetCollectionElement(val targetList:TargetList): Target, Node()
+class ParameterList(val parameters: List<BaseParameter> = ArrayList()) : BaseParameter(), Container<BaseParameter> {
+
+  init {
+    for (child in parameters) {
+      child.parent = this
+    }
+  }
+
+  override val children get() = this.parameters
+
+  override fun toString(): String {
+    return "ParameterList(parameters=$parameters)"
+  }
+
+}

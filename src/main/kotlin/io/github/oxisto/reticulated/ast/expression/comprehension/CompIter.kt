@@ -25,32 +25,7 @@ import io.github.oxisto.reticulated.ast.CouldNotParseException
  *      comp_iter ::= comp_for | comp_if
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#displays-for-lists-sets-and-dictionaries}]
  */
-class CompIter(val compFor: CompFor?, val compIf: CompIf?) : BaseComprehension() {
-    init {
-        if(compFor == null){
-            if(compIf == null){
-                throw CouldNotParseException(
-                        "In a CompIter should not be both, the compFor and the compIf, null."
-                )
-            }
-        } else {
-            if ( compIf != null ) {
-                throw CouldNotParseException(
-                        "In a CompIter should me ether compFor or compIf null."
-                )
-            }
-        }
-    }
+abstract class CompIter : BaseComprehension() {
 
-    override fun toString(): String {
-        val result:String
-        if(compFor == null){
-            result = "compIf=$compIf"
-        }else{
-            result = "compFor=$compFor"
-        }
-        return "CompIter(" + System.lineSeparator() +
-                "\t$result" + System.lineSeparator() +
-                ")"
-    }
+     abstract override fun toString(): String
 }

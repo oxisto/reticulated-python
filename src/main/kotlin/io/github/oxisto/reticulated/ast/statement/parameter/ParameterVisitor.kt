@@ -15,7 +15,7 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.statement
+package io.github.oxisto.reticulated.ast.statement.parameter
 
 import io.github.oxisto.reticulated.ast.expression.primary.atom.AtomVisitor
 import io.github.oxisto.reticulated.ast.Scope
@@ -25,17 +25,17 @@ import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 import org.antlr.v4.runtime.ParserRuleContext
 
-class ParameterVisitor(val scope: Scope) : Python3BaseVisitor<Parameter>() {
+class ParameterVisitor(val scope: Scope) : Python3BaseVisitor<BaseParameter>() {
 
-  override fun visitTfpdef(ctx: Python3Parser.TfpdefContext): Parameter {
+  override fun visitTfpdef(ctx: Python3Parser.TfpdefContext): BaseParameter {
     return handleParameter(ctx)
   }
 
-  override fun visitVfpdef(ctx: Python3Parser.VfpdefContext): Parameter {
+  override fun visitVfpdef(ctx: Python3Parser.VfpdefContext): BaseParameter {
     return handleParameter(ctx)
   }
 
-  private fun handleParameter(ctx: ParserRuleContext): Parameter {
+  private fun handleParameter(ctx: ParserRuleContext): BaseParameter {
     val id = ctx.getChild(0).accept(
         AtomVisitor(
             this.scope
@@ -51,8 +51,6 @@ class ParameterVisitor(val scope: Scope) : Python3BaseVisitor<Parameter>() {
       )
 
       Parameter(id, expression)
-    } else {
-      Parameter(id)
-    }
+    } else id
   }
 }
