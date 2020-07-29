@@ -29,12 +29,11 @@ import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 import org.antlr.v4.runtime.tree.TerminalNode
 
+/**
+ * this class offers visitors for all primaries.
+ */
 class PrimaryVisitor(val scope: Scope): Python3BaseVisitor<Primary>() {
 
-  /**
-   * It is probably a primary
-   *
-   */
   override fun visitAtom_expr(ctx: Python3Parser.Atom_exprContext): Primary {
     return if (ctx.childCount == 1) {
       // It is an atom
@@ -143,21 +142,21 @@ class PrimaryVisitor(val scope: Scope): Python3BaseVisitor<Primary>() {
     return ProperSlice(getLowerBound(ctx), getUpperBound(ctx), stride)
   }
 
-  private fun getLowerBound(ctx: Python3Parser.SubscriptContext): LowerBound? {
-    var lowerBound: LowerBound? = null
+  private fun getLowerBound(ctx: Python3Parser.SubscriptContext): Expression? {
+    var lowerBound: Expression? = null
     if (ctx.getChild(0) is Python3Parser.TestContext)
-      lowerBound = LowerBound(ctx.getChild(0).accept(ExpressionVisitor(this.scope)))
+      lowerBound = ctx.getChild(0).accept(ExpressionVisitor(this.scope))
     return lowerBound
   }
 
-  private fun getUpperBound(ctx: Python3Parser.SubscriptContext): UpperBound? {
-    var upperBound: UpperBound? = null
+  private fun getUpperBound(ctx: Python3Parser.SubscriptContext): Expression? {
+    var upperBound: Expression? = null
     if (ctx.childCount >= 2 && ctx.getChild(1) is Python3Parser.TestContext)
-        upperBound = UpperBound(ctx.getChild(1).accept(ExpressionVisitor(this.scope)))
+        upperBound = ctx.getChild(1).accept(ExpressionVisitor(this.scope))
     if (ctx.childCount >= 3 &&
         ctx.getChild(0) is Python3Parser.TestContext &&
         ctx.getChild(2) is Python3Parser.TestContext)
-      upperBound = UpperBound(ctx.getChild(2).accept(ExpressionVisitor(this.scope)))
+      upperBound = ctx.getChild(2).accept(ExpressionVisitor(this.scope))
     return upperBound
   }
 }

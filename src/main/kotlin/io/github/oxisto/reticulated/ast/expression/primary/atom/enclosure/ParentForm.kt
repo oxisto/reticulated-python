@@ -15,11 +15,17 @@
  *
  */
 
-
 package io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure
 
 import io.github.oxisto.reticulated.ast.expression.starred.Starred
 
+/**
+ * This class represents the parent_form.
+ * It´s EBNF representations is:
+ *        parenth_form ::= "(" [starred_expression] ")"
+ *
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-parenth-form}]
+ */
 class ParentForm(val starredExpression: Starred?): Enclosure(){
 
   override fun toString(): String {

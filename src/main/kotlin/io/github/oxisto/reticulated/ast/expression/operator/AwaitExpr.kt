@@ -17,7 +17,6 @@
 
 package io.github.oxisto.reticulated.ast.expression.operator
 
-import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.primary.Primary
 
 /**
@@ -28,7 +27,7 @@ import io.github.oxisto.reticulated.ast.expression.primary.Primary
  */
 class AwaitExpr(val primary: Primary): BaseOperator(){
 
-    // TODO: Write AwaitExpr tests
+    // TODO: Write AwaitExpr tests, as soon as the async_funcdef is implemented
 
     override fun toString(): String {
         return "AwaitExpr(" + System.lineSeparator() +

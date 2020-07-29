@@ -17,10 +17,18 @@
 
 package io.github.oxisto.reticulated.ast.expression.primary.slice
 
+import io.github.oxisto.reticulated.ast.expression.Expression
+
+/**
+ * This class represents a proper_slice.
+ * It´s EBNF representation is:
+ *        proper_slice ::=  [lower_bound] ":" [upper_bound] [ ":" stride ]
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-proper-slice}]
+ */
 class ProperSlice(
-    val lowerBound: LowerBound?,
-    val upperBound: UpperBound?,
-    val stride: Stride?
+    val lowerBound: Expression?,
+    val upperBound: Expression?,
+    val stride: Expression?
 ): Slice() {
 
 

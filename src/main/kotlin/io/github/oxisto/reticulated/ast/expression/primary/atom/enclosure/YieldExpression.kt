@@ -21,9 +21,16 @@ package io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.ExpressionList
-// TODO: Testing, as soon as funcdefs are implemented
-class YieldExpression(val expressionList: ExpressionList?, val expression: Expression?) : Enclosure() {
 
+/**
+ * This class represents a yield_eypression.
+ * It´s EBNF representations is:
+ *        yield_expression ::=  "yield" [expression_list | "from" expression]
+ *
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-yield-atom}]
+ */
+class YieldExpression(val expressionList: ExpressionList?, val expression: Expression?) : Enclosure() {
+// TODO: write Tests
   init {
     if(expressionList != null && expression != null)
       throw CouldNotParseException(

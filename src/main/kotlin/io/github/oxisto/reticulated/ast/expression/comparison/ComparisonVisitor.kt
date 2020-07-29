@@ -19,7 +19,6 @@ package io.github.oxisto.reticulated.ast.expression.comparison
 
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.expression.booleanexpr.BooleanExprVisitor
-import io.github.oxisto.reticulated.ast.expression.booleanexpr.OrExpr
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 import io.github.oxisto.reticulated.Pair

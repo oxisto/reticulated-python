@@ -19,17 +19,9 @@ package io.github.oxisto.reticulated.ast.expression
 
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
-import io.github.oxisto.reticulated.ast.expression.argument.CallTrailerVisitor
-import io.github.oxisto.reticulated.ast.expression.primary.atom.AtomVisitor
-import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
 import io.github.oxisto.reticulated.ast.expression.booleanops.BooleanOpVisitor
-import io.github.oxisto.reticulated.ast.expression.primary.call.Call
-import io.github.oxisto.reticulated.ast.expression.primary.AttributeRef
-import io.github.oxisto.reticulated.ast.expression.primary.Primary
-import io.github.oxisto.reticulated.ast.expression.primary.slice.Slicing
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
-import org.antlr.v4.runtime.tree.TerminalNode
 
 /**
  * Think of splitting the class
@@ -48,6 +40,5 @@ class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
     // TODO: Implement Expression List Visitor
     return super.visitExprlist(ctx)
   }
-
 
 }

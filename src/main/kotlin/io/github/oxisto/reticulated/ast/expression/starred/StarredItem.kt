@@ -20,6 +20,12 @@ package io.github.oxisto.reticulated.ast.expression.starred
 
 import io.github.oxisto.reticulated.ast.expression.booleanexpr.OrExpr
 
+/**
+ * This class represents an starred_item.
+ * It´s EBNF representation is:
+ *        starred_item ::= assignment_expression | "*" or_expr
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-starred-item}]
+ */
 class StarredItem(val orExpr: OrExpr): Starred() {
   // TODO: StarredItem tests
 

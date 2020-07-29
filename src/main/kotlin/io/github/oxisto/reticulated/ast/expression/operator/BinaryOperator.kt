@@ -19,6 +19,9 @@ package io.github.oxisto.reticulated.ast.expression.operator
 
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 
+/**
+ * All binary operators of Python.
+ */
 enum class BinaryOperator(val symbol: String) {
     SHIFT_RIGHT(">>"), SHIFT_LEFT("<<"), ADDITION("+"),
     SUBTRACTION("-"), MULTIPLICATION("*"), DIVISION("/"),

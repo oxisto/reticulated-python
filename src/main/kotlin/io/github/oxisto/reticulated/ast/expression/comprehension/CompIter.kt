@@ -17,8 +17,6 @@
 
 package io.github.oxisto.reticulated.ast.expression.comprehension
 
-import io.github.oxisto.reticulated.ast.CouldNotParseException
-
 /**
  * This class represents a comp_iter.
  * It´s EBNF definition is:

@@ -17,14 +17,12 @@
 
 package io.github.oxisto.reticulated.ast.expression.booleanops
 
-import io.github.oxisto.reticulated.ast.CouldNotParseException
-import io.github.oxisto.reticulated.ast.expression.comparison.Comparison
-
 /**
  * This class represents a not_test.
  * It´s EBNF definition is:
  *      not_test ::= comparison | "not" not_test
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#boolean-operations}]
+ *
  */
 class NotTest(val notTest: BaseBooleanOp): BaseBooleanOp() {
 

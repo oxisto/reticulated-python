@@ -20,6 +20,13 @@ package io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure
 import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.comprehension.CompFor
 
+/**
+ * This class represents a generator_expression.
+ * It´s EBNF representations is:
+ *        generator_expression ::= "(" expression comp_for ")"
+ *
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-generator-expression}]
+ */
 class GeneratorExpression(val expression: Expression, val compFor: CompFor) : Enclosure() {
   override fun toString(): String {
     return "GeneratorExpression(" + System.lineSeparator() +

@@ -21,6 +21,7 @@ import io.github.oxisto.reticulated.ast.expression.comparison.BaseComparison
 
 /**
  * The base class for all boolean expressions and all operators.
+ *
  */
 abstract class BaseBooleanExpr: BaseComparison() {
      abstract override fun toString(): String

@@ -23,6 +23,13 @@ import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.booleanexpr.OrExpr
 import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
 
+/**
+ * This class represents a key_datum pair.
+ * It´s EBNF representations is:
+ *        key_datum ::= expression ":" expression | "**" or_expr
+ *
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-key-datum}]
+ */
 class KeyDatum(val key: Expression?, val datum: Expression?, val orExpr: OrExpr?): Enclosure() {
 
   init {

@@ -25,6 +25,9 @@ import io.github.oxisto.reticulated.ast.expression.booleanexpr.OrExpr
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 
+/**
+ * This class offers visitors for all starred nodes
+ */
 class StarredVisitor(val scope: Scope) : Python3BaseVisitor<Starred>() {
 
   override fun visitTestlist_comp(ctx: Python3Parser.Testlist_compContext): Starred {

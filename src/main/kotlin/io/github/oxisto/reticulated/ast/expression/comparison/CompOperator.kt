@@ -17,6 +17,9 @@
 
 package io.github.oxisto.reticulated.ast.expression.comparison
 
+/**
+ * All comparison operators of Python.
+ */
 enum class CompOperator(val symbol:String) {
     SMALLER("<"), SMALLER_OR_EQUAL("<="), LARGER(">"), LARGER_OR_EQUAL(">="),
     EQUAL("=="), NOT_EQUAL("!="), IS("is"), IS_NOT("is not"), IN("in"),

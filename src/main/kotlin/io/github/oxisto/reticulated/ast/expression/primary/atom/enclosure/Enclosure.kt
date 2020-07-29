@@ -20,6 +20,15 @@ package io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure
 
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Atom
 
+/**
+ * This class represents a enclosure.
+ * It´s EBNF representations is:
+ *        enclosure ::= parenth_form | list_display |
+ *                      dict_display | set_display |
+ *                      generator_expression | yield_atom
+ *
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-enclosure}]
+ */
 abstract class Enclosure: Atom() {
 
 }

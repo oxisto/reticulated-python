@@ -25,6 +25,7 @@ import io.github.oxisto.reticulated.ast.expression.Expression
  * because it is already in the relating visitor decidable if it is a single argument or a positional argument.
  * It has the EBNF representation: positional_argument ::= "*" expression
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#calls}]
+ *
  */
 class PositionalArgument(expression: Expression) : Argument(expression) {
 

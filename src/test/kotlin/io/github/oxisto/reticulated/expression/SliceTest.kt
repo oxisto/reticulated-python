@@ -64,12 +64,9 @@ class SliceTest {
 
     val properSlice = primary1.sliceList as ProperSlice
     assertNotNull(properSlice)
-    val lowerBound2 = properSlice.lowerBound as LowerBound
-    assertNotNull(lowerBound2)
-    val lowerBound2Value = lowerBound2.expression as Integer
+    val lowerBound2Value = properSlice.lowerBound as Integer
     assertEquals( lowerBound2Value.value, 0)
-    val upperBound2 = properSlice.upperBound as UpperBound
-    val upperBound2Value = upperBound2.expression as Integer
+    val upperBound2Value = properSlice.upperBound as Integer
     assertEquals(upperBound2Value.value, 3)
     val stride2 = properSlice.stride as Stride
     assertNotNull(stride2)
@@ -110,14 +107,10 @@ class SliceTest {
 )]
 ) "]"
 ) "[" slice_list=ProperSlice(
-	LowerBound=LowerBound(
-	Expression:Integer(
+	LowerBound=Integer(
 	value=0
-)
-) ":" UpperBound=UpperBound(
-	Expression=Integer(
+) ":" UpperBound=Integer(
 	value=3
-) 
 ) ":" Stride(
 	Expression=Integer(
 	value=2

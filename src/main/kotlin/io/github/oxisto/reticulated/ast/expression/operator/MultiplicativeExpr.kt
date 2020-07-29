@@ -17,9 +17,6 @@
 
 package io.github.oxisto.reticulated.ast.expression.operator
 
-import io.github.oxisto.reticulated.ast.CouldNotParseException
-
-
 /**
  * This class represents a m_expr.
  * It´s EBNF representations are:

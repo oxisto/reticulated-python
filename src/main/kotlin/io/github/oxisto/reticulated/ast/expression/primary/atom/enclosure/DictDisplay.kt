@@ -20,6 +20,13 @@ package io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure
 
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 
+/**
+ * This class represents a dict_display.
+ * It´s EBNF representations is:
+ *        dict_display ::= "{" ( starred_list | comprehension ) "}"
+ *
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-dict-display}]
+ */
 class DictDisplay(val keyDatumList: KeyDatumList?, var dictComprehension: DictComprehension?): Enclosure() {
 
   init {

@@ -17,13 +17,12 @@
 
 package io.github.oxisto.reticulated.ast.expression.booleanexpr
 
-import io.github.oxisto.reticulated.ast.CouldNotParseException
-
 /**
  * The visitor for an xor_expr.
  * It´s EBNF representation is:
  *      xor_expr ::= and_expr | xor_expr "^" and_expr
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#binary-bitwise-operations}]
+ *
  */
 class XorExpr(val xorExpr: BaseBooleanExpr, val andExpr: BaseBooleanExpr): BaseBooleanExpr() {
 

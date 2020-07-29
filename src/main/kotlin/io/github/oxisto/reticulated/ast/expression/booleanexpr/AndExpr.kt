@@ -17,13 +17,11 @@
 
 package io.github.oxisto.reticulated.ast.expression.booleanexpr
 
-import io.github.oxisto.reticulated.ast.CouldNotParseException
-import io.github.oxisto.reticulated.ast.expression.operator.ShiftExpr
-
 /**
  * This class represents an and_expr.
  * It´s EBNF definition is: and_expr ::= shift_expr | and_expr "&" shift_expr
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#binary-bitwise-operations}]
+ *
  */
 class AndExpr(val andExpr: BaseBooleanExpr, val shiftExpr: BaseBooleanExpr): BaseBooleanExpr() {
 

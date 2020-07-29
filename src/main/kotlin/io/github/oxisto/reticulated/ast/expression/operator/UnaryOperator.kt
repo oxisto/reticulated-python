@@ -19,6 +19,9 @@ package io.github.oxisto.reticulated.ast.expression.operator
 
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 
+/**
+ * All unary operators of python.
+ */
 enum class UnaryOperator(val symbol: String) {
     POSITIVE("+"), NEGATIVE("-"), BITWISE_NOT("~");
 

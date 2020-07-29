@@ -17,12 +17,9 @@
 
 package io.github.oxisto.reticulated.ast.expression.comparison
 
-import io.github.oxisto.reticulated.ast.Node
-import io.github.oxisto.reticulated.ast.expression.booleanexpr.OrExpr
 import io.github.oxisto.reticulated.Pair
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.expression.booleanexpr.BaseBooleanExpr
-import io.github.oxisto.reticulated.ast.expression.booleanops.BaseBooleanOp
 
 /**
  * This class represents a comparison.

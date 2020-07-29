@@ -19,7 +19,6 @@ package io.github.oxisto.reticulated.ast.expression.argument
 
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.Expression
-import io.github.oxisto.reticulated.ast.expression.primary.call.CallTrailer
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 import org.antlr.v4.runtime.tree.TerminalNodeImpl
@@ -32,7 +31,6 @@ import org.antlr.v4.runtime.tree.TerminalNodeImpl
  *          starred_and_keywords [ "," keyword_arguments ] |
  *          keyword_arguments
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#calls}]
- *
  *
  */
 class ArgumentListVisitor(val scope: Scope): Python3BaseVisitor<Expression>() {

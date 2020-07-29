@@ -17,10 +17,6 @@
 
 package io.github.oxisto.reticulated.ast.expression
 
-import io.github.oxisto.reticulated.ast.CouldNotParseException
-import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
-import io.github.oxisto.reticulated.ast.expression.lambda.LambdaNoCond
-
 /**
  * This class represents an expression_nocond
  * It´s EBNF representation is:

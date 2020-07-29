@@ -15,12 +15,18 @@
  *
  */
 
-
 package io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure
 
 import io.github.oxisto.reticulated.ast.Container
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 
+/**
+ * This class represents a key_datum_list.
+ * It´s EBNF representations is:
+ *        key_datum_list ::= key_datum ("," key_datum)* [","]
+ *
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-key-datum-list}]
+ */
 class KeyDatumList(var keyDatums: List<KeyDatum> = ArrayList()) : Enclosure(), Container<KeyDatum> {
 
   init {

@@ -17,13 +17,15 @@
 
 package io.github.oxisto.reticulated.ast.expression.booleanexpr
 
-import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.operator.OperatorVisitor
-import io.github.oxisto.reticulated.ast.expression.operator.ShiftExpr
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 
+/**
+ * This visitor is called for all boolean expressions.
+ *
+ */
 class BooleanExprVisitor(val scope: Scope):  Python3BaseVisitor<BaseBooleanExpr>() {
     /**
      * The visitor for an or_expr.

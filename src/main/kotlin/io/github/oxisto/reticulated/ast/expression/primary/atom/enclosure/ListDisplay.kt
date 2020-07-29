@@ -22,6 +22,13 @@ import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.expression.comprehension.Comprehension
 import io.github.oxisto.reticulated.ast.expression.starred.Starred
 
+/**
+ * This class represents a list_display.
+ * It´s EBNF representations is:
+ *        list_display ::= "[" [starred_list | comprehension] "]"
+ *
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-list-display}]
+ */
 class ListDisplay(val starredList: Starred?, val comprehension: Comprehension?) : Enclosure() {
 
   init {

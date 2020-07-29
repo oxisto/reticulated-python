@@ -30,6 +30,7 @@ import io.github.oxisto.reticulated.ast.expression.primary.call.CallTrailer
  *    positional_arguments ::= ( positional_argument | argument ) ( "," positional_argument | "," argument )*
  *    keyword_arguments ::= keyword_argument ( "," keyword_argument )*
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#calls}]
+ *
  */
 class ArgumentList(private val arguments: List<Expression> = ArrayList()) : CallTrailer(), Container<Expression> {
 

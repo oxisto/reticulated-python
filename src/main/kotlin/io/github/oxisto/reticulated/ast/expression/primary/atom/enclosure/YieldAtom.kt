@@ -18,6 +18,13 @@
 
 package io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure
 
+/**
+ * This class represents a yield_atom.
+ * It´s EBNF representations is:
+ *        yield_atom ::= "(" yield_expression ")"
+ *
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-yield-atom}]
+ */
 class YieldAtom(val yieldExpression: YieldExpression): Enclosure() {
 
   // TODO: Write Yield tests

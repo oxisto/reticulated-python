@@ -21,6 +21,12 @@ import io.github.oxisto.reticulated.ast.Container
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.expression.primary.Primary
 
+/**
+ * This class represents a slice_list.
+ * It´s EBNF representation is:
+ *        slice_list ::= slice_item ("," slice_item)* [","]
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-slice-list}]
+ */
 class SliceList(private val items: List<Primary> = ArrayList()) : Slice(), Container<Primary> {
 
   // TODO: WriteSliceList tests

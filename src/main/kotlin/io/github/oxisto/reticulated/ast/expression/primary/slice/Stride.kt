@@ -19,6 +19,12 @@ package io.github.oxisto.reticulated.ast.expression.primary.slice
 
 import io.github.oxisto.reticulated.ast.expression.Expression
 
+/**
+ * This class represents a stride.
+ * It´s EBNF representation is:
+ *        stride ::= [expression]
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-stride}]
+ */
 class Stride(val expression: Expression?): Slice() {
   override fun toString(): String {
     var result = "Stride(" + System.lineSeparator()

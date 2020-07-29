@@ -18,7 +18,7 @@
 package io.github.oxisto.reticulated.ast.expression.operator
 /**
  * This class represents a u_expr.
- * It´s EBNF representations are:
+ * It´s EBNF representations is:
  *      u_expr ::=  power | "-" u_expr | "+" u_expr | "~" u_expr
  *
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#unary-arithmetic-and-bitwise-operations}]

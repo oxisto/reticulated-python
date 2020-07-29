@@ -22,6 +22,7 @@ package io.github.oxisto.reticulated.ast.expression.booleanexpr
  * It´s EBNF representation is:
  *      or_expr ::= xor_expr | or_expr "|" xor_expr
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#binary-bitwise-operations}]
+ *
  */
 class OrExpr(val orExpr: BaseBooleanExpr, val xorExpr: BaseBooleanExpr): BaseBooleanExpr() {
 

@@ -21,6 +21,13 @@ package io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure
 import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.comprehension.CompFor
 
+/**
+ * This class represents a dict_Comprehension.
+ * It´s EBNF representations is:
+ *        dict_comprehension ::= expression ":" expression comp_for
+ *
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-dict-comprehension}]
+ */
 class DictComprehension(val key: Expression, val datum: Expression, val compFor: CompFor): Enclosure() {
 
   override fun toString(): String {

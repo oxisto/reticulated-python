@@ -22,6 +22,12 @@ import io.github.oxisto.reticulated.ast.Container
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.expression.Expression
 
+/**
+ * This class represents an starred_list.
+ * It´s EBNF representation is:
+ *        starred_list ::= starred_item ("," starred_item)* [","]
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-starred-list}]
+ */
 class StarredList(private val starredItems: List<Starred> = ArrayList()): Expression(), Container<Starred> {
 
   init {

@@ -31,7 +31,11 @@ import io.github.oxisto.reticulated.ast.expression.starred.StarredList
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 
+/**
+ * This class offers a visitor for a set_display and a dict_display
+ */
 class SetMakerVisitor (val scope: Scope) : Python3BaseVisitor<Expression>() {
+
   override fun visitDictorsetmaker(ctx: Python3Parser.DictorsetmakerContext): Expression {
     return if (ctx.childCount == 4 &&
         ctx.getChild(3) is Python3Parser.Comp_forContext) {

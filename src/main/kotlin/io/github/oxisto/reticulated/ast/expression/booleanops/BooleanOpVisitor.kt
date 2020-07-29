@@ -22,6 +22,10 @@ import io.github.oxisto.reticulated.ast.expression.comparison.ComparisonVisitor
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 
+/**
+ * This visitor is called for all boolean Operators.
+ *
+ */
 class BooleanOpVisitor(val scope: Scope) : Python3BaseVisitor<BaseBooleanOp>() {
 
     /**

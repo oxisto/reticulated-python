@@ -19,5 +19,8 @@ package io.github.oxisto.reticulated.ast.expression.starred
 
 import io.github.oxisto.reticulated.ast.simple.target.Target
 
+/**
+ * This class is the base for the starred nodes.
+ */
 abstract class Starred : Target() {
 }
