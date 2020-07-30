@@ -29,8 +29,6 @@ import io.github.oxisto.reticulated.ast.expression.Expression
  */
 class SliceList(private val items: List<Expression> = ArrayList()) : Slice(), Container<Expression> {
 
-  // TODO: WriteSliceList tests
-
   init {
     if (items.isEmpty())
       throw CouldNotParseException("Empty slice item list was provided.")
@@ -40,9 +38,8 @@ class SliceList(private val items: List<Expression> = ArrayList()) : Slice(), Co
   override val children get() = this.items
 
   override fun toString(): String {
-    var result =  "SliceList(" + System.lineSeparator() +
-        "\t" + items.first()
-    items.subList(1, items.size).forEach { result += ", $it" }
-    return result + System.lineSeparator() + ")"
+    return "SliceList(" + System.lineSeparator() +
+        "\titems=$items" + System.lineSeparator() +
+        ")"
   }
 }

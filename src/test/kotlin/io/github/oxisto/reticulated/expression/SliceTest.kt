@@ -112,8 +112,8 @@ class SliceTest {
 	value=0
 ) ":" UpperBound=Integer(
 	value=3
-) ":" Stride(
-	Expression=Integer(
+) Stride(
+	":" Expression=Integer(
 	value=2
 )
 )

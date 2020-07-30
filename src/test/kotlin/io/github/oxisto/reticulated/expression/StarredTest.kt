@@ -18,7 +18,7 @@ import kotlin.test.assertNull
 
 class StarredTest {
   @Test
-  fun testSlicingParseTree() {
+  fun starredTest() {
     val file = File(
         javaClass
             .classLoader
@@ -58,7 +58,7 @@ class StarredTest {
   }
 
   @Test
-  fun testSlicingParseString () {
+  fun starredToStringTest () {
     val file = File(
         javaClass
             .classLoader

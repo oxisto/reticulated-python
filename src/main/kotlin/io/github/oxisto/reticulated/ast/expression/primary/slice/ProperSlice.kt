@@ -40,7 +40,7 @@ class ProperSlice(
     if (upperBound != null)
       result += "UpperBound=$upperBound"
     if (stride != null)
-      result += " \":\" $stride"
+      result += " $stride"
     return result + System.lineSeparator() + ")"
   }
 

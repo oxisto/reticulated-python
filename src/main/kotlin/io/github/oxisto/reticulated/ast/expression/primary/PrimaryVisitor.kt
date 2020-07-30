@@ -46,7 +46,7 @@ class PrimaryVisitor(val scope: Scope): Python3BaseVisitor<Expression>() {
           )
     } else {
       // first child is the primary
-      val primary = if (ctx.getChild(0) is Python3Parser.AtomContext)
+      var primary = if (ctx.getChild(0) is Python3Parser.AtomContext)
         ctx.getChild(0)
             .accept(
                 AtomVisitor(
@@ -61,43 +61,36 @@ class PrimaryVisitor(val scope: Scope): Python3BaseVisitor<Expression>() {
       // All of them have a primary as the first child
 
       // check the trailer and decide what it is
-      val trailer = ctx.getChild(Python3Parser.TrailerContext::class.java, 0)
+      val trailer = ctx.getChild(ctx.childCount - 1)
 
-      if ( trailer.childCount == 2 ) {
-        if (trailer.getChild(TerminalNode::class.java, 0).text == "." ) {
-          // it is an attribute ref, parse the identifier
-
-          var attributeRef = primary
-          for (index in 1 until trailer.childCount) {
-            val id = trailer.getChild(index).accept(AtomVisitor(this.scope)) as Identifier
-            attributeRef = AttributeRef(attributeRef, id)
-          }
-
-          attributeRef
-        } else {
-          // It is a call without arguments
-          // parse the trailer
-          val argumentList =
+      when (trailer.getChild(0).text) {
+         "(" -> {
+           // it is a call
+           for (index in 1 until ctx.childCount-1)
+             primary = AttributeRef(
+                 primary,
+                 ctx.getChild(index)
+                     .getChild(1)
+                     .accept(
+                         AtomVisitor(this.scope)
+                     ) as Identifier
+             )
+           val argumentList =
               trailer.accept(
                   CallTrailerVisitor(
                       this.scope
                   )
               )
-          Call(primary, argumentList)
+           Call(primary, argumentList)
         }
-      } else {
-        if (trailer.getChild(TerminalNode::class.java, 0).text == "(") {
-            // it is a call
-            // parse the trailer
-            val argumentList =
-                trailer.accept(
-                    CallTrailerVisitor(
-                        this.scope
-                    )
-                )
+        "." -> {
+          // it is an attribute ref, parse the identifier
+          val id = trailer.getChild(1)
+              .accept(AtomVisitor(this.scope)) as Identifier
+          AttributeRef(primary, id)
 
-            Call(primary, argumentList)
-        } else { // "["
+        }
+        else -> { // "["
           // it is s Slicing or a subscription. Parse all trailers
           var res = primary
           for (index in 1 until ctx.childCount) {
@@ -115,7 +108,7 @@ class PrimaryVisitor(val scope: Scope): Python3BaseVisitor<Expression>() {
   override fun visitSubscriptlist(ctx: Python3Parser.SubscriptlistContext): Expression {
     val sliceItems = ArrayList<Expression>()
     var containsProperSlice = false
-    for (index in 0 until ctx.childCount) {
+    for (index in 0 until ctx.childCount step 2) {
       val sliceItem = ctx.getChild(index).accept(this)
       if (sliceItem is ProperSlice)
         containsProperSlice = true

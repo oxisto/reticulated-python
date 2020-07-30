@@ -27,9 +27,10 @@ import io.github.oxisto.reticulated.ast.expression.Expression
  */
 class Stride(val expression: Expression?): Slice() {
   override fun toString(): String {
-    var result = "Stride(" + System.lineSeparator()
+    var result = "Stride(" + System.lineSeparator() +
+        "\t\":\""
     if(expression != null)
-      result += "\tExpression=$expression"
+      result += " Expression=$expression"
     return result + System.lineSeparator() + ")"
   }
 }
