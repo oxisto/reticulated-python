@@ -18,9 +18,9 @@
 package io.github.oxisto.reticulated.expression
 
 import io.github.oxisto.reticulated.PythonParser
-import io.github.oxisto.reticulated.ast.expression.primary.call.Call
 import io.github.oxisto.reticulated.ast.expression.primary.AttributeRef
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
+import io.github.oxisto.reticulated.ast.expression.primary.call.Call
 import io.github.oxisto.reticulated.ast.simple.ImportStatement
 import org.junit.Test
 import java.io.File
@@ -31,53 +31,60 @@ class ExpressionsTest {
   @Test
   fun testAttributeRef() {
     val file = File(
-        javaClass
-            .classLoader
-            .getResource("import.py")!!
-            .file
+      javaClass
+        .classLoader
+        .getResource("import.py")!!
+        .file
     )
 
     val input = PythonParser()
-        .parse(file.path)
-        .root
+      .parse(file.path)
+      .root
     assertNotNull(input)
 
     // print(input)
 
-    val importStatement = input.statements[0] as ImportStatement
+    val importStatement = input.statementAsOrNull<ImportStatement>(0)
     assertNotNull(importStatement)
+
     val module = importStatement.module
     assertEquals(module.name, "os")
 
-    val call = input.statements[1] as Call
+    val call = input.statementAsOrNull(1) as Call?
     assertNotNull(call)
+
     val prim = call.primary as Identifier
     assertEquals(prim.name, "print")
+
     val trailer = call.callTrailer as AttributeRef
     assertNotNull(call)
+
     val primary = trailer.primary as Identifier
     assertEquals(primary.name, "os")
+
     val id = trailer.identifier
     assertEquals(id.name, "name")
   }
 
 
-  @Test fun testAttributeRefString () {
+  @Test
+  fun testAttributeRefString() {
     val file = File(
-        javaClass
-            .classLoader
-            .getResource("import.py")!!
-            .file
+      javaClass
+        .classLoader
+        .getResource("import.py")!!
+        .file
     )
 
     val input = PythonParser()
-        .parse(file.path)
-        .root
+      .parse(file.path)
+      .root
     assertNotNull(input)
 
     val inputString = input.toString()
     // print(input)
-    assertEquals(inputString, """FileInput(statements=[ImportStatement(
+    assertEquals(
+      inputString, """FileInput(statements=[ImportStatement(
 	module=Identifier(
 	name='os'
 )
@@ -91,7 +98,8 @@ class ExpressionsTest {
 	name='name'
 )
 )
-)])""".replace("\n", System.lineSeparator()))
+)])""".replace("\n", System.lineSeparator())
+    )
   }
 
 
