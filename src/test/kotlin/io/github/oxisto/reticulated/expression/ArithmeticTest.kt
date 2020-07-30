@@ -18,9 +18,12 @@
 package io.github.oxisto.reticulated.expression
 
 import io.github.oxisto.reticulated.PythonParser
-import io.github.oxisto.reticulated.ast.expression.primary.atom.literal.*
-import io.github.oxisto.reticulated.ast.expression.operator.*
+import io.github.oxisto.reticulated.ast.expression.operator.AdditiveExpr
+import io.github.oxisto.reticulated.ast.expression.operator.MultiplicativeExpr
+import io.github.oxisto.reticulated.ast.expression.operator.PowerExpr
+import io.github.oxisto.reticulated.ast.expression.operator.UnaryExpr
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
+import io.github.oxisto.reticulated.ast.expression.primary.atom.literal.*
 import io.github.oxisto.reticulated.ast.simple.AssignmentExpression
 import org.junit.Test
 import java.io.File
@@ -31,23 +34,23 @@ class ArithmeticTest {
   @Test
   fun testAdditiveExpressions() {
     val file = File(
-        javaClass
-            .classLoader
-            .getResource("expressions/arithmetic/additive.py")!!
-            .file
+      javaClass
+        .classLoader
+        .getResource("expressions/arithmetic/additive.py")!!
+        .file
     )
 
     val input = PythonParser()
-        .parse(file.path)
-        .root
+      .parse(file.path)
+      .root
     assertNotNull(input)
     // print(
-        // beautifyResult(
-            // input.toString()
-        // )
+    // beautifyResult(
+    // input.toString()
     // )
-    val firstAssignment = input.statements[0] as AssignmentExpression
-    val firstTarget = firstAssignment.target as Identifier
+    // )
+    val firstAssignment = input.statementAsOrNull<AssignmentExpression>(0)
+    val firstTarget = firstAssignment?.target as Identifier
     assertEquals(firstTarget.name, "a")
 
     val firstAdditiveExpr = firstAssignment.expression as AdditiveExpr
@@ -73,10 +76,10 @@ class ArithmeticTest {
     assertNotNull(valueOfFUEN4)
     assertEquals(valueOfFUEN4.value, 1)
 
-    val secondAssignment = input.statements[1]  as AssignmentExpression
-    val secondTarget = secondAssignment.target  as Identifier
+    val secondAssignment = input.statements[1] as AssignmentExpression
+    val secondTarget = secondAssignment.target as Identifier
     assertEquals(secondTarget.name, "b")
-    val secondAdditiveExpr = secondAssignment.expression  as AdditiveExpr
+    val secondAdditiveExpr = secondAssignment.expression as AdditiveExpr
     val floatOfSSAE = secondAdditiveExpr.additiveExpr as FloatNumber
     assertNotNull(floatOfSSAE)
     assertEquals(floatOfSSAE.value, "0.5".toFloat())
@@ -108,7 +111,7 @@ class ArithmeticTest {
     val forthAssignment = input.statements[3] as AssignmentExpression
     val forthTarget = forthAssignment.target as Identifier
     assertEquals(forthTarget.name, "d")
-    val forthAdditiveExpr = forthAssignment.expression  as AdditiveExpr
+    val forthAdditiveExpr = forthAssignment.expression as AdditiveExpr
     assertNotNull(forthAdditiveExpr)
     val valueOfSAEFAE = forthAdditiveExpr.additiveExpr as Integer
     assertNotNull(valueOfSAEFAE)
@@ -133,7 +136,7 @@ class ArithmeticTest {
     val fifthAssignment = input.statements[4] as AssignmentExpression
     val fifthTarget = fifthAssignment.target as Identifier
     assertEquals(fifthTarget.name, "e")
-    val fifthAdditiveExpr = fifthAssignment.expression  as AdditiveExpr
+    val fifthAdditiveExpr = fifthAssignment.expression as AdditiveExpr
     assertNotNull(fifthAdditiveExpr)
     val subAdditiveExprOfFiAE = fifthAdditiveExpr.additiveExpr as UnaryExpr
     assertNotNull(subAdditiveExprOfFiAE)
@@ -158,22 +161,23 @@ class ArithmeticTest {
     assertEquals(floatNumberOfINFiAE.value, "0.1".toFloat())
   }
 
-  @Test fun multiplicativeTest(){
+  @Test
+  fun multiplicativeTest() {
     val file = File(
-        javaClass
-            .classLoader
-            .getResource("expressions/arithmetic/multiplicative.py")!!
-            .file
-        )
+      javaClass
+        .classLoader
+        .getResource("expressions/arithmetic/multiplicative.py")!!
+        .file
+    )
 
     val input = PythonParser()
-        .parse(file.path)
-        .root
+      .parse(file.path)
+      .root
     assertNotNull(input)
     // print(
-        // beautifyResult(
-            // input.toString()
-        // )
+    // beautifyResult(
+    // input.toString()
+    // )
     // )
     val power = input.statements[0] as PowerExpr
     assertNotNull(power)
@@ -186,7 +190,7 @@ class ArithmeticTest {
     assertNotNull(floatNumberPSBO)
     assertEquals(floatNumberPSBO.value, "0.1".toFloat())
 
-    val baseOperatorSE = input.statements[1]  as MultiplicativeExpr
+    val baseOperatorSE = input.statements[1] as MultiplicativeExpr
     assertNotNull(baseOperatorSE)
     val multiplicativeExprSE = baseOperatorSE.multiplicativeExpr as UnaryExpr
     assertNotNull(multiplicativeExprSE)
@@ -208,7 +212,7 @@ class ArithmeticTest {
     assertNotNull(bytesLiteralUOSE)
     assertEquals(bytesLiteralUOSE.value, "1".toByte())
 
-    val baseOperatorTE = input.statements[2]  as MultiplicativeExpr
+    val baseOperatorTE = input.statements[2] as MultiplicativeExpr
     assertNotNull(baseOperatorTE)
     val bytesLiteralTE = baseOperatorTE.multiplicativeExpr as BytesLiteral
     assertNotNull(bytesLiteralTE)
@@ -247,20 +251,22 @@ class ArithmeticTest {
     assertEquals(floatNumberFiE.value, "0.5".toFloat())
   }
 
-  @Test fun multiplicativeToStringTest(){
+  @Test
+  fun multiplicativeToStringTest() {
     val file = File(
-        javaClass
-            .classLoader
-            .getResource("expressions/arithmetic/multiplicative.py")!!
-            .file
+      javaClass
+        .classLoader
+        .getResource("expressions/arithmetic/multiplicative.py")!!
+        .file
     )
 
     val input = PythonParser()
-        .parse(file.path)
-        .root
+      .parse(file.path)
+      .root
     assertNotNull(input)
     val inputString = input.toString()
-    assertEquals(inputString, """FileInput(statements=[PowerExpr(
+    assertEquals(
+      inputString, """FileInput(statements=[PowerExpr(
 	primary=BytesLiteral(
 	value=10
 ) power=** unaryExpr=ImagNumber(
@@ -298,23 +304,26 @@ class ArithmeticTest {
 ) binaryOperator=MODULO unaryExpr=FloatNumber(
 	value=0.5
 )
-)])""".replace("\n", System.lineSeparator()))
+)])""".replace("\n", System.lineSeparator())
+    )
   }
 
-    @Test fun arithmeticToStringTest(){
-        val file = File(
-            javaClass
-                .classLoader
-                .getResource("expressions/arithmetic/additive.py")!!
-                .file
-        )
+  @Test
+  fun arithmeticToStringTest() {
+    val file = File(
+      javaClass
+        .classLoader
+        .getResource("expressions/arithmetic/additive.py")!!
+        .file
+    )
 
-        val input = PythonParser()
-            .parse(file.path)
-            .root
-        assertNotNull(input)
-        val inputString = input.toString()
-        assertEquals(inputString, """FileInput(statements=[AssignmentExpression(
+    val input = PythonParser()
+      .parse(file.path)
+      .root
+    assertNotNull(input)
+    val inputString = input.toString()
+    assertEquals(
+      inputString, """FileInput(statements=[AssignmentExpression(
 	target=Identifier(
 	name='a'
 ) expression=AdditiveExpr(
@@ -384,6 +393,7 @@ class ArithmeticTest {
 ) "j"
 )
 )
-)])""".replace("\n", System.lineSeparator()))
-    }
+)])""".replace("\n", System.lineSeparator())
+    )
+  }
 }

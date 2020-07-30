@@ -32,4 +32,15 @@ class FileInput(val statements: ArrayList<Statement> = ArrayList()) : Node() {
     return "FileInput(statements=$statements)"
   }
 
+  inline fun <reified T> statementAsOrNull(i: Int): T? {
+    val statement = statements.getOrNull(i)
+
+    if (statement != null && statement is T?) {
+      return statement
+    }
+
+    return null
+  }
+
+
 }

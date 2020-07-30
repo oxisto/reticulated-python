@@ -18,19 +18,11 @@
 package io.github.oxisto.reticulated.expression
 
 import io.github.oxisto.reticulated.PythonParser
-import io.github.oxisto.reticulated.ast.expression.ConditionalExpression
-import io.github.oxisto.reticulated.ast.expression.argument.ArgumentList
-import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
-import io.github.oxisto.reticulated.ast.expression.comparison.Comparison
-import io.github.oxisto.reticulated.ast.expression.operator.PowerExpr
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
 import io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure.SetDisplay
 import io.github.oxisto.reticulated.ast.expression.primary.atom.literal.Integer
 import io.github.oxisto.reticulated.ast.expression.primary.atom.literal.StringLiteral
 import io.github.oxisto.reticulated.ast.expression.primary.call.Call
-import io.github.oxisto.reticulated.ast.expression.starred.StarredList
-import io.github.oxisto.reticulated.ast.simple.ExpressionStatement
-import io.github.oxisto.reticulated.ast.statement.StatementList
 import org.junit.Test
 import java.io.File
 import kotlin.test.assertEquals
@@ -41,17 +33,17 @@ import kotlin.test.assertNull
 class SetTest {
 
   @Test
-  fun starredSetTest () {
+  fun starredSetTest() {
     val file = File(
-        javaClass
-            .classLoader
-            .getResource("expressions/enclosure/display/starred_set.py")!!
-            .file
+      javaClass
+        .classLoader
+        .getResource("expressions/enclosure/display/starred_set.py")!!
+        .file
     )
 
     val input = PythonParser()
-        .parse(file.path)
-        .root
+      .parse(file.path)
+      .root
     assertNotNull(input)
 
     // print(input.toString())
@@ -68,22 +60,22 @@ class SetTest {
   }
 
   @Test
-  fun comprehensionSetTest () {
+  fun comprehensionSetTest() {
     val file = File(
-        javaClass
-            .classLoader
-            .getResource("expressions/enclosure/display/comprehension_set.py")!!
-            .file
+      javaClass
+        .classLoader
+        .getResource("expressions/enclosure/display/comprehension_set.py")!!
+        .file
     )
 
     val input = PythonParser()
-        .parse(file.path)
-        .root
+      .parse(file.path)
+      .root
     assertNotNull(input)
 
     // print(input.toString())
 
-    val set = input.statements[0] as SetDisplay
+    val set = input.statementAsOrNull<SetDisplay>(0)
     assertNotNull(set)
     assertNull(set.starredList)
     val comprehension = set.comprehension
@@ -106,20 +98,21 @@ class SetTest {
   @Test
   fun starredSetToStringTest() {
     val file = File(
-        javaClass
-            .classLoader
-            .getResource("expressions/enclosure/display/starred_set.py")!!
-            .file
+      javaClass
+        .classLoader
+        .getResource("expressions/enclosure/display/starred_set.py")!!
+        .file
     )
 
     val input = PythonParser()
-        .parse(file.path)
-        .root
+      .parse(file.path)
+      .root
     assertNotNull(input)
 
     val inputString = input.toString()
     // print(beautifyResult(inputString))
-    assertEquals(inputString, """FileInput(statements=[SetDisplay(
+    assertEquals(
+      inputString, """FileInput(statements=[SetDisplay(
 	"{"starredList=StarredList(
 	starredItems=[Integer(
 	value=1
@@ -127,26 +120,28 @@ class SetTest {
 	value=a
 )]
 ) "}"
-)])""".replace("\n", System.lineSeparator()))
+)])""".replace("\n", System.lineSeparator())
+    )
   }
 
   @Test
   fun comprehensionSetToStringTest() {
     val file = File(
-        javaClass
-            .classLoader
-            .getResource("expressions/enclosure/display/comprehension_set.py")!!
-            .file
+      javaClass
+        .classLoader
+        .getResource("expressions/enclosure/display/comprehension_set.py")!!
+        .file
     )
 
     val input = PythonParser()
-        .parse(file.path)
-        .root
+      .parse(file.path)
+      .root
     assertNotNull(input)
 
     val inputString = input.toString()
     // print(beautifyResult(inputString))
-    assertEquals(inputString, """FileInput(statements=[SetDisplay(
+    assertEquals(
+      inputString, """FileInput(statements=[SetDisplay(
 	"{"comprehension=Comprehension(
 	expression=Identifier(
 	name='x'
@@ -162,6 +157,7 @@ class SetTest {
 )
 )
 ) "}"
-)])""".replace("\n", System.lineSeparator()))
+)])""".replace("\n", System.lineSeparator())
+    )
   }
 }
