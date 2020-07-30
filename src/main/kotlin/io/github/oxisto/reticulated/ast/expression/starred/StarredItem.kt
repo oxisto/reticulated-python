@@ -18,7 +18,7 @@
 
 package io.github.oxisto.reticulated.ast.expression.starred
 
-import io.github.oxisto.reticulated.ast.expression.booleanexpr.OrExpr
+import io.github.oxisto.reticulated.ast.expression.booleanexpr.BaseBooleanExpr
 
 /**
  * This class represents an starred_item.
@@ -26,8 +26,7 @@ import io.github.oxisto.reticulated.ast.expression.booleanexpr.OrExpr
  *        starred_item ::= assignment_expression | "*" or_expr
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-starred-item}]
  */
-class StarredItem(val orExpr: OrExpr): Starred() {
-  // TODO: StarredItem tests
+class StarredItem(val orExpr: BaseBooleanExpr): Starred() {
 
   override fun toString(): String {
     return "StarredItem(" + System.lineSeparator() +

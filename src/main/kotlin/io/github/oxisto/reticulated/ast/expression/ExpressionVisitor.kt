@@ -17,23 +17,27 @@
 
 package io.github.oxisto.reticulated.ast.expression
 
-import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.booleanops.BooleanOpVisitor
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 
 /**
- * Think of splitting the class
+ * This class offers visitors for a Expression an a ExpressionList.
  */
 class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
 
   override fun visitTest(ctx: Python3Parser.TestContext): Expression {
-    if (ctx.childCount != 1) {
-      throw CouldNotParseException("Currently not implemented.")
+    return if (ctx.childCount == 1)
+      ctx.getChild(0).accept(BooleanOpVisitor(this.scope))
+    else {
+      val orTest = ctx.getChild(0)
+          .accept(BooleanOpVisitor(this.scope))
+      val orTestOptional = ctx.getChild(2)
+          .accept(BooleanOpVisitor(this.scope))
+      val expressionOptional = ctx.getChild(4).accept(this)
+      ConditionalExpression(orTest, orTestOptional, expressionOptional)
     }
-    // TODO: check if it is a conditional Expression
-    return ctx.getChild(0).accept(BooleanOpVisitor(this.scope))
   }
 
   override fun visitTestlist(ctx: Python3Parser.TestlistContext): Expression {

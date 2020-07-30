@@ -46,7 +46,7 @@ class StarredVisitor(val scope: Scope) : Python3BaseVisitor<Starred>() {
                 ctx.getChild(index)
                     .accept(
                       BooleanExprVisitor(this.scope)
-                    ) as OrExpr
+                    )
             )
         )
     }
@@ -56,20 +56,12 @@ class StarredVisitor(val scope: Scope) : Python3BaseVisitor<Starred>() {
   }
 
   override fun visitTestlist_star_expr(ctx: Python3Parser.Testlist_star_exprContext): Starred {
-    return if (ctx.childCount == 1 && ctx.getChild(0) is Python3Parser.TestContext)
-      ctx.getChild(0)
-          .accept(
-              ExpressionVisitor(
-                  this.scope
-              )
-          )
-    else {
-      val items = ArrayList<StarredItem>()
-      for (index in 0 until ctx.childCount)
-        items.add(ctx.getChild(index).accept(this) as StarredItem)
-      if (items.size == 1) items[0]
-      else StarredExpression( items )
-    }
+    return ctx.getChild(0)
+        .accept(
+            ExpressionVisitor(
+                this.scope
+            )
+        )
   }
 
 }
