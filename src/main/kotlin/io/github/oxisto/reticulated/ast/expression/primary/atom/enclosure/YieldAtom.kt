@@ -27,8 +27,6 @@ package io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure
  */
 class YieldAtom(val yieldExpression: YieldExpression): Enclosure() {
 
-  // TODO: Write Yield tests
-
   override fun toString(): String {
     return "YieldAtom(" + System.lineSeparator() +
         "\t \"(\" yieldExpression=$yieldExpression \")\"" + System.lineSeparator() +

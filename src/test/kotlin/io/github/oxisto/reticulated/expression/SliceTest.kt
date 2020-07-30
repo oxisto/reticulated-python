@@ -18,6 +18,7 @@
 package io.github.oxisto.reticulated.expression
 
 import io.github.oxisto.reticulated.PythonParser
+import io.github.oxisto.reticulated.ast.expression.primary.Subscription
 import io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure.ListDisplay
 import io.github.oxisto.reticulated.ast.expression.primary.atom.literal.Integer
 import io.github.oxisto.reticulated.ast.expression.primary.slice.*
@@ -46,9 +47,9 @@ class SliceTest {
             // input.toString()
 //        )
     // )
-    val slicing = input.statements[0] as Slicing
-    assertNotNull(slicing)
-    val primary0 = slicing.primary as Slicing
+    val subscription = input.statements[0] as Subscription
+    assertNotNull(subscription)
+    val primary0 = subscription.primary as Slicing
     assertNotNull(primary0)
     val primary1 = primary0.primary as Slicing
     assertNotNull(primary1)
@@ -79,7 +80,7 @@ class SliceTest {
     assertNull(properSlice1.upperBound)
     assertNull(properSlice1.stride)
 
-    val sliceList0 = slicing.sliceList as Integer
+    val sliceList0 = subscription.expressionList as Integer
     assertEquals(sliceList0.value, 0)
   }
 
@@ -95,8 +96,8 @@ class SliceTest {
         .parse(file.path)
         .root
     assertNotNull(input)
-    assertEquals(input.toString(), """FileInput(statements=[Slicing(
-	 primary=Slicing(
+    assertEquals(input.toString(), """FileInput(statements=[Subscription(
+	primary=Slicing(
 	 primary=Slicing(
 	 primary=ListDisplay(
 	 "[" starredList=StarredList(
@@ -120,9 +121,9 @@ class SliceTest {
 ) "[" slice_list=ProperSlice(
 	 ":" 
 )  "]"
-) "[" slice_list=Integer(
+) [ expressionList=Integer(
 	value=0
-)  "]"
+) ] 
 )])""".replace("\n", System.lineSeparator()))
   }
 }

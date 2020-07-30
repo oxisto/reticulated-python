@@ -18,6 +18,8 @@
 package io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure
 
 import io.github.oxisto.reticulated.ast.Scope
+import io.github.oxisto.reticulated.ast.expression.Expression
+import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 
@@ -25,9 +27,17 @@ import io.github.oxisto.reticulated.grammar.Python3Parser
  * This class offers visitors for a yield_expression
  *
  */
-class YieldExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Enclosure>() {
+class YieldExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
   override fun visitYield_expr(ctx: Python3Parser.Yield_exprContext): Enclosure {
-    // TODO: Implement Yield Expression visitor
-    return super.visitYield_expr(ctx)
+    val yieldExpression = ctx.getChild(1).accept(this)
+    return if (ctx.getChild(1).childCount == 1)
+      YieldExpression(yieldExpression, null)
+    else
+      YieldExpression(null, yieldExpression)
+  }
+
+  override fun visitYield_arg(ctx: Python3Parser.Yield_argContext): Expression {
+    val index = ctx.childCount - 1
+    return ctx.getChild(index).accept(ExpressionVisitor(this.scope))
   }
 }

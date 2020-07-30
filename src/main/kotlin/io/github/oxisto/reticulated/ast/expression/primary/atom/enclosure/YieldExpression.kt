@@ -29,8 +29,8 @@ import io.github.oxisto.reticulated.ast.expression.ExpressionList
  *
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-yield-atom}]
  */
-class YieldExpression(val expressionList: ExpressionList?, val expression: Expression?) : Enclosure() {
-// TODO: write Tests
+class YieldExpression(val expressionList: Expression?, val expression: Expression?) : Enclosure() {
+
   init {
     if(expressionList != null && expression != null)
       throw CouldNotParseException(

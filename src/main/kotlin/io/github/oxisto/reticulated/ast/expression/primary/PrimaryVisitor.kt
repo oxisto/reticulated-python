@@ -19,6 +19,7 @@ package io.github.oxisto.reticulated.ast.expression.primary
 
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.Expression
+import io.github.oxisto.reticulated.ast.expression.ExpressionList
 import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
 import io.github.oxisto.reticulated.ast.expression.argument.CallTrailerVisitor
 import io.github.oxisto.reticulated.ast.expression.primary.atom.AtomVisitor
@@ -32,7 +33,7 @@ import org.antlr.v4.runtime.tree.TerminalNode
 /**
  * this class offers visitors for all primaries.
  */
-class PrimaryVisitor(val scope: Scope): Python3BaseVisitor<Primary>() {
+class PrimaryVisitor(val scope: Scope): Python3BaseVisitor<Expression>() {
 
   override fun visitAtom_expr(ctx: Python3Parser.Atom_exprContext): Primary {
     return if (ctx.childCount == 1) {
@@ -100,10 +101,10 @@ class PrimaryVisitor(val scope: Scope): Python3BaseVisitor<Primary>() {
           // it is s Slicing or a subscription. Parse all trailers
           var res = primary
           for (index in 1 until ctx.childCount) {
-            res = Slicing(
-                res,
-                ctx.getChild(index).getChild(1).accept(this) as Primary
-                )
+            val indices = ctx.getChild(index).getChild(1).accept(this)
+            res = if (indices is SliceList || indices is ProperSlice)    // It is a Slicing
+              Slicing(res, indices as Primary)
+            else Subscription(res, indices as Expression)    // It is a Subscription
           }
           res
         }
@@ -111,14 +112,20 @@ class PrimaryVisitor(val scope: Scope): Python3BaseVisitor<Primary>() {
     }
   }
 
-  override fun visitSubscriptlist(ctx: Python3Parser.SubscriptlistContext): Primary {
-    val sliceItems = ArrayList<Primary>()
-    for (index in 0 until ctx.childCount)
-      sliceItems.add(ctx.getChild(index).accept(this))
-    return if (sliceItems.size == 1)
-      sliceItems[0]
-    else
-      SliceList(sliceItems)
+  override fun visitSubscriptlist(ctx: Python3Parser.SubscriptlistContext): Expression {
+    val sliceItems = ArrayList<Expression>()
+    var containsProperSlice = false
+    for (index in 0 until ctx.childCount) {
+      val sliceItem = ctx.getChild(index).accept(this)
+      if (sliceItem is ProperSlice)
+        containsProperSlice = true
+      sliceItems.add(sliceItem)
+    }
+    return when {
+      sliceItems.size == 1 -> sliceItems[0]
+      containsProperSlice -> SliceList(sliceItems)
+      else -> ExpressionList(sliceItems)
+    }
   }
 
   override fun visitSubscript(ctx: Python3Parser.SubscriptContext): Primary {

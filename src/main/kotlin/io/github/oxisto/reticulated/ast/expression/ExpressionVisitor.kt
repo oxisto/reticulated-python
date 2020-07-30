@@ -36,9 +36,15 @@ class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
     return ctx.getChild(0).accept(BooleanOpVisitor(this.scope))
   }
 
-  override fun visitExprlist(ctx: Python3Parser.ExprlistContext): Expression {
-    // TODO: Implement Expression List Visitor
-    return super.visitExprlist(ctx)
+  override fun visitTestlist(ctx: Python3Parser.TestlistContext): Expression {
+    val expressions = ArrayList<Expression>()
+    for (index in 0 until ctx.childCount step 2)
+      expressions.add(
+          ctx.getChild(index).accept(this)
+      )
+    return if (expressions.size == 1)
+      expressions[0]
+    else
+      ExpressionList(expressions)
   }
-
 }

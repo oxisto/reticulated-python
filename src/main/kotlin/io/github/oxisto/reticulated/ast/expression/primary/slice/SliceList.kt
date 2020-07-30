@@ -19,7 +19,7 @@ package io.github.oxisto.reticulated.ast.expression.primary.slice
 
 import io.github.oxisto.reticulated.ast.Container
 import io.github.oxisto.reticulated.ast.CouldNotParseException
-import io.github.oxisto.reticulated.ast.expression.primary.Primary
+import io.github.oxisto.reticulated.ast.expression.Expression
 
 /**
  * This class represents a slice_list.
@@ -27,7 +27,7 @@ import io.github.oxisto.reticulated.ast.expression.primary.Primary
  *        slice_list ::= slice_item ("," slice_item)* [","]
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-slice-list}]
  */
-class SliceList(private val items: List<Primary> = ArrayList()) : Slice(), Container<Primary> {
+class SliceList(private val items: List<Expression> = ArrayList()) : Slice(), Container<Expression> {
 
   // TODO: WriteSliceList tests
 

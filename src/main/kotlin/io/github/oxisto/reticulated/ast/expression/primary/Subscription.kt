@@ -17,15 +17,14 @@
 
 package io.github.oxisto.reticulated.ast.expression.primary
 
-import io.github.oxisto.reticulated.ast.expression.ExpressionList
+import io.github.oxisto.reticulated.ast.expression.Expression
 
 /**
  * This class represents a subscription.
  * It´s EBNF representation is:
  *        subscription ::= primary "[" expression_list "]"
  */
-class Subscription(val primary: Primary, val expressionList: ExpressionList) : Primary() {
-  // TODO: Write relating visitor (primary_visitor)
+class Subscription(val primary: Primary, val expressionList: Expression) : Primary() {
 
   override fun toString(): String {
     return "Subscription(" + System.lineSeparator() +

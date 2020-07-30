@@ -20,7 +20,6 @@ package io.github.oxisto.reticulated.ast.expression.operator
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.primary.Primary
-import io.github.oxisto.reticulated.ast.expression.booleanexpr.BaseBooleanExpr
 import io.github.oxisto.reticulated.ast.expression.primary.PrimaryVisitor
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
@@ -133,7 +132,7 @@ class OperatorVisitor(val scope: Scope): Python3BaseVisitor<BaseOperator>() {
                     PrimaryVisitor(
                         this.scope
                     )
-                )
+                ) as Primary
             )
         } else {
             // It is a PrimaryExpr
