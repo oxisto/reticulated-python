@@ -48,7 +48,7 @@ class Name(name: String) : Identifier(name), Identifiable {
     scope.addVariable(variable)
   }
 
-  override val id: Identifier
+  val identifier: Identifier
     get() {
       return this
     }
@@ -59,6 +59,9 @@ class Name(name: String) : Identifier(name), Identifiable {
   fun resolve(scope: Scope): ResolvedVariable? {
     return scope.resolveByIdentifier(this)
   }
+
+  override val id: Identifier
+    get() = this
 
   override fun toString(): String {
     return "Name(" + System.lineSeparator() +

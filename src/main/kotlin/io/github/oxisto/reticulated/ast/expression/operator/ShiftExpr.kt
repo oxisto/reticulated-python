@@ -17,7 +17,6 @@
 
 package io.github.oxisto.reticulated.ast.expression.operator
 
-import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.expression.booleanexpr.BaseBooleanExpr
 
 /**
@@ -28,34 +27,17 @@ import io.github.oxisto.reticulated.ast.expression.booleanexpr.BaseBooleanExpr
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#unary-arithmetic-and-bitwise-operations}]
  */
 class ShiftExpr(
-        val shiftExpr: BaseBooleanExpr?,
-        val binaryOperator: BinaryOperator?,
+        val shiftExpr: BaseBooleanExpr,
+        val binaryOperator: BinaryOperator,
         val baseOperator: BaseOperator
 ): BaseOperator() {
 
-    init {
-        if(binaryOperator == null){
-            if(shiftExpr != null && shiftExpr !is ShiftExpr && shiftExpr !is BaseOperator) {
-                throw CouldNotParseException()
-            }
-        }else {
-            if(shiftExpr == null || (
-                            binaryOperator != BinaryOperator.SHIFT_LEFT &&
-                                    binaryOperator != BinaryOperator.SHIFT_RIGHT
-                        )
-            ){
-                throw CouldNotParseException()
-            }
-        }
-    }
-
     override fun toString(): String {
-        var result = "ShiftExpr(" + System.lineSeparator() + "\t"
-        if (shiftExpr != null) {
-            result += "shiftExpr=$shiftExpr binaryOperator=${binaryOperator!!.symbol} "
-        }
-        result += "additiveExpr=$baseOperator" + System.lineSeparator() +
-                ")"
-        return result
+        return "ShiftExpr(" + System.lineSeparator() +
+            "\tshiftExpr=$shiftExpr " +
+            "binaryOperator=${binaryOperator.symbol} " +
+            "additiveExpr=$baseOperator" +
+            System.lineSeparator() +
+            ")"
     }
 }

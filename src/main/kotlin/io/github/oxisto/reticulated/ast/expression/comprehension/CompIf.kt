@@ -17,7 +17,7 @@
 
 package io.github.oxisto.reticulated.ast.expression.comprehension
 
-import io.github.oxisto.reticulated.ast.expression.ExpressionNoCond
+import io.github.oxisto.reticulated.ast.expression.Expression
 
 /**
  * This class represents a comp_if.
@@ -25,13 +25,12 @@ import io.github.oxisto.reticulated.ast.expression.ExpressionNoCond
  *      comp_if ::= "if" expression_nocond [comp_iter]
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#displays-for-lists-sets-and-dictionaries}]
  */
-class CompIf(val expressionNoCond: ExpressionNoCond, val compIter: CompIter? = null) : BaseComprehension() {
+class CompIf(val expressionNoCond: Expression, val compIter: CompIter? = null) : CompIter() {
     override fun toString(): String {
-        var result = "if expressionNoCond=$expressionNoCond"
+        var result = "CompIf(" + System.lineSeparator() +
+            "\t\"if\" expressionNoCond=$expressionNoCond"
         if ( compIter != null )
             result += " compIter=$compIter"
-        return "CompIf(" + System.lineSeparator() +
-                "\tcompIf=$result" + System.lineSeparator() +
-                ")"
+        return result + System.lineSeparator() + ")"
     }
 }

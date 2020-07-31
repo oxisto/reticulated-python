@@ -23,6 +23,8 @@ import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
 import io.github.oxisto.reticulated.ast.expression.primary.call.Call
 import io.github.oxisto.reticulated.ast.expression.comprehension.Comprehension
 import io.github.oxisto.reticulated.ast.expression.operator.PowerExpr
+import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
+import io.github.oxisto.reticulated.ast.expression.primary.atom.literal.Integer
 import io.github.oxisto.reticulated.ast.simple.ExpressionStatement
 import io.github.oxisto.reticulated.ast.statement.StatementList
 import org.junit.Test
@@ -41,238 +43,29 @@ class AsyncComprehensionTest {
             .file
     )
 
-        val input = PythonParser()
-                .parse(file.path)
-                .root
-        val isAsync = (
-            (
-                (
-                    (
-                        (
-                            (
-                                (
-                                    input.statements[0] as StatementList
-                                    )[0] as ExpressionStatement
-                                ).expression as ConditionalExpression
-                            ).orTest as OrTest
-                        ).andTest
-                        .notTest
-                        .comparison!!
-                        .orExpr
-                        .xorExpr
-                        .andExpr
-                        .shiftExpr
-                        .baseOperator as PowerExpr
-                    ).primary as Call)
-                .callTrailer as Comprehension
-            ).compFor
-            .isAsync
-        assertTrue(isAsync)
+      val input = PythonParser()
+              .parse(file.path)
+              .root
+      assertNotNull(input)
+      // print(input)
+      val call = input.statements[0] as Call
+      assertNotNull(call)
+      val primary = call.primary as Identifier
+      assertEquals(primary.name, "fun")
+      val trailer = call.callTrailer as Comprehension
+      assertNotNull(trailer)
+      val expression = trailer.expression as Identifier
+      assertEquals(expression.name, "i")
+      val compFor = trailer.compFor
+      assertNotNull(compFor)
+      val isAsync = compFor.isAsync
+      assertTrue(isAsync)
+      val target = compFor.targetList as Identifier
+      assertEquals(target.name, "i")
+      val orTest = compFor.orTest as Call
+      val prim = orTest.primary as Identifier
+      assertEquals(prim.name, "range")
+      val callTrailer = orTest.callTrailer as Integer
+      assertEquals(callTrailer.value, 10)
     }
-
-  @Test fun asyncToStringTest(){
-    val file = File(
-        javaClass
-            .classLoader
-            .getResource("expressions/arithmetic/additive.py")!!
-            .file
-    )
-
-    val input = PythonParser()
-        .parse(file.path)
-        .root
-    assertNotNull(input)
-    val inputString = input.toString()
-    assertEquals(inputString, """FileInput(statements=[StatementList(
-	statements=[AssignmentExpression(
-	target=Identifier(
-	name='a'
-) expression=ConditionalExpression(
-	orTest=OrTest(
-	andTest=AndTest(
-	notTest=NotTest(
-	comparison=Comparison(
-	orExpr=OrExpr(
-	xorExpr=XorExpr(
-	andExpr=AndExpr(
-	shiftExpr=ShiftExpr(
-	additiveExpr=AdditiveExpr(
-	additiveExpr=PowerExpr(
-	primary=Integer(
-	value=1
-)
-) binaryOperator=ADDITION multiplicativeExpr=UnaryExpr(
-	unaryOperator=NEGATIVEUnaryExpr=UnaryExpr(
-	unaryOperator=NEGATIVEUnaryExpr=UnaryExpr(
-	unaryOperator=POSITIVEUnaryExpr=UnaryExpr(
-	unaryOperator=NEGATIVEUnaryExpr=PowerExpr(
-	primary=Integer(
-	value=1
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)]
-), StatementList(
-	statements=[AssignmentExpression(
-	target=Identifier(
-	name='b'
-) expression=ConditionalExpression(
-	orTest=OrTest(
-	andTest=AndTest(
-	notTest=NotTest(
-	comparison=Comparison(
-	orExpr=OrExpr(
-	xorExpr=XorExpr(
-	andExpr=AndExpr(
-	shiftExpr=ShiftExpr(
-	additiveExpr=AdditiveExpr(
-	additiveExpr=PowerExpr(
-	primary=FloatNumber(
-	value=0.5
-)
-) binaryOperator=ADDITION multiplicativeExpr=PowerExpr(
-	primary=ImagNumber(
-	value=Integer(
-	value=1
-) j
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)]
-), StatementList(
-	statements=[AssignmentExpression(
-	target=Identifier(
-	name='c'
-) expression=ConditionalExpression(
-	orTest=OrTest(
-	andTest=AndTest(
-	notTest=NotTest(
-	comparison=Comparison(
-	orExpr=OrExpr(
-	xorExpr=XorExpr(
-	andExpr=AndExpr(
-	shiftExpr=ShiftExpr(
-	additiveExpr=AdditiveExpr(
-	additiveExpr=PowerExpr(
-	primary=StringLiteral(
-	value=Test
-)
-) binaryOperator=ADDITION multiplicativeExpr=PowerExpr(
-	primary=StringLiteral(
-	value=Test
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)]
-), StatementList(
-	statements=[AssignmentExpression(
-	target=Identifier(
-	name='d'
-) expression=ConditionalExpression(
-	orTest=OrTest(
-	andTest=AndTest(
-	notTest=NotTest(
-	comparison=Comparison(
-	orExpr=OrExpr(
-	xorExpr=XorExpr(
-	andExpr=AndExpr(
-	shiftExpr=ShiftExpr(
-	additiveExpr=AdditiveExpr(
-	additiveExpr=PowerExpr(
-	primary=Integer(
-	value=1
-)
-) binaryOperator=SUBTRACTION multiplicativeExpr=UnaryExpr(
-	unaryOperator=NEGATIVEUnaryExpr=UnaryExpr(
-	unaryOperator=POSITIVEUnaryExpr=PowerExpr(
-	primary=FloatNumber(
-	value=0.5
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)]
-), StatementList(
-	statements=[AssignmentExpression(
-	target=Identifier(
-	name='e'
-) expression=ConditionalExpression(
-	orTest=OrTest(
-	andTest=AndTest(
-	notTest=NotTest(
-	comparison=Comparison(
-	orExpr=OrExpr(
-	xorExpr=XorExpr(
-	andExpr=AndExpr(
-	shiftExpr=ShiftExpr(
-	additiveExpr=AdditiveExpr(
-	additiveExpr=UnaryExpr(
-	unaryOperator=BITWISE_NOTUnaryExpr=UnaryExpr(
-	unaryOperator=BITWISE_NOTUnaryExpr=PowerExpr(
-	primary=BytesLiteral(
-	value=11
-)
-)
-)
-) binaryOperator=SUBTRACTION multiplicativeExpr=PowerExpr(
-	primary=ImagNumber(
-	value=FloatNumber(
-	value=0.1
-) j
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)
-)]
-)])""".replace("\n", System.lineSeparator()))
-  }
 }

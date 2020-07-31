@@ -18,7 +18,6 @@
 package io.github.oxisto.reticulated.ast.expression.operator
 
 import io.github.oxisto.reticulated.ast.CouldNotParseException
-import io.github.oxisto.reticulated.ast.expression.AwaitExpr
 import io.github.oxisto.reticulated.ast.expression.primary.Primary
 
 /**
@@ -31,7 +30,7 @@ import io.github.oxisto.reticulated.ast.expression.primary.Primary
 class PowerExpr(
     val awaitExpr: AwaitExpr?,
     val primary: Primary?,
-    val baseOperator: BaseOperator?
+    val baseOperator: BaseOperator
 ): BaseOperator() {
     init {
         if(awaitExpr == null) {
@@ -47,15 +46,12 @@ class PowerExpr(
 
     override fun toString(): String {
         var result = "PowerExpr(" + System.lineSeparator() + "\t"
-        result += if(awaitExpr == null){
-            "primary=$primary"
-        } else {
-            "awaitExpr=$awaitExpr"
-        }
-        if(baseOperator != null){
-            result += " power=${BinaryOperator.POWER.symbol} unaryExpr=$baseOperator"
-        }
-        result += System.lineSeparator() + ")"
-        return result
+        result += if(awaitExpr == null) "primary=$primary"
+        else "awaitExpr=$awaitExpr"
+        return "$result " +
+            "power=${BinaryOperator.POWER.symbol} " +
+            "unaryExpr=$baseOperator" +
+            System.lineSeparator() +
+            ")"
     }
 }

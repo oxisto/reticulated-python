@@ -17,9 +17,15 @@
 
 package io.github.oxisto.reticulated.ast.expression.primary.atom
 
-import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
+import io.github.oxisto.reticulated.ast.expression.Expression
+import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
+import io.github.oxisto.reticulated.ast.expression.comprehension.CompFor
+import io.github.oxisto.reticulated.ast.expression.comprehension.Comprehension
+import io.github.oxisto.reticulated.ast.expression.comprehension.ComprehensionVisitor
+import io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure.*
 import io.github.oxisto.reticulated.ast.expression.primary.atom.literal.*
+import io.github.oxisto.reticulated.ast.expression.starred.*
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 import org.antlr.v4.runtime.tree.TerminalNode
@@ -30,12 +36,83 @@ import org.antlr.v4.runtime.tree.TerminalNode
 class AtomVisitor(val scope: Scope) : Python3BaseVisitor<Atom>() {
 
   override fun visitAtom(ctx: Python3Parser.AtomContext): Atom {
-  // TODO: check if it is a enclosure
-    val atom = ctx.getChild(0).accept(this)
+    return when (ctx.childCount) {
+      1 -> ctx.getChild(0).accept(this)
+      2 -> when (ctx.getChild(0).text) { // it is a enclosure
+        "(" -> ParentForm(null)
+        "[" -> ListDisplay(null, null)
+        else -> DictDisplay(null, null) // firsChild is "{"
+      }
 
-    return atom
+      else -> when (ctx.getChild(0).text) { // it is a enclosure, childCount == 3
+        "(" -> {
+          when {
+            ctx.getChild(1).childCount == 2 &&
+            ctx.getChild(1).getChild(1) is Python3Parser.Comp_forContext
+            -> GeneratorExpression(
+                ctx.getChild(1)
+                    .getChild(0)
+                    .accept(
+                        ExpressionVisitor(this.scope)
+                    ),
+                ctx.getChild(1)
+                    .getChild(1)
+                    .accept(
+                        ComprehensionVisitor(this.scope)
+                    ) as CompFor
+            )
+            ctx.getChild(1) is Python3Parser.Testlist_compContext -> ParentForm(
+                ctx.getChild(1)
+                    .accept(
+                        StarredVisitor(this.scope)
+                    )
+            )
+            else -> YieldAtom( // if (ctx.getChild(1) is Python3Parser.Yield_exprContext)
+                ctx.getChild(1)
+                    .accept(
+                        YieldExpressionVisitor(this.scope)
+                    ) as YieldExpression
+            )
+          }
+        }
+
+        "[" -> {
+          if (ctx.getChild(1).childCount == 2 &&
+              ctx.getChild(1).getChild(1) is Python3Parser.Comp_forContext)
+            ListDisplay(
+                null,
+                Comprehension(
+                    ctx.getChild(1).getChild(0)
+                        .accept(
+                            ExpressionVisitor(this.scope)
+                        ) as Expression,
+                    ctx.getChild(1).getChild(1)
+                    .accept(
+                        ComprehensionVisitor(this.scope)
+                    ) as CompFor
+                )
+            )
+          else
+            ListDisplay(
+                ctx.getChild(1)
+                    .accept(
+                        StarredVisitor(this.scope)
+                    ),
+                null
+            )
+        }
+
+        else -> { //  "{"
+          when (val elem = ctx.getChild(1).accept(SetMakerVisitor(this.scope))) {
+            is DictComprehension -> DictDisplay(null, elem )
+            is KeyDatumList ->  DictDisplay( elem,null)
+            is StarredList -> SetDisplay(elem, null)
+            else -> SetDisplay(null, elem as Comprehension)
+          }
+        }
+      }
+    }
   }
-
 
   override fun visitTerminal(node: TerminalNode): Atom {
     // check for some literals now
@@ -53,41 +130,31 @@ class AtomVisitor(val scope: Scope) : Python3BaseVisitor<Atom>() {
     } else { null }
 
     return when {
-      intOrNull != null -> {
-        Integer(intOrNull)
-      }
+      intOrNull != null -> Integer(intOrNull)
+
       text.startsWith("\"") || text.startsWith("\'") -> {
         StringLiteral(
             text.replace("\"", "")
                 .replace("\'", "")
         )
       }
-      floatOrNull != null -> {
-        FloatNumber(floatOrNull)
-      }
+
+      floatOrNull != null -> FloatNumber(floatOrNull)
+
       isImagNumber -> {
         val textWithoutLast = text.substring(0, text.lastIndex)
         val intOrNullOfImag = textWithoutLast.toIntOrNull()
         val floatOrNullOfImag = textWithoutLast.toFloatOrNull()
-        when {
-          intOrNullOfImag != null -> {
-            ImagNumber(null, Integer(intOrNullOfImag))
-          }
-          floatOrNullOfImag != null -> {
-            ImagNumber(FloatNumber(floatOrNullOfImag), null)
-          }
-          else -> {
-            throw CouldNotParseException()
-          }
-        }
+        if(intOrNullOfImag != null)
+          ImagNumber(null, Integer(intOrNullOfImag))
+        else
+          ImagNumber(FloatNumber(floatOrNullOfImag as Float), null)
       }
-      byteValue != null -> {
-        BytesLiteral(byteValue)
-      }
-      else -> {
-        Identifier(node.text)
-      }
+
+      byteValue != null -> BytesLiteral(byteValue)
+
+      else -> Identifier(node.text)
     }
   }
-
+  
 }

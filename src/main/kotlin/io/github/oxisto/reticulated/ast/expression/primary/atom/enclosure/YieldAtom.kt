@@ -15,11 +15,21 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.expression.primary
 
-import io.github.oxisto.reticulated.ast.Node
-import io.github.oxisto.reticulated.ast.simple.target.Target
+package io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure
 
-class Slicing: Target, Node() {
-    // TODO: Implement: slicing ::= primary "[" slice_list "]"
+/**
+ * This class represents a yield_atom.
+ * It´s EBNF representations is:
+ *        yield_atom ::= "(" yield_expression ")"
+ *
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-yield-atom}]
+ */
+class YieldAtom(val yieldExpression: YieldExpression): Enclosure() {
+
+  override fun toString(): String {
+    return "YieldAtom(" + System.lineSeparator() +
+        "\t \"(\" yieldExpression=$yieldExpression \")\"" + System.lineSeparator() +
+        ")"
+  }
 }

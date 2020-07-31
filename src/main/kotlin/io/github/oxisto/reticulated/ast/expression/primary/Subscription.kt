@@ -15,25 +15,21 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.expression
+package io.github.oxisto.reticulated.ast.expression.primary
 
-import io.github.oxisto.reticulated.ast.expression.primary.Primary
+import io.github.oxisto.reticulated.ast.expression.Expression
 
 /**
- * This class represents an await_expr
+ * This class represents a subscription.
  * It´s EBNF representation is:
- *      await_expr ::="await" primary
- * [see: https://docs.python.org/3/reference/expressions.html#await-expression]
+ *        subscription ::= primary "[" expression_list "]"
  */
-class AwaitExpr(val primary: Primary): Expression(){
+class Subscription(val primary: Primary, val expressionList: Expression) : Primary() {
 
-    override fun isCall(): Boolean {
-        return false
-    }
+  override fun toString(): String {
+    return "Subscription(" + System.lineSeparator() +
+            "\tprimary=$primary [ expressionList=$expressionList ] " + System.lineSeparator() +
+            ")"
+  }
 
-    override fun toString(): String {
-        return "AwaitExpr(" + System.lineSeparator() +
-                "\tawait primary=$primary" + System.lineSeparator() +
-                ")"
-    }
 }

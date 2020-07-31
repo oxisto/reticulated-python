@@ -15,32 +15,22 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.statement
+package io.github.oxisto.reticulated.ast.expression.primary.slice
 
-import io.github.oxisto.reticulated.ast.Node
 import io.github.oxisto.reticulated.ast.expression.Expression
-import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
-import io.github.oxisto.reticulated.solver.Identifiable
 
 /**
- * A parameter, i.e. in a function definition.
- *
- * Reference: https://docs.python.org/3/reference/compound_stmts.html#grammar-token-parameter
+ * This class represents a stride.
+ * It´s EBNF representation is:
+ *        stride ::= [expression]
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-stride}]
  */
-open class Parameter(final override val id: Identifier, val expression: Expression? = null) : Node(), Identifiable {
-
-  init {
-    id.parent = this
-    expression?.parent = this
-  }
-
+class Stride(val expression: Expression?): Slice() {
   override fun toString(): String {
-    var result = "Parameter(" + System.lineSeparator() +
-        "\tid=$id"
-    if(expression != null){
-      result += " expression=$expression"
-    }
-    result += System.lineSeparator() + ")"
-    return result
+    var result = "Stride(" + System.lineSeparator() +
+        "\t\":\""
+    if(expression != null)
+      result += " Expression=$expression"
+    return result + System.lineSeparator() + ")"
   }
 }

@@ -19,10 +19,10 @@ package io.github.oxisto.reticulated.ast.expression.comparison
 
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.expression.booleanexpr.BooleanExprVisitor
-import io.github.oxisto.reticulated.ast.expression.booleanexpr.OrExpr
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 import io.github.oxisto.reticulated.Pair
+import io.github.oxisto.reticulated.ast.expression.booleanexpr.BaseBooleanExpr
 
 /**
  * This visitor is called for a comparison
@@ -30,14 +30,9 @@ import io.github.oxisto.reticulated.Pair
  *      comparison ::= or_expr ( comp_operator or_expr )*
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#comparisons}]
  */
-class ComparisonVisitor(val scope: io.github.oxisto.reticulated.ast.Scope): Python3BaseVisitor<Comparison>() {
+class ComparisonVisitor(val scope: io.github.oxisto.reticulated.ast.Scope): Python3BaseVisitor<BaseComparison>() {
 
-    override fun visitComparison(ctx: Python3Parser.ComparisonContext): Comparison {
-        if(ctx.childCount < 1 || ctx.childCount%2 == 0){
-            throw CouldNotParseException(
-                    "The ctx=$ctx in a ComparisonContext should have one or a even childCount."
-            )
-        }
+    override fun visitComparison(ctx: Python3Parser.ComparisonContext): BaseComparison {
         val getOrExprByPosition = {
             position:Int -> ctx
                 .getChild(position)
@@ -45,19 +40,19 @@ class ComparisonVisitor(val scope: io.github.oxisto.reticulated.ast.Scope): Pyth
                     BooleanExprVisitor(
                         this.scope
                     )
-                ) as OrExpr
+                )
         }
-        val orExpr:OrExpr = getOrExprByPosition(0)
-        val comparisons:ArrayList<Pair<CompOperator, OrExpr>> = ArrayList()
+        val orExpr = getOrExprByPosition(0)
+        val comparisons:ArrayList<Pair<CompOperator, BaseBooleanExpr>> = ArrayList()
         var index = 1
-        while(index < ctx.childCount){
+        while(index < ctx.childCount) {
             val compSymbol: String = ctx
                     .getChild(index)
                     .text
             val compOperator: CompOperator = CompOperator
                     .getCompOperatorBySymbol(compSymbol)
                     ?: throw CouldNotParseException(
-                            "The compOperator should be an element of the enum CompOperator."
+                            "The compOperator=$compSymbol should be an element of the enum CompOperator."
                     )
             val pair = Pair(
                     compOperator,
@@ -66,6 +61,7 @@ class ComparisonVisitor(val scope: io.github.oxisto.reticulated.ast.Scope): Pyth
             comparisons.add(pair)
             index += 2
         }
-        return Comparison(orExpr, comparisons)
+        return if (comparisons.isEmpty()) orExpr
+        else Comparison(orExpr, comparisons)
     }
 }

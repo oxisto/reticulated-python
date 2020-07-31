@@ -20,7 +20,7 @@ package io.github.oxisto.reticulated.ast.expression.comprehension
 import io.github.oxisto.reticulated.ast.expression.primary.call.CallTrailer
 
 /**
- * This class is the base for all comparison´s.
+ * This class is the base for all comprehensions.
  */
 abstract class BaseComprehension: CallTrailer(){
     abstract override fun toString(): String

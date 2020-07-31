@@ -18,6 +18,7 @@
 package io.github.oxisto.reticulated.ast.expression.argument
 
 import io.github.oxisto.reticulated.ast.Scope
+import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 import org.antlr.v4.runtime.tree.TerminalNodeImpl
@@ -31,13 +32,12 @@ import org.antlr.v4.runtime.tree.TerminalNodeImpl
  *          keyword_arguments
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#calls}]
  *
- *
  */
-class ArgumentListVisitor(val scope: Scope): Python3BaseVisitor<ArgumentList>() {
+class ArgumentListVisitor(val scope: Scope): Python3BaseVisitor<Expression>() {
 
-    override fun visitArglist(ctx: Python3Parser.ArglistContext): ArgumentList {
+    override fun visitArglist(ctx: Python3Parser.ArglistContext): Expression {
 
-        val arguments = ArrayList<Argument>()
+        val arguments = ArrayList<Expression>()
 
         // loop through children
         for (tree in ctx.children) {
@@ -52,6 +52,7 @@ class ArgumentListVisitor(val scope: Scope): Python3BaseVisitor<ArgumentList>() 
             }
         }
 
-        return ArgumentList(arguments)
+        return if (arguments.size == 1) arguments[0]
+        else ArgumentList(arguments)
     }
 }

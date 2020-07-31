@@ -17,13 +17,15 @@
 
 package io.github.oxisto.reticulated.ast.expression.booleanops
 
-import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
-import io.github.oxisto.reticulated.ast.expression.comparison.Comparison
 import io.github.oxisto.reticulated.ast.expression.comparison.ComparisonVisitor
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 
+/**
+ * This visitor is called for all boolean Operators.
+ *
+ */
 class BooleanOpVisitor(val scope: Scope) : Python3BaseVisitor<BaseBooleanOp>() {
 
     /**
@@ -33,24 +35,18 @@ class BooleanOpVisitor(val scope: Scope) : Python3BaseVisitor<BaseBooleanOp>() {
      * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#boolean-operations}]
      */
     override fun visitOr_test(ctx: Python3Parser.Or_testContext): BaseBooleanOp {
-        if(ctx.childCount < 1 || ctx.childCount > 3){
-            throw CouldNotParseException("The ctx=$ctx child count is unexpected.")
-        }
-        val orTest: BaseBooleanOp?
-        val andTest: AndTest
         val getAndTestByPosition = {
             position:Int -> ctx
                 .getChild(position)
-                .accept(this) as AndTest
+                .accept(this)
         }
-        if(ctx.childCount == 1) {
-            orTest = null
-            andTest = getAndTestByPosition(0)
-        }else{
-            orTest = ctx.getChild(0).accept(this)
-            andTest = getAndTestByPosition(2)
-        }
-        return OrTest(orTest, andTest)
+        return if(ctx.childCount == 3)
+            OrTest(
+                ctx.getChild(0)
+                    .accept(this),
+                getAndTestByPosition(2)
+            )
+        else getAndTestByPosition(0)
     }
 
     /**
@@ -60,24 +56,18 @@ class BooleanOpVisitor(val scope: Scope) : Python3BaseVisitor<BaseBooleanOp>() {
      * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#boolean-operations}]
      */
     override fun visitAnd_test(ctx: Python3Parser.And_testContext): BaseBooleanOp {
-        if(ctx.childCount < 1 || ctx.childCount > 3){
-            throw CouldNotParseException("The ctx=$ctx child count is unexpected.")
-        }
-        val andTest: BaseBooleanOp?
-        val notTest: NotTest
         val getNotTestByPosition = {
             position: Int -> ctx
                 .getChild(position)
-                .accept(this) as NotTest
+                .accept(this)
         }
-        if(ctx.childCount == 1){
-            andTest = null
-            notTest = getNotTestByPosition(0)
-        } else {
-            andTest = ctx.getChild(0).accept(this)
-            notTest = getNotTestByPosition(2)
-        }
-        return AndTest(andTest, notTest)
+        return if (ctx.childCount == 3)
+            AndTest(
+                ctx.getChild(0)
+                    .accept(this),
+                getNotTestByPosition(2)
+            )
+        else getNotTestByPosition(0)
     }
 
     /**
@@ -87,18 +77,8 @@ class BooleanOpVisitor(val scope: Scope) : Python3BaseVisitor<BaseBooleanOp>() {
      * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#boolean-operations}]
      */
     override fun visitNot_test(ctx: Python3Parser.Not_testContext): BaseBooleanOp {
-        if(ctx.childCount < 1 || ctx.childCount > 3){
-            throw CouldNotParseException("The ctx=$ctx child count is unexpected.")
-        }
-        val comparison: Comparison?
-        val notTest: NotTest?
-        if(ctx.childCount == 2){
-            comparison = null
-            notTest = ctx.getChild(1).accept(this) as NotTest
-        }else {
-            comparison = ctx.getChild(0).accept(ComparisonVisitor(this.scope))
-            notTest = null
-        }
-        return NotTest(comparison, notTest)
+        return if (ctx.childCount == 2)
+            NotTest( ctx.getChild(1).accept(this) )
+        else ctx.getChild(0).accept(ComparisonVisitor(this.scope))
     }
 }

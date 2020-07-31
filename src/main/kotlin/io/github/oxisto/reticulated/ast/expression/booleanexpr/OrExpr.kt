@@ -17,29 +17,18 @@
 
 package io.github.oxisto.reticulated.ast.expression.booleanexpr
 
-import io.github.oxisto.reticulated.ast.CouldNotParseException
-
 /**
  * The class represents an or_expr.
  * It´s EBNF representation is:
  *      or_expr ::= xor_expr | or_expr "|" xor_expr
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#binary-bitwise-operations}]
+ *
  */
-class OrExpr(val orExpr: BaseBooleanExpr?, val xorExpr: XorExpr): BaseBooleanExpr() {
-
-    init {
-        if(orExpr != null && orExpr !is OrExpr && orExpr !is XorExpr) {
-            throw CouldNotParseException("The orExpr=$orExpr is unexpected.")
-        }
-    }
+class OrExpr(val orExpr: BaseBooleanExpr, val xorExpr: BaseBooleanExpr): BaseBooleanExpr() {
 
     override fun toString(): String {
-        var result = "OrExpr(" + System.lineSeparator() + "\t"
-        if (orExpr != null) {
-            result += "orExpr=$orExpr | "
-        }
-        result += "xorExpr=$xorExpr" + System.lineSeparator() +
-                ")"
-        return result
+        return "OrExpr(" + System.lineSeparator() +
+            "\torExpr=$orExpr \"|\" xorExpr=$xorExpr" + System.lineSeparator() +
+            ")"
     }
 }

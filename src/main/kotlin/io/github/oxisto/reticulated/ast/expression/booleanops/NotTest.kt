@@ -17,41 +17,18 @@
 
 package io.github.oxisto.reticulated.ast.expression.booleanops
 
-import io.github.oxisto.reticulated.ast.CouldNotParseException
-import io.github.oxisto.reticulated.ast.expression.comparison.Comparison
-
 /**
  * This class represents a not_test.
  * It´s EBNF definition is:
  *      not_test ::= comparison | "not" not_test
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#boolean-operations}]
+ *
  */
-class NotTest(val comparison: Comparison?, val notTest:NotTest? ): BaseBooleanOp() {
-
-    init {
-        if(comparison == null){
-            if(notTest == null){
-                throw CouldNotParseException(
-                        "In a NotTest should not be boat, the comparison ant the notTest, null."
-                )
-            }
-        }else {
-            if(notTest != null){
-                throw CouldNotParseException(
-                        "In a NotTest should be ether the comparison or the notTes, null."
-                )
-            }
-        }
-    }
+class NotTest(val notTest: BaseBooleanOp): BaseBooleanOp() {
 
     override fun toString(): String {
-        var result = "NotTest(" + System.lineSeparator() + "\t"
-        result += if(comparison == null){
-            "not notTest=$notTest"
-        }else {
-            "comparison=$comparison"
-        }
-        result += System.lineSeparator() + ")"
-        return result
+        return "NotTest(" + System.lineSeparator() +
+            "\t\"not\" notTest=$notTest" + System.lineSeparator() +
+            ")"
     }
 }

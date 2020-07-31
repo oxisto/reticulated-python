@@ -17,9 +17,9 @@
 
 package io.github.oxisto.reticulated.ast.expression.lambda
 
-import io.github.oxisto.reticulated.ast.Node
+import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.ExpressionNoCond
-import io.github.oxisto.reticulated.ast.statement.ParameterList
+import io.github.oxisto.reticulated.ast.statement.parameter.BaseParameter
 
 /**
  * This class represents a lambda_expr_nocond
@@ -27,15 +27,14 @@ import io.github.oxisto.reticulated.ast.statement.ParameterList
  *      lambda_expr_nocond ::= "lambda" [parameter_list] ":" expression_nocond
  *  [see: {@linktourl https://docs.python.org/3/reference/expressions.html#lambda}]
  */
-class LambdaNoCond(val parameterList: ParameterList?, val exprNoCond: ExpressionNoCond): Node() {
+class LambdaNoCond(val parameterList: BaseParameter?, val exprNoCond: Expression): ExpressionNoCond() {
     override fun toString(): String {
-        var result = "lambda "
-        if ( parameterList != null ) {
+        var result = "LambdaNoCond(" + System.lineSeparator() +
+            "\t\"lambda\" "
+        if ( parameterList != null )
             result += "parameterList=$parameterList "
-        }
         result += ": exprNoCond=$exprNoCond"
-        return "LambdaNoCond(" + System.lineSeparator() +
-                "\tlambdaNoCond=$result" + System.lineSeparator() +
+        return result + System.lineSeparator() +
                 ")"
     }
 }

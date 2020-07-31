@@ -24,15 +24,13 @@ import io.github.oxisto.reticulated.ast.expression.primary.atom.AtomVisitor
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
 import io.github.oxisto.reticulated.ast.simple.SimpleStatement
 import io.github.oxisto.reticulated.ast.simple.SimpleStatementVisitor
+import io.github.oxisto.reticulated.ast.statement.parameter.BaseParameter
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 
 class StatementVisitor(val scope: Scope) : Python3BaseVisitor<Statement>() {
 
-  override fun visitStmt(ctx: Python3Parser.StmtContext?): Statement {
-    if (ctx == null) {
-      throw EmptyContextException()
-    }
+  override fun visitStmt(ctx: Python3Parser.StmtContext): Statement {
 
     return if (ctx.childCount == 1 && ctx.getChild(0) is Python3Parser.Compound_stmtContext) {
       // its a compound statement
@@ -51,16 +49,12 @@ class StatementVisitor(val scope: Scope) : Python3BaseVisitor<Statement>() {
           )
         )
       }
-
-      StatementList(list)
+      if (list.size == 1) list[0]
+      else StatementList(list)
     }
   }
 
-  override fun visitFuncdef(ctx: Python3Parser.FuncdefContext?): Statement {
-    if (ctx == null) {
-      throw EmptyContextException()
-    }
-
+  override fun visitFuncdef(ctx: Python3Parser.FuncdefContext): Statement {
     // TODO: decorators
 
     // assume that the first child is 'def'
@@ -84,7 +78,7 @@ class StatementVisitor(val scope: Scope) : Python3BaseVisitor<Statement>() {
             Visitor(
                 functionScope
             )
-        ) as ParameterList
+        ) as BaseParameter
 
     // forth is ':' or '->'
     val op = ctx.getChild(3)
@@ -103,7 +97,7 @@ class StatementVisitor(val scope: Scope) : Python3BaseVisitor<Statement>() {
       Visitor(
         functionScope
       )
-    ) as Suite
+    ) as Statement
 
     // create a new function definition
     val def = FunctionDefinition(id, parameterList, suite, expression)

@@ -18,6 +18,7 @@
 package io.github.oxisto.reticulated.ast.expression.argument
 
 import io.github.oxisto.reticulated.ast.Container
+import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.primary.call.CallTrailer
 
 /**
@@ -29,14 +30,15 @@ import io.github.oxisto.reticulated.ast.expression.primary.call.CallTrailer
  *    positional_arguments ::= ( positional_argument | argument ) ( "," positional_argument | "," argument )*
  *    keyword_arguments ::= keyword_argument ( "," keyword_argument )*
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#calls}]
+ *
  */
-class ArgumentList(private val arguments: List<Argument> = ArrayList()) : CallTrailer(), Container<Argument> {
+class ArgumentList(private val arguments: List<Expression> = ArrayList()) : CallTrailer(), Container<Expression> {
 
   override val children get() = this.arguments
 
   override fun toString(): String {
     return "ArgumentList(" + System.lineSeparator() +
-            "\targument=$arguments" + System.lineSeparator() +
-            ")"
+        "\targuments=$arguments" + System.lineSeparator() +
+        ")"
   }
 }

@@ -15,23 +15,27 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.statement
+package io.github.oxisto.reticulated.ast.statement.parameter
 
-import io.github.oxisto.reticulated.ast.Container
-import io.github.oxisto.reticulated.ast.Node
+import io.github.oxisto.reticulated.ast.expression.Expression
+import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
+import io.github.oxisto.reticulated.solver.Identifiable
 
-class ParameterList(val parameters: List<Parameter> = ArrayList()) : Node(), Container<Parameter> {
+/**
+ * A parameter, i.e. in a function definition.
+ *
+ * Reference: https://docs.python.org/3/reference/compound_stmts.html#grammar-token-parameter
+ */
+open class Parameter(final override val id: Identifier, val expression: Expression) : BaseParameter(), Identifiable {
 
   init {
-    for (child in parameters) {
-      child.parent = this
-    }
+    id.parent = this
+    expression.parent = this
   }
-
-  override val children get() = this.parameters
 
   override fun toString(): String {
-    return "ParameterList(parameters=$parameters)"
+    return "Parameter(" + System.lineSeparator() +
+        "\tid=$id expression=$expression" +
+        System.lineSeparator() + ")"
   }
-
 }

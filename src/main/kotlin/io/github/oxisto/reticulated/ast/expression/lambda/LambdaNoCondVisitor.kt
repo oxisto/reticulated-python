@@ -17,13 +17,11 @@
 
 package io.github.oxisto.reticulated.ast.expression.lambda
 
-import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
-import io.github.oxisto.reticulated.ast.expression.ExpressionNoCond
+import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.ExpressionNoCondVisitor
-import io.github.oxisto.reticulated.ast.statement.Parameter
-import io.github.oxisto.reticulated.ast.statement.ParameterList
-import io.github.oxisto.reticulated.ast.statement.ParameterListVisitor
+import io.github.oxisto.reticulated.ast.statement.parameter.BaseParameter
+import io.github.oxisto.reticulated.ast.statement.parameter.ParameterListVisitor
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 
@@ -35,11 +33,8 @@ import io.github.oxisto.reticulated.grammar.Python3Parser
  */
 class LambdaNoCondVisitor(val scope: Scope): Python3BaseVisitor<LambdaNoCond>() {
     override fun visitLambdef_nocond(ctx: Python3Parser.Lambdef_nocondContext): LambdaNoCond {
-        if(ctx.childCount < 3 || ctx.childCount > 4){
-            throw CouldNotParseException("The childCount of the ctx=$ctx was not expected.")
-        }
-        val parameterList: ParameterList?
-        val expressionNoCond: ExpressionNoCond
+        var parameterList: BaseParameter? = null
+        val expressionNoCond: Expression
         val getExpressionNoCondByPosition = {
             position:Int -> ctx
                 .getChild(position)
@@ -47,21 +42,19 @@ class LambdaNoCondVisitor(val scope: Scope): Python3BaseVisitor<LambdaNoCond>() 
                         ExpressionNoCondVisitor(
                                 this.scope
                         )
-                ) as ExpressionNoCond
+                )
         }
-        if( ctx.childCount == 3 ) {
-            parameterList = null
-            expressionNoCond = getExpressionNoCondByPosition(2)
-        } else {
-            val listOfParameter = ctx
-                    .getChild(1)
-                    .accept(
-                            ParameterListVisitor(
-                                    this.scope
-                            )
-                    ) as List<Parameter>
-            parameterList = ParameterList(listOfParameter)
-            expressionNoCond = getExpressionNoCondByPosition(3)
+        expressionNoCond = if( ctx.childCount == 3 )
+            getExpressionNoCondByPosition(2)
+        else {
+            parameterList = ctx
+                .getChild(1)
+                .accept(
+                    ParameterListVisitor(
+                        this.scope
+                    )
+                )
+            getExpressionNoCondByPosition(3)
         }
         return LambdaNoCond(parameterList, expressionNoCond)
     }

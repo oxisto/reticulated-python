@@ -17,4 +17,8 @@
 
 package io.github.oxisto.reticulated.ast.simple.target
 
-interface Target
+import io.github.oxisto.reticulated.ast.simple.ExpressionStatement
+
+abstract class Target: ExpressionStatement(){
+
+}

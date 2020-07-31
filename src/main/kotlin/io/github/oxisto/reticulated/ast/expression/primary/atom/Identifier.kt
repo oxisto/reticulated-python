@@ -17,15 +17,18 @@
 
 package io.github.oxisto.reticulated.ast.expression.primary.atom
 
-import io.github.oxisto.reticulated.ast.simple.target.Target
+import io.github.oxisto.reticulated.solver.Identifiable
 
-open class Identifier(val name: String) : Target, Atom() {
+open class Identifier(val name: String) : Atom(), Identifiable {
 
   override fun toString(): String {
     return "Identifier(" + System.lineSeparator() +
             "\tname='$name'" + System.lineSeparator() +
             ")"
   }
+
+  override val id: Identifier
+    get() = this
 
   override fun equals(other: Any?): Boolean {
     if (this === other) return true
@@ -36,10 +39,6 @@ open class Identifier(val name: String) : Target, Atom() {
     if (name != other.name) return false
 
     return true
-  }
-
-  override fun isCall(): Boolean {
-    return false
   }
 
   override fun hashCode(): Int {

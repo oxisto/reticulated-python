@@ -17,9 +17,6 @@
 
 package io.github.oxisto.reticulated.ast.expression.operator
 
-import io.github.oxisto.reticulated.ast.CouldNotParseException
-
-
 /**
  * This class represents a m_expr.
  * It´s EBNF representations are:
@@ -29,37 +26,19 @@ import io.github.oxisto.reticulated.ast.CouldNotParseException
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#unary-arithmetic-and-bitwise-operations}]
  */
 class MultiplicativeExpr(
-        val multiplicativeExpr: BaseOperator?,
-        val binaryOperator: BinaryOperator?,
+        val multiplicativeExpr: BaseOperator,
+        val binaryOperator: BinaryOperator,
         val unaryExpr: BaseOperator
 ): BaseOperator() {
 
-    init {
-        if(binaryOperator == null) {
-            if(multiplicativeExpr != null){
-                throw CouldNotParseException()
-            }
-        }else {
-            if (multiplicativeExpr == null || (
-                            binaryOperator != BinaryOperator.MULTIPLICATION &&
-                                    binaryOperator != BinaryOperator.DIVISION &&
-                                    binaryOperator != BinaryOperator.FLOOR_DIVISION &&
-                                    binaryOperator != BinaryOperator.MATRIX_MULTIPLICATION &&
-                                    binaryOperator != BinaryOperator.MODULO
-                            )
-            ) {
-                throw CouldNotParseException()
-            }
-        }
-    }
 
     override fun toString(): String {
-        var result ="MultiplicativeExpr(" + System.lineSeparator() + "\t"
-        if (multiplicativeExpr != null) {
-            result += "multiplicativeExpr=$multiplicativeExpr binaryOperator=$binaryOperator "
-        }
-        result += "unaryExpr=$unaryExpr" + System.lineSeparator() +
-                ")"
-        return result
+        return "MultiplicativeExpr(" +
+            System.lineSeparator() +
+            "\tmultiplicativeExpr=$multiplicativeExpr " +
+            "binaryOperator=$binaryOperator " +
+            "unaryExpr=$unaryExpr" +
+            System.lineSeparator() +
+            ")"
     }
 }

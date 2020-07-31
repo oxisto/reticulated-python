@@ -15,26 +15,25 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.expression
+package io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure
 
-import io.github.oxisto.reticulated.ast.expression.primary.Primary
-import io.github.oxisto.reticulated.ast.simple.target.Target
+import io.github.oxisto.reticulated.ast.expression.starred.Starred
 
 /**
- * This class represents a subscription.
- * It´s EBNF representation is:
- *        subscription ::= primary "[" expression_list "]"
+ * This class represents the parent_form.
+ * It´s EBNF representations is:
+ *        parenth_form ::= "(" [starred_expression] ")"
+ *
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-parenth-form}]
  */
-class Subscription(val primary: Primary, val expressionList: List<Expression>) : Target, Primary() {
-  // TODO: Write relating visitor (primary_visitor)
-  override fun isCall(): Boolean {
-    return false
-  }
+class ParentForm(val starredExpression: Starred?): Enclosure(){
 
   override fun toString(): String {
-    return "Subscription(" + System.lineSeparator() +
-            "\tprimary=$primary [ expressionList=$expressionList ] " + System.lineSeparator() +
-            ")"
+    var result = "StarredExpression(" + System.lineSeparator() +
+        "\t \"(\" "
+    if (starredExpression != null)
+      result += "starredExpression=$starredExpression"
+    return "$result \")\"" + System.lineSeparator() +
+        ")"
   }
-
 }

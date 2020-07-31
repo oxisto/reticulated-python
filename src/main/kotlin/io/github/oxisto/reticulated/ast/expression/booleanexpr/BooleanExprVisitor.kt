@@ -17,13 +17,15 @@
 
 package io.github.oxisto.reticulated.ast.expression.booleanexpr
 
-import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.operator.OperatorVisitor
-import io.github.oxisto.reticulated.ast.expression.operator.ShiftExpr
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 
+/**
+ * This visitor is called for all boolean expressions.
+ *
+ */
 class BooleanExprVisitor(val scope: Scope):  Python3BaseVisitor<BaseBooleanExpr>() {
     /**
      * The visitor for an or_expr.
@@ -32,25 +34,18 @@ class BooleanExprVisitor(val scope: Scope):  Python3BaseVisitor<BaseBooleanExpr>
      * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#binary-bitwise-operations}]
      */
     override fun visitExpr(ctx: Python3Parser.ExprContext): BaseBooleanExpr {
-        if(ctx.childCount < 1 || ctx.childCount > 3){
-            throw CouldNotParseException("The ctx=$ctx child count is unexpected.")
-        }
-        val orExpr: BaseBooleanExpr?
-        val xorExpr: XorExpr
         val getXorExprByPosition = {
             position:Int -> ctx
                 .getChild(position)
-                .accept(this) as XorExpr
+                .accept(this)
         }
-        if(ctx.childCount == 1){
-            orExpr = null
-            xorExpr = getXorExprByPosition(0)
-        } else {
-            orExpr = ctx.getChild(0)
-                    .accept(this) as BaseBooleanExpr
-            xorExpr = getXorExprByPosition(2)
-        }
-        return OrExpr(orExpr, xorExpr)
+        return if (ctx.childCount == 3)
+            OrExpr(
+                ctx.getChild(0)
+                    .accept(this) as BaseBooleanExpr,
+                getXorExprByPosition(2)
+            )
+        else getXorExprByPosition(0)
     }
 
     /**
@@ -60,25 +55,15 @@ class BooleanExprVisitor(val scope: Scope):  Python3BaseVisitor<BaseBooleanExpr>
      * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#binary-bitwise-operations}]
      */
     override fun visitXor_expr(ctx: Python3Parser.Xor_exprContext): BaseBooleanExpr {
-        val xorExpr:  BaseBooleanExpr?
-        val andExpr: AndExpr
         val getAndExprByPosition = {
             position:Int -> ctx.
                 getChild(position)
-                .accept(this) as AndExpr
+                .accept(this)
         }
-        if(ctx.childCount == 1){
-            xorExpr = null
-            andExpr = getAndExprByPosition(0)
-        } else {
-            if(ctx.childCount != 3){
-                throw CouldNotParseException("The ctx=$ctx child count is unexpected.")
-            }
-            xorExpr = ctx.getChild(0)
-                    .accept(this) as BaseBooleanExpr
-            andExpr = getAndExprByPosition(2)
-        }
-        return XorExpr(xorExpr, andExpr)
+        return if (ctx.childCount == 3)
+            XorExpr(ctx.getChild(0)
+                .accept(this) as BaseBooleanExpr, getAndExprByPosition(2))
+        else getAndExprByPosition(0)
     }
 
     /**
@@ -88,8 +73,6 @@ class BooleanExprVisitor(val scope: Scope):  Python3BaseVisitor<BaseBooleanExpr>
      * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#binary-bitwise-operations}]
      */
     override fun visitAnd_expr(ctx: Python3Parser.And_exprContext): BaseBooleanExpr {
-        val andExpr: BaseBooleanExpr?
-        val shiftExpr: ShiftExpr
         val getShiftExprByPosition = {
             position:Int -> ctx.
                 getChild(position)
@@ -97,27 +80,21 @@ class BooleanExprVisitor(val scope: Scope):  Python3BaseVisitor<BaseBooleanExpr>
                         OperatorVisitor(
                                 this.scope
                         )
-                ) as ShiftExpr
+                )
         }
-        if(ctx.childCount == 1) {
-            andExpr = null
-            shiftExpr = getShiftExprByPosition(0)
-        } else {
-            if(ctx.childCount != 3){
-                throw CouldNotParseException("The ctx=$ctx child count is unexpected.")
-            }
+        return if(ctx.childCount == 3) {
             val child = ctx.getChild(0)
-            andExpr = if(child is Python3Parser.And_exprContext) {
+            val andExpr = if(child is Python3Parser.And_exprContext) {
                 child.accept(this) as BaseBooleanExpr
             } else {
                 child.accept(
-                        OperatorVisitor(
-                                this.scope
-                        )
+                    OperatorVisitor(
+                        this.scope
+                    )
                 )
             }
-            shiftExpr = getShiftExprByPosition(2)
-        }
-        return AndExpr(andExpr, shiftExpr)
+            val shiftExpr = getShiftExprByPosition(2)
+            AndExpr(andExpr, shiftExpr)
+        } else getShiftExprByPosition(0)
     }
 }

@@ -24,6 +24,7 @@ import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
  * This class represents the keyword_item.
  * It has the EBNF representation: keyword_item ::= identifier "=" expression
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#calls}]
+ *
  */
 class KeywordItem(val identifier: Identifier, expression: Expression): KeywordArgument(expression) {
 
@@ -34,7 +35,7 @@ class KeywordItem(val identifier: Identifier, expression: Expression): KeywordAr
 
     override fun toString(): String{
         return "KeywordItem(" + System.lineSeparator() +
-                "\tkeywordItem=($identifier=$expression)" +System.lineSeparator() +
+                "\t Identifier=$identifier \"=\" Expression=$expression " + System.lineSeparator() +
                 ")"
     }
 }

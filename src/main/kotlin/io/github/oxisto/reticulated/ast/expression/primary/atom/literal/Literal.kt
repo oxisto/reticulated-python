@@ -24,9 +24,5 @@ import io.github.oxisto.reticulated.ast.expression.primary.atom.Atom
  */
 abstract class Literal<T>() : Atom() {
 
-  override fun isCall(): Boolean {
-    return false
-  }
-
   abstract override fun toString(): String
 }

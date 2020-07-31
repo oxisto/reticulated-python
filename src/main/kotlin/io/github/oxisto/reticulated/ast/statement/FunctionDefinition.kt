@@ -20,6 +20,8 @@ package io.github.oxisto.reticulated.ast.statement
 import io.github.oxisto.reticulated.ast.Suite
 import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
+import io.github.oxisto.reticulated.ast.statement.parameter.BaseParameter
+import io.github.oxisto.reticulated.ast.statement.parameter.ParameterList
 
 /**
  * A function definition
@@ -27,15 +29,16 @@ import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
  * Reference: https://docs.python.org/3/reference/compound_stmts.html#grammar-token-funcdef
  */
 class FunctionDefinition(
-    val id: Identifier,
-    val parameterList: ParameterList = ParameterList(), suite: Suite,
+    val funcName: Identifier,
+    val parameterList: BaseParameter?,
+    suite: Statement,
     val expression: Expression?
 ) : Definition(suite) {
   // TODO: decorators
 
   init {
-    id.parent = this
-    parameterList.parent = this
+    funcName.parent = this
+    parameterList?.parent = this
   }
 
   override fun isFunctionDefinition(): Boolean {
@@ -47,7 +50,15 @@ class FunctionDefinition(
   }
 
   override fun toString(): String {
-    return "FunctionDefinition(id=$id, parameters=$parameterList)"
+    var result = "FunctionDefinition(" + System.lineSeparator() +
+        "\t\"def\" funcname=$funcName \"(\" "
+    if (parameterList != null)
+        result += "parameters=$parameterList"
+    result += " \")\""
+    if (expression != null)
+      result += "\"->\" expression=$expression"
+    return "$result \":\" suite =$suite" + System.lineSeparator() +
+        ")"
   }
 
 }

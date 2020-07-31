@@ -17,29 +17,18 @@
 
 package io.github.oxisto.reticulated.ast.expression.booleanops
 
-import io.github.oxisto.reticulated.ast.CouldNotParseException
-
 /**
  * This class represents an or_test.
  * It´s EBNF definition is:
  *      or_test ::= and_test | or_test "or" and_test
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#boolean-operations}]
+ *
  */
-class OrTest(val orTest: BaseBooleanOp?, val andTest:AndTest): BaseBooleanOp() {
-
-    init {
-        if(orTest != null && orTest !is OrTest && orTest !is AndTest){
-            throw CouldNotParseException()
-        }
-    }
+class OrTest(val orTest: BaseBooleanOp, val andTest:BaseBooleanOp): BaseBooleanOp() {
 
     override fun toString():String {
-        var result  = "OrTest(" + System.lineSeparator() + "\t"
-        if(orTest !== null) {
-            result += "orTest=$orTest or "
-        }
-        result += "andTest=$andTest" + System.lineSeparator() +
-                ")"
-        return result
+        return "OrTest(" + System.lineSeparator() +
+            "\torTest=$orTest \"or\" andTest=$andTest" + System.lineSeparator() +
+            ")"
     }
 }

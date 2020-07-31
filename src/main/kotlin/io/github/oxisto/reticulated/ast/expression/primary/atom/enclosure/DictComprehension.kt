@@ -15,19 +15,24 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.statement
+
+package io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure
 
 import io.github.oxisto.reticulated.ast.expression.Expression
-import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
+import io.github.oxisto.reticulated.ast.expression.comprehension.CompFor
 
 /**
- * A parameter with a default value.
+ * This class represents a dict_Comprehension.
+ * It´s EBNF representations is:
+ *        dict_comprehension ::= expression ":" expression comp_for
  *
- * Reference: https://docs.python.org/3/reference/compound_stmts.html#grammar-token-defparameter
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-dict-comprehension}]
  */
-class DefaultParameter(id: Identifier, val default: Expression, expression: Expression?) : Parameter(id, expression) {
+class DictComprehension(val key: Expression, val datum: Expression, val compFor: CompFor): Enclosure() {
 
-  init {
-    default.parent = this
+  override fun toString(): String {
+    return "DictComprehension(" + System.lineSeparator() +
+        "\tkey=$key \":\" datum=$datum compFor=$compFor" + System.lineSeparator() +
+        ")"
   }
 }

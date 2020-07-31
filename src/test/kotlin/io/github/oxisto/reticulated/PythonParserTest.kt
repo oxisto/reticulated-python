@@ -19,15 +19,14 @@
  */
 package io.github.oxisto.reticulated
 
-import io.github.oxisto.reticulated.ast.expression.ConditionalExpression
+import io.github.oxisto.reticulated.ast.Suite
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
+import io.github.oxisto.reticulated.ast.expression.primary.atom.literal.StringLiteral
 import io.github.oxisto.reticulated.ast.expression.primary.call.Call
-import io.github.oxisto.reticulated.ast.expression.argument.ArgumentList
-import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
-import io.github.oxisto.reticulated.ast.expression.comparison.Comparison
-import io.github.oxisto.reticulated.ast.expression.operator.PowerExpr
 import io.github.oxisto.reticulated.ast.simple.ExpressionStatement
 import io.github.oxisto.reticulated.ast.statement.FunctionDefinition
+import io.github.oxisto.reticulated.ast.statement.StatementList
+import io.github.oxisto.reticulated.ast.statement.parameter.ParameterList
 import java.io.File
 import kotlin.test.*
 
@@ -46,23 +45,56 @@ class PythonParserTest {
     val input = classUnderTest.parse(file.path).root
     assertNotNull(input)
 
-    // first function without arguments
-    var func = input.statements[0]
-    assertTrue(func is FunctionDefinition)
-    assertEquals("func_no_arguments", func.id.name)
-    assertEquals(0, func.parameterList.count)
+    // print(input.toString())
 
     // first function without arguments
-    func = input.statements[1]
-    assertTrue(func is FunctionDefinition)
-    assertEquals("func_one_argument", func.id.name)
-    assertEquals(1, func.parameterList.count)
+    val func1 = input.statements[0]
+    assertTrue(func1 is FunctionDefinition)
+    assertNull(func1.expression)
+    assertEquals("func_no_arguments", func1.funcName.name)
+    assertEquals(0, (func1.parameterList as ParameterList).count)
+    val call = func1.suite
+    assertTrue(call is Call)
+    val callName = call.primary as Identifier
+    assertEquals(callName.name, "print")
+    val param = call.callTrailer as StringLiteral
+    assertEquals(param.value, "test")
 
-    // first function without arguments
-    func = input.statements[2]
-    assertTrue(func is FunctionDefinition)
-    assertEquals("func_two_arguments", func.id.name)
-    assertEquals(2, func.parameterList.count)
+    // second function with one argument
+    val func2 = input.statements[1]
+    assertTrue(func2 is FunctionDefinition)
+    assertNull(func2.expression)
+    assertEquals("func_one_argument", func2.funcName.name)
+    val parameter2 = func2.parameterList as Identifier
+    assertEquals(parameter2.name, "i")
+    val call2 = func2.suite as Call
+    val callName2 = call2.primary as Identifier
+    assertEquals(callName2.name, "print")
+    val param2 = call2.callTrailer as Identifier
+    assertEquals(param2.name, "i")
+
+    // third function wit two arguments
+    val func3 = input.statements[2]
+    assertTrue(func3 is FunctionDefinition)
+    assertNull(func3.expression)
+    assertEquals("func_two_arguments", func3.funcName.name)
+    val parameter3 = func3.parameterList as ParameterList
+    val firstParameter = parameter3[0] as Identifier
+    assertEquals(firstParameter.name, "i")
+    val secondParameter = parameter3[1] as Identifier
+    assertEquals(secondParameter.name, "j")
+    val suite = func3.suite as Suite
+    val firstCall = suite[0] as Call
+    val firstCallName = firstCall.primary as Identifier
+    assertEquals(firstCallName.name, "print")
+    val firstCallParam = firstCall.callTrailer as Identifier
+    assertEquals(firstCallParam.name, "i")
+    val secondCall = suite[1] as Call
+    val secondCallName = secondCall.primary as Identifier
+    assertEquals(secondCallName.name, "print")
+    val secondCallParam = secondCall.callTrailer as Identifier
+    assertEquals(secondCallParam.name, "j")
+
   }
 
   @Test
@@ -93,82 +125,21 @@ class PythonParserTest {
 
     val input = classUnderTest.parse(file.path).root
 
+    // print(input)
+
     val func = input.statements[0]
     assertTrue(func is FunctionDefinition)
-
+    assertEquals(func.funcName.name, "func")
+    val param = func.parameterList as Identifier
+    assertEquals(param.name, "i")
     // get the first statement of the suite
-    val stmt = func.suite.statements[0].asStatementList().statements[0]
-    assertTrue(stmt is ExpressionStatement)
-
-    val conditionalExpression = stmt.expression as ConditionalExpression
-    assertNotNull(conditionalExpression)
-    val orTestCall = conditionalExpression.orTest as OrTest
-    assertNotNull(orTestCall)
-    val subOrTestCall = orTestCall.orTest
-    assertNull(subOrTestCall)
-    val andTestCall = orTestCall.andTest
-    assertNotNull(andTestCall)
-    val subAndTestCall = andTestCall.andTest
-    assertNull(subAndTestCall)
-    val notTestCall = andTestCall.notTest
-    assertNotNull(notTestCall)
-    val subNotTestCall = notTestCall.notTest
-    assertNull(subNotTestCall)
-    val comparisonCall = notTestCall.comparison
-    assertNotNull(comparisonCall)
-    val comparisonsCall = comparisonCall.comparisons
-    assertNotNull(comparisonsCall)
-    assertEquals(comparisonsCall.size, 0)
-    val orExprCall = comparisonCall.orExpr
-    assertNotNull(orExprCall)
-    val subOrExprCall = orExprCall.orExpr
-    assertNull(subOrExprCall)
-    val xorExprCall = orExprCall.xorExpr
-    assertNotNull(xorExprCall)
-    val subXorExprCall = xorExprCall.xorExpr
-    assertNull(subXorExprCall)
-    val andExprCall = xorExprCall.andExpr
-    assertNotNull(andExprCall)
-    val subAndExprCall = andExprCall.andExpr
-    assertNull(subAndExprCall)
-    val shiftExprCall = andExprCall.shiftExpr
-    assertNotNull(shiftExprCall)
-    val subShiftExprCall = shiftExprCall.shiftExpr
-    assertNull(subShiftExprCall)
-    val binaryOperatorCall = shiftExprCall.binaryOperator
-    assertNull(binaryOperatorCall)
-    val baseOperatorCall = shiftExprCall.baseOperator as PowerExpr
-    assertNotNull(baseOperatorCall)
-    val awaitExprCall = baseOperatorCall.awaitExpr
-    assertNull(awaitExprCall)
-    val subBaseOperatorCall = baseOperatorCall.baseOperator
-    assertNull(subBaseOperatorCall)
-    val call = baseOperatorCall.primary
+    val call = func.suite
     assertTrue(call is Call)
+    val callName = call.primary as Identifier
+    assertEquals(callName.name, "print")
 
-    // get first argument
-    val arg = call.callTrailer as ArgumentList
-    val arg0 = arg[0]
-    assertNotNull(arg0)
-
-    val name = (
-        (
-            (
-                (
-                    arg0.expression as ConditionalExpression
-                    ).orTest as OrTest
-                ).andTest
-                .notTest
-                .comparison as Comparison
-            ).orExpr
-            .xorExpr
-            .andExpr
-            .shiftExpr
-            .baseOperator as PowerExpr
-        ).primary
+    val name = call.callTrailer
     assertTrue(name is Identifier)
     assertEquals("i", name.name)
-
-    assertNotNull(input)
   }
 }

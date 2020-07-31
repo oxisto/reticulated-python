@@ -17,7 +17,7 @@
 
 package io.github.oxisto.reticulated.ast.simple.target
 
-class TargetTupleElement(targetList: TargetList): TargetCollectionElement(targetList) {
+class TargetTupleElement(var targetList: TargetList): Target() {
     override fun toString(): String {
         return "TargetTupleElement(" + System.lineSeparator() +
                 "\ttargetList=( $targetList )" + System.lineSeparator() +

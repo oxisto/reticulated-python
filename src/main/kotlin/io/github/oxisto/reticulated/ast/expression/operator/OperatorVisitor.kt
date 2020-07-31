@@ -19,10 +19,8 @@ package io.github.oxisto.reticulated.ast.expression.operator
 
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
-import io.github.oxisto.reticulated.ast.expression.AwaitExpr
-import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
 import io.github.oxisto.reticulated.ast.expression.primary.Primary
-import io.github.oxisto.reticulated.ast.expression.booleanexpr.BaseBooleanExpr
+import io.github.oxisto.reticulated.ast.expression.primary.PrimaryVisitor
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 import org.antlr.v4.runtime.ParserRuleContext
@@ -44,57 +42,40 @@ import org.antlr.v4.runtime.tree.TerminalNodeImpl
 class OperatorVisitor(val scope: Scope): Python3BaseVisitor<BaseOperator>() {
 
     override fun visitShift_expr(ctx: Python3Parser.Shift_exprContext): BaseOperator {
-        if(ctx.childCount < 1 || ctx.childCount > 3){
-            throw CouldNotParseException()
-        }
-        val shiftExpr: BaseBooleanExpr?
-        val binaryOperator: BinaryOperator?
-        val baseOperator: BaseOperator
         val getBaseOperatorByPosition = {
             position:Int -> ctx
                 .getChild(position)
                 .accept(this)
         }
-        if(ctx.childCount == 1){
-            shiftExpr = null
-            binaryOperator = null
-            baseOperator = getBaseOperatorByPosition(0)
-        } else {
-            shiftExpr = ctx.getChild(0)
-                    .accept(this)
-            binaryOperator = BinaryOperator
+        return if(ctx.childCount == 3)
+            ShiftExpr(
+                ctx.getChild(0)
+                    .accept(this),
+                BinaryOperator
                     .getBinaryOperator(
-                            ctx.getChild(1).text
-                    )
-            baseOperator = getBaseOperatorByPosition(2)
-        }
-        return ShiftExpr(shiftExpr, binaryOperator, baseOperator)
+                        ctx.getChild(1).text
+                    ),
+                getBaseOperatorByPosition(2)
+            )
+        else getBaseOperatorByPosition(0)
     }
 
     override fun visitArith_expr(ctx: Python3Parser.Arith_exprContext): BaseOperator {
-        if(ctx.childCount < 1 || ctx.childCount > 3) {
-            throw CouldNotParseException()
-        }
         return when (ctx.childCount) {
-            1 -> {
-                ctx.getChild(0).accept(this)
-            }
-            2 -> {
-                // It is a UnaryExpr
-                handleUnaryOperator(ctx)
-            }
+            1 -> ctx.getChild(0).accept(this)
+            2 -> handleUnaryOperator(ctx)    // It is a UnaryExpr
             3 -> {
                 // It is a AdditiveExpr
+                val baseOperatorLeft: BaseOperator = ctx
+                    .getChild(0)
+                    .accept(this)
+
                 val binaryOperator: BinaryOperator = BinaryOperator
                     .getBinaryOperator(
                         ctx
                         .getChild(1)
                         .text
-                    ) ?: throw CouldNotParseException()
-
-                val baseOperatorLeft: BaseOperator = ctx
-                        .getChild(0)
-                        .accept(this)
+                    )
 
                 val baseOperatorRight: BaseOperator = ctx
                         .getChild(2)
@@ -117,79 +98,65 @@ class OperatorVisitor(val scope: Scope): Python3BaseVisitor<BaseOperator>() {
             handleUnaryOperator(ctx)
         } else if(ctx.childCount == 3){
             // It is a MultiplicativeExpr
-            val binaryOperator: BinaryOperator = BinaryOperator
-                .getBinaryOperator(
-                    ctx.getChild(1)
-                        .text
-                ) ?: throw CouldNotParseException()
-
             val baseOperatorLeft: BaseOperator = ctx
                 .getChild(0)
                 .accept(this)
 
+            val binaryOperator: BinaryOperator = BinaryOperator
+                .getBinaryOperator(
+                    ctx.getChild(1)
+                        .text
+                )
+
             val baseOperatorRight: BaseOperator = ctx
                 .getChild(2)
                 .accept(this)
+
             MultiplicativeExpr(baseOperatorLeft, binaryOperator, baseOperatorRight)
-        }else {
-            ctx.getChild(0).accept(this)
-        }
+        } else ctx.getChild(0).accept(this)
     }
 
     override fun visitFactor(ctx: Python3Parser.FactorContext): BaseOperator {
-        return if(ctx.childCount == 2){
-            // It is a UnaryExpr
-            getUnaryExpr(ctx)
-        } else {
-            // It is a PowerExpr
-            ctx.getChild(0).accept(this) as PowerExpr
-        }
+        return if(ctx.childCount == 2) getUnaryExpr(ctx)    // It is a UnaryExpr
+        else ctx.getChild(0).accept(this)    // It is a PowerExpr
     }
 
-    override fun visitPower(ctx: Python3Parser.PowerContext): PowerExpr {
-        if(ctx.childCount != 1 && ctx.childCount != 3 ){
-            throw CouldNotParseException()
-        }
-        val awaitExpr: AwaitExpr?
-        val primary: Primary?
+    override fun visitPower(ctx: Python3Parser.PowerContext): BaseOperator {
+        var awaitExpr: AwaitExpr? = null
+        var primary: Primary? = null
         val child = ctx.getChild(0)
         if(child.childCount == 2 && child.getChild(0).text == "await"){
             // It is an AwaitExpr
-            awaitExpr = child.accept(
-                ExpressionVisitor(
-                    this.scope
-                )
-            ) as AwaitExpr
-            primary = null
-        }else{
+            awaitExpr = AwaitExpr(
+                child.accept(
+                    PrimaryVisitor(
+                        this.scope
+                    )
+                ) as Primary
+            )
+        } else {
             // It is a PrimaryExpr
-            awaitExpr = null
             primary =
                 child.accept(
-                    ExpressionVisitor(
+                    PrimaryVisitor(
                         this.scope
                     )
                 ) as Primary
         }
 
-        val unaryExpr = if(ctx.childCount == 3){
+        val unaryExpr = if (ctx.childCount == 3) {
             // It is a UnaryExpr or a PowerExpr
             ctx
                 .getChild(2)
                 .accept(this)
-        }else { null }
-        return PowerExpr(awaitExpr, primary, unaryExpr)
+        } else null
+        return if(unaryExpr == null) {
+            primary ?: awaitExpr!!
+        } else PowerExpr(awaitExpr, primary, unaryExpr)
     }
 
     private fun handleUnaryOperator(ctx: ParserRuleContext): UnaryExpr {
-        if(ctx.childCount != 1) {
-            throw CouldNotParseException()
-        }
-        val child = ctx.getChild(0)
-        if(child.childCount != 2) {
-            throw CouldNotParseException()
-        }
-        return getUnaryExpr(child)
+        return getUnaryExpr(ctx.getChild(0))
     }
 
     private fun getUnaryExpr(parseTree: ParseTree): UnaryExpr {
@@ -198,7 +165,7 @@ class OperatorVisitor(val scope: Scope): Python3BaseVisitor<BaseOperator>() {
                 parseTree
                     .getChild(0)
                     .text.toString()
-            ) ?: throw CouldNotParseException(),
+            ),
             parseTree.getChild(1)
                 .accept(this)
         )

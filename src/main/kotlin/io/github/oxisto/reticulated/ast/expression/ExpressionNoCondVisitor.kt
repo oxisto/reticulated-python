@@ -17,10 +17,8 @@
 
 package io.github.oxisto.reticulated.ast.expression
 
-import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.booleanops.BooleanOpVisitor
-import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
 import io.github.oxisto.reticulated.ast.expression.lambda.LambdaNoCondVisitor
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
@@ -31,32 +29,11 @@ import io.github.oxisto.reticulated.grammar.Python3Parser
  *      expression_nocond ::= or_test | lambda_expr_nocond
  *
  */
-class ExpressionNoCondVisitor(val scope: Scope): Python3BaseVisitor<ExpressionNoCond>() {
-    override fun visitTest_nocond(ctx: Python3Parser.Test_nocondContext): ExpressionNoCond {
-        if(ctx.childCount != 1){
-            throw CouldNotParseException()
-        }
+class ExpressionNoCondVisitor(val scope: Scope): Python3BaseVisitor<Expression>() {
+    override fun visitTest_nocond(ctx: Python3Parser.Test_nocondContext): Expression {
         val child = ctx.getChild(0)
-
-        return if ( child is Python3Parser.Or_testContext){
-            ExpressionNoCond(
-                    child.accept(BooleanOpVisitor(this.scope)) as OrTest,
-                    null
-            )
-        } else {
-            if(child !is Python3Parser.Lambdef_nocondContext){
-                throw CouldNotParseException(
-                        "The second child of the ctx=$ctx was neither a Test_nocondContext nor a Lambdef_nocondContext."
-                )
-            }
-            ExpressionNoCond(
-                    null,
-                    child.accept(
-                            LambdaNoCondVisitor(
-                                    this.scope
-                            )
-                    )
-            )
-        }
+        return if ( child is Python3Parser.Or_testContext)
+            child.accept(BooleanOpVisitor(this.scope))
+        else child.accept(LambdaNoCondVisitor(this.scope))
     }
 }
