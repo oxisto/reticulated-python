@@ -109,6 +109,10 @@ publishing {
   }
 }
 
+tasks.named("sonarqube") {
+    dependsOn(":jacocoTestReport")
+}
+
 tasks.withType<GenerateModuleMetadata> {
   enabled = false
 }
