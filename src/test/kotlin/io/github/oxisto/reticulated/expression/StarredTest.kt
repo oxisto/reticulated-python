@@ -56,45 +56,4 @@ class StarredTest {
     val secondValue = secondSIListDisplay.starredList as Integer
     assertEquals(secondValue.value, 3)
   }
-
-  @Test
-  fun starredToStringTest () {
-    val file = File(
-        javaClass
-            .classLoader
-            .getResource("expressions/starred.py")!!
-            .file
-    )
-    val input = PythonParser()
-        .parse(file.path)
-        .root
-    assertNotNull(input)
-    assertEquals(input.toString(), """FileInput(statements=[Call(
-	primary=Identifier(
-	name='print'
-) callTrailer=ArgumentList(
-	arguments=[PositionalArgument(
-	"*" Expression=ListDisplay(
-	 "[" starredList=Integer(
-	value=1
-) "]"
-)
-), PositionalArgument(
-	"*" Expression=ListDisplay(
-	 "[" starredList=StarredList(
-	starredItems=[Integer(
-	value=2
-), StarredItem(
-	"*" OrExpr=ListDisplay(
-	 "[" starredList=Integer(
-	value=3
-) "]"
-)
-)]
-) "]"
-)
-)]
-)
-)])""".replace("\n", System.lineSeparator()))
-  }
 }

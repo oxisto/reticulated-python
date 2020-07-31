@@ -31,27 +31,4 @@ class ParentFormTest {
     val valueOfParentForm = parentForm.starredExpression as Integer
     assertEquals(valueOfParentForm.value, 1)
   }
-
-   @Test fun prenthFormToStringTest () {
-     val file = File(
-         javaClass
-             .classLoader
-             .getResource("expressions/enclosure/display/parent_form.py")!!
-             .file
-     )
-
-     val input = PythonParser()
-         .parse(file.path)
-         .root
-     assertNotNull(input)
-
-     val inputString  = input.toString()
-
-     assertEquals(inputString, """FileInput(statements=[StarredExpression(
-	 "(" starredExpression=Integer(
-	value=1
-) ")"
-)])""".replace("\n", System.lineSeparator()))
-   }
-
 }

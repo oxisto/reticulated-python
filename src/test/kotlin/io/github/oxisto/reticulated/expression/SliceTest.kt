@@ -83,47 +83,4 @@ class SliceTest {
     val sliceList0 = subscription.expressionList as Integer
     assertEquals(sliceList0.value, 0)
   }
-
-  @Test
-  fun testSlicingParseString () {
-    val file = File(
-        javaClass
-            .classLoader
-            .getResource("expressions/slice/slice.py")!!
-            .file
-    )
-    val input = PythonParser()
-        .parse(file.path)
-        .root
-    assertNotNull(input)
-    assertEquals(input.toString(), """FileInput(statements=[Subscription(
-	primary=Slicing(
-	 primary=Slicing(
-	 primary=ListDisplay(
-	 "[" starredList=StarredList(
-	starredItems=[Integer(
-	value=1
-), Integer(
-	value=2
-)]
-) "]"
-) "[" slice_list=ProperSlice(
-	LowerBound=Integer(
-	value=0
-) ":" UpperBound=Integer(
-	value=3
-) Stride(
-	":" Expression=Integer(
-	value=2
-)
-)
-)  "]"
-) "[" slice_list=ProperSlice(
-	 ":" 
-)  "]"
-) [ expressionList=Integer(
-	value=0
-) ] 
-)])""".replace("\n", System.lineSeparator()))
-  }
 }

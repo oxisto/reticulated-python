@@ -68,38 +68,4 @@ class AsyncComprehensionTest {
       val callTrailer = orTest.callTrailer as Integer
       assertEquals(callTrailer.value, 10)
     }
-
-  @Test fun asyncToStringTest(){
-    val file = File(
-        javaClass
-            .classLoader
-            .getResource("expressions/comprehension/async_comprehension_argument.py")!!
-            .file
-    )
-
-    val input = PythonParser()
-        .parse(file.path)
-        .root
-    assertNotNull(input)
-    val inputString = input.toString()
-    assertEquals(inputString, """FileInput(statements=[Call(
-	primary=Identifier(
-	name='fun'
-) callTrailer=Comprehension(
-	expression=Identifier(
-	name='i'
-) compFor=CompFor(
-	"async" "for" targetList=Identifier(
-	name='i'
-)  "in" orTest=Call(
-	primary=Identifier(
-	name='range'
-) callTrailer=Integer(
-	value=10
-)
-)
-)
-)
-)])""".replace("\n", System.lineSeparator()))
-  }
 }

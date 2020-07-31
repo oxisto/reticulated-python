@@ -71,36 +71,4 @@ class GeneratorTest {
     val arg = call.callTrailer as Integer
     assertEquals(arg.value, 10)
   }
-
-  @Test fun generatorToStringTest() {
-    val file = File(
-        javaClass
-            .classLoader
-            .getResource("expressions/enclosure/generator_expression.py")!!
-            .file
-    )
-
-    val input = PythonParser()
-        .parse(file.path)
-        .root
-    assertNotNull(input)
-
-    val inputString = input.toString()
-    // print(beautifyResult(inputString))
-    assertEquals(inputString, """FileInput(statements=[GeneratorExpression(
-	 "(" expression=Identifier(
-	name='x'
-) compFor=CompFor(
-	"for" targetList=Identifier(
-	name='x'
-)  "in" orTest=Call(
-	primary=Identifier(
-	name='range'
-) callTrailer=Integer(
-	value=10
-)
-)
-) ")"
-)])""".replace("\n", System.lineSeparator()))
-  }
 }

@@ -46,35 +46,4 @@ class ConditionalTest {
     val expressionOptional = conditionalExpression.expressionOptional as Integer
     assertEquals(expressionOptional.value, 2)
   }
-
-  @Test
-  fun testSlicingParseString () {
-    val file = File(
-        javaClass
-            .classLoader
-            .getResource("expressions/conditional.py")!!
-            .file
-    )
-    val input = PythonParser()
-        .parse(file.path)
-        .root
-    assertNotNull(input)
-    assertEquals(input.toString(), """FileInput(statements=[Call(
-	primary=Identifier(
-	name='print'
-) callTrailer=ConditionalExpression(
-	orTest=Integer(
-	value=1
-) "if" orTest=Comparison(
-	orExpr=Integer(
-	value=1
-) compOperator=SMALLER orEpr=Integer(
-	value=2
-)
-) "else" expression=Integer(
-	value=2
-)
-)
-)])""".replace("\n", System.lineSeparator()))
-  }
 }

@@ -84,46 +84,4 @@ class SimpleStatementTest {
     val id = attributeRef.identifier
     assertEquals(id.name, "name")
   }
-
-  @Test fun parseToStringTest () {
-    val file = File(javaClass.classLoader.getResource("simple_stmt.py")!!.file)
-
-    val input = PythonParser().parse(file.path).root
-    assertNotNull(input)
-    assertEquals(input.toString(), """FileInput(statements=[AssignmentExpression(
-	target=Identifier(
-	name='i'
-) expression=Integer(
-	value=4
-)
-), Call(
-	primary=Identifier(
-	name='print'
-) callTrailer=Identifier(
-	name='i'
-)
-)])""".replace("\n", System.lineSeparator()))
-  }
-
-  @Test fun importToStringTest () {
-    val file = File(javaClass.classLoader.getResource("import.py")!!.file)
-
-    val input = PythonParser().parse(file.path).root
-    assertNotNull(input)
-    assertEquals(input.toString(), """FileInput(statements=[ImportStatement(
-	module=Identifier(
-	name='os'
-)
-), Call(
-	primary=Identifier(
-	name='print'
-) callTrailer=AttributeRef(
-	primary=Identifier(
-	name='os'
-)"."identifier=Identifier(
-	name='name'
-)
-)
-)])""".replace("\n", System.lineSeparator()))
-  }
 }

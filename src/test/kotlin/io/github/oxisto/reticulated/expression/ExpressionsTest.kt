@@ -66,41 +66,4 @@ class ExpressionsTest {
     assertEquals(id.name, "name")
   }
 
-
-  @Test
-  fun testAttributeRefString() {
-    val file = File(
-      javaClass
-        .classLoader
-        .getResource("import.py")!!
-        .file
-    )
-
-    val input = PythonParser()
-      .parse(file.path)
-      .root
-    assertNotNull(input)
-
-    val inputString = input.toString()
-    // print(input)
-    assertEquals(
-      inputString, """FileInput(statements=[ImportStatement(
-	module=Identifier(
-	name='os'
-)
-), Call(
-	primary=Identifier(
-	name='print'
-) callTrailer=AttributeRef(
-	primary=Identifier(
-	name='os'
-)"."identifier=Identifier(
-	name='name'
-)
-)
-)])""".replace("\n", System.lineSeparator())
-    )
-  }
-
-
 }
