@@ -24,11 +24,11 @@ package io.github.oxisto.reticulated.ast.expression.booleanops
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#boolean-operations}]
  *
  */
-class AndTest(val andTest:BaseBooleanOp, val notTest:BaseBooleanOp): BaseBooleanOp() {
+class AndTest(val andTest: BaseBooleanOp, val notTest: BaseBooleanOp) : BaseBooleanOp() {
 
-    override fun toString(): String {
-        return "AndTest(" + System.lineSeparator() +
-            "\tandTest=$andTest \"and\" notTest=$notTest" + System.lineSeparator() +
-            ")"
-    }
+  override fun toString(): String {
+    return "AndTest(" + System.lineSeparator() +
+      "\tandTest=$andTest \"and\" notTest=$notTest" + System.lineSeparator() +
+      ")"
+  }
 }

@@ -29,9 +29,9 @@ import io.github.oxisto.reticulated.ast.expression.Expression
  */
 class PositionalArgument(val expression: Expression) : Expression() {
 
-    override fun toString(): String{
-        return "PositionalArgument(" + System.lineSeparator() +
-                "\t\"*\" Expression=$expression" + System.lineSeparator() +
-                ")"
-    }
+  override fun toString(): String {
+    return "PositionalArgument(" + System.lineSeparator() +
+      "\t\"*\" Expression=$expression" + System.lineSeparator() +
+      ")"
+  }
 }

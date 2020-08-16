@@ -17,9 +17,9 @@
 
 package io.github.oxisto.reticulated.ast.statement.parameter
 
-import io.github.oxisto.reticulated.ast.expression.primary.atom.AtomVisitor
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
+import io.github.oxisto.reticulated.ast.expression.primary.atom.AtomVisitor
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
@@ -37,17 +37,17 @@ class ParameterVisitor(val scope: Scope) : Python3BaseVisitor<Parameter>() {
 
   private fun handleParameter(ctx: ParserRuleContext): Parameter {
     val id = ctx.getChild(0).accept(
-        AtomVisitor(
-            this.scope
-        )
+      AtomVisitor(
+        this.scope
+      )
     ) as Identifier
 
     return if (ctx.childCount == 3) {
       // third one is the type
       val expression = ctx.getChild(2).accept(
-              ExpressionVisitor(
-                      this.scope
-              )
+        ExpressionVisitor(
+          this.scope
+        )
       )
 
       Parameter(id, expression)

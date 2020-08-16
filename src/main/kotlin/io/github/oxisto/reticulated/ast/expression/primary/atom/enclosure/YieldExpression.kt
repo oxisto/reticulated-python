@@ -20,7 +20,6 @@ package io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure
 
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.expression.Expression
-import io.github.oxisto.reticulated.ast.expression.ExpressionList
 
 /**
  * This class represents a yield_eypression.
@@ -32,15 +31,15 @@ import io.github.oxisto.reticulated.ast.expression.ExpressionList
 class YieldExpression(val expressionList: Expression?, val expression: Expression?) : Enclosure() {
 
   init {
-    if(expressionList != null && expression != null)
+    if (expressionList != null && expression != null)
       throw CouldNotParseException(
-          "A YieldExpression cannot contain both, a expressionList=$expressionList and a expression=$expression."
+        "A YieldExpression cannot contain both, a expressionList=$expressionList and a expression=$expression."
       )
   }
 
   override fun toString(): String {
     var result = "YieldExpression(" + System.lineSeparator() +
-        "\t\"yield\" "
+      "\t\"yield\" "
     if (expressionList != null)
       result += "expressionList=$expressionList"
     if (expression != null)

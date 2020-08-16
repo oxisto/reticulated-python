@@ -17,19 +17,19 @@ class StarredExpressionTest {
   @Test
   fun starredTest() {
     val file = File(
-        javaClass
-            .classLoader
-            .getResource("expressions/starred.py")!!
-            .file
+      javaClass
+        .classLoader
+        .getResource("expressions/starred.py")!!
+        .file
     )
     val input = PythonParser()
-        .parse(file.path)
-        .root
+      .parse(file.path)
+      .root
     assertNotNull(input)
     // print(
-        // beautifyResult(
-            // input.toString()
-        // )
+    // beautifyResult(
+    // input.toString()
+    // )
     // )
     val call = input.statements[0] as Call
     val callName = call.primary as Identifier

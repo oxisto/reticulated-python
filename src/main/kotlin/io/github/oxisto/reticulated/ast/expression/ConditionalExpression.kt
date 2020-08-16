@@ -18,7 +18,6 @@
 package io.github.oxisto.reticulated.ast.expression
 
 import io.github.oxisto.reticulated.ast.expression.booleanops.BaseBooleanOp
-import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
 
 /**
  * This class represents a conditional_expression
@@ -26,19 +25,22 @@ import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
  *        conditional_expression ::= or_test ["if" or_test "else" expression]
  * [see: https://docs.python.org/3/reference/expressions.html#conditional-expressions]
  */
-class ConditionalExpression(val orTest: BaseBooleanOp, val orTestOptional: BaseBooleanOp, val expressionOptional: Expression): Expression() {
+class ConditionalExpression(
+  val orTest: BaseBooleanOp,
+  val orTestOptional: BaseBooleanOp,
+  val expressionOptional: Expression
+) : Expression() {
 
   override fun toString(): String {
     var result = "ConditionalExpression(" + System.lineSeparator() +
-            "\torTest=$orTest"
-      result += " if orTest=$orTestOptional else expression=$expressionOptional"
+      "\torTest=$orTest"
+    result += " if orTest=$orTestOptional else expression=$expressionOptional"
     result += System.lineSeparator() + ")"
     return "ConditionalExpression(" + System.lineSeparator() +
-        "\torTest=$orTest \"if\" " +
-        "orTest=$orTestOptional \"else\" " +
-        "expression=$expressionOptional" +
-        System.lineSeparator() +
-        ")"
+      "\torTest=$orTest \"if\" " +
+      "orTest=$orTestOptional \"else\" " +
+      "expression=$expressionOptional" +
+      System.lineSeparator() +
+      ")"
   }
-
 }

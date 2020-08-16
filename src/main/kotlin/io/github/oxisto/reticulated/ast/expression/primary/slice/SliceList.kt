@@ -32,14 +32,13 @@ class SliceList(private val items: List<Expression> = ArrayList()) : Slice(), Co
   init {
     if (items.isEmpty())
       throw CouldNotParseException("Empty slice item list was provided.")
-
   }
 
   override val children get() = this.items
 
   override fun toString(): String {
     return "SliceList(" + System.lineSeparator() +
-        "\titems=$items" + System.lineSeparator() +
-        ")"
+      "\titems=$items" + System.lineSeparator() +
+      ")"
   }
 }

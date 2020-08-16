@@ -33,5 +33,4 @@ class SetComprehension(val elt: Expression, val generators: kotlin.collections.L
   override fun toString(): String {
     return "SetComprehension(elt=$elt, generators=$generators)"
   }
-
 }

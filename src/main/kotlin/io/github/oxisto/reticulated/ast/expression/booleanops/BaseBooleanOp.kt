@@ -24,6 +24,6 @@ import io.github.oxisto.reticulated.ast.expression.Expression
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#boolean-operations}]
  *
  */
-abstract class BaseBooleanOp: Expression() {
-    abstract override fun toString(): String
+abstract class BaseBooleanOp : Expression() {
+  abstract override fun toString(): String
 }

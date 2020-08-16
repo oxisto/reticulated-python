@@ -18,7 +18,6 @@
 package io.github.oxisto.reticulated.ast.statement
 
 import io.github.oxisto.reticulated.ast.Container
-import io.github.oxisto.reticulated.ast.simple.SimpleStatement
 
 /**
  * A helper node that contains multiple statements so that we can use a list of statements as a statement.
@@ -30,5 +29,4 @@ class Statements(val statements: List<Statement>) : Statement(), Container<State
   override fun toString(): String {
     return "Statements(statements=$statements)"
   }
-
 }

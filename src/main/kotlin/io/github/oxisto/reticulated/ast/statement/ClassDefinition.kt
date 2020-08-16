@@ -32,5 +32,4 @@ class ClassDefinition(suite: Suite) : Definition(suite) {
   override fun toString(): String {
     TODO("Not yet implemented")
   }
-
 }

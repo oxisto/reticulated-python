@@ -27,22 +27,23 @@ import io.github.oxisto.reticulated.ast.expression.booleanexpr.BaseBooleanExpr
  *      comparison ::= or_expr ( comp_operator or_expr )*
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#comparisons}]
  */
-class Comparison(val orExpr: BaseBooleanExpr, val comparisons: List<Pair<CompOperator, BaseBooleanExpr>>): BaseComparison() {
+class Comparison(val orExpr: BaseBooleanExpr, val comparisons: List<Pair<CompOperator, BaseBooleanExpr>>) :
+  BaseComparison() {
 
-    init {
-        if (comparisons.isEmpty())
-            throw CouldNotParseException("A Comparison should contain a comparison not only a OrExpr=$orExpr.")
-    }
+  init {
+    if (comparisons.isEmpty())
+      throw CouldNotParseException("A Comparison should contain a comparison not only a OrExpr=$orExpr.")
+  }
 
-    override fun toString(): String {
-        var result = "Comparison(" + System.lineSeparator() +
-                "\torExpr=$orExpr"
-        for(elem:Pair<CompOperator, BaseBooleanExpr> in comparisons){
-            val compOperatorOfElem = elem.getFirst()
-            val orExprOfElem = elem.getSecond()
-            result += " compOperator=$compOperatorOfElem orEpr=$orExprOfElem"
-        }
-        result += System.lineSeparator() + ")"
-        return result
+  override fun toString(): String {
+    var result = "Comparison(" + System.lineSeparator() +
+      "\torExpr=$orExpr"
+    for (elem: Pair<CompOperator, BaseBooleanExpr> in comparisons) {
+      val compOperatorOfElem = elem.getFirst()
+      val orExprOfElem = elem.getSecond()
+      result += " compOperator=$compOperatorOfElem orEpr=$orExprOfElem"
     }
+    result += System.lineSeparator() + ")"
+    return result
+  }
 }

@@ -35,8 +35,7 @@ class ImportStatement(val module: Identifier) : SimpleStatement() {
 
   override fun toString(): String {
     return "ImportStatement(" + System.lineSeparator() +
-        "\tmodule=$module" + System.lineSeparator() +
-        ")"
+      "\tmodule=$module" + System.lineSeparator() +
+      ")"
   }
-
 }

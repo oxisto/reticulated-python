@@ -93,5 +93,4 @@ class SetComprehensionTest {
     val callArgument = call.callTrailer as Integer
     assertEquals(callArgument.value, 10)
   }
-
 }

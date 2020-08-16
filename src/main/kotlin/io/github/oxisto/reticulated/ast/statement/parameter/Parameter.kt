@@ -27,7 +27,11 @@ import io.github.oxisto.reticulated.solver.Identifiable
  *
  * Reference: https://docs.python.org/3/reference/compound_stmts.html#grammar-token-parameter
  */
-open class Parameter(final override val id: Identifier, val annotation: Expression? = null, var star: StarType = StarType.NO_STAR) : Node(), Identifiable {
+open class Parameter(
+  final override val id: Identifier,
+  val annotation: Expression? = null,
+  var star: StarType = StarType.NO_STAR
+) : Node(), Identifiable {
 
   enum class StarType {
     NO_STAR,
@@ -43,5 +47,4 @@ open class Parameter(final override val id: Identifier, val annotation: Expressi
   override fun toString(): String {
     return "Parameter(id=$id, annotation=$annotation, star=$star)"
   }
-
 }

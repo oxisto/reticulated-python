@@ -13,7 +13,7 @@ class ListVisitor(val scope: Scope) : Python3BaseVisitor<List>() {
     val elts = mutableListOf<Expression>()
 
     for (tree in ctx.children) {
-      if(tree is TerminalNode) {
+      if (tree is TerminalNode) {
         continue
       }
 
@@ -22,5 +22,4 @@ class ListVisitor(val scope: Scope) : Python3BaseVisitor<List>() {
 
     return List(elts)
   }
-
 }

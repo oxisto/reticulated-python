@@ -22,19 +22,19 @@ class SliceListTest {
   @Test
   fun sliceListTest() {
     val file = File(
-        javaClass
-            .classLoader
-            .getResource("expressions/slice/slice_list.py")!!
-            .file
+      javaClass
+        .classLoader
+        .getResource("expressions/slice/slice_list.py")!!
+        .file
     )
     val input = PythonParser()
-        .parse(file.path)
-        .root
+      .parse(file.path)
+      .root
     assertNotNull(input)
     // print(
-        // beautifyResult(
-            // input.toString()
-        // )
+    // beautifyResult(
+    // input.toString()
+    // )
     // )
     val import = input.statements[0] as ImportStatement
     val module = import.module

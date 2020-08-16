@@ -29,6 +29,4 @@ import io.github.oxisto.reticulated.ast.expression.primary.atom.Atom
  *
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-enclosure}]
  */
-abstract class Enclosure: Atom() {
-
-}
+abstract class Enclosure : Atom()

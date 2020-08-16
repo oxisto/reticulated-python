@@ -25,18 +25,17 @@ package io.github.oxisto.reticulated.ast.expression.operator
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#unary-arithmetic-and-bitwise-operations}]
  */
 class AdditiveExpr(
-        val additiveExpr: BaseOperator,
-        val binaryOperator: BinaryOperator,
-        val multiplicativeExpr: BaseOperator
-): BaseOperator(){
+  val additiveExpr: BaseOperator,
+  val binaryOperator: BinaryOperator,
+  val multiplicativeExpr: BaseOperator
+) : BaseOperator() {
 
-    override fun toString(): String {
-        return "AdditiveExpr(" + System.lineSeparator() +
-            "\tadditiveExpr=$additiveExpr " +
-            "binaryOperator=$binaryOperator " +
-            "multiplicativeExpr=$multiplicativeExpr" +
-            System.lineSeparator() +
-            ")"
-    }
-
+  override fun toString(): String {
+    return "AdditiveExpr(" + System.lineSeparator() +
+      "\tadditiveExpr=$additiveExpr " +
+      "binaryOperator=$binaryOperator " +
+      "multiplicativeExpr=$multiplicativeExpr" +
+      System.lineSeparator() +
+      ")"
+  }
 }

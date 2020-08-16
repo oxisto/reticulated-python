@@ -17,7 +17,10 @@
 
 package io.github.oxisto.reticulated.ast.statement
 
-import io.github.oxisto.reticulated.ast.*
+import io.github.oxisto.reticulated.ast.CouldNotParseException
+import io.github.oxisto.reticulated.ast.Scope
+import io.github.oxisto.reticulated.ast.ScopeType
+import io.github.oxisto.reticulated.ast.SuiteVisitor
 import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
 import io.github.oxisto.reticulated.ast.expression.primary.atom.AtomVisitor
@@ -41,11 +44,11 @@ class StatementVisitor(val scope: Scope) : Python3BaseVisitor<Statement>() {
       // loop through children
       for (tree in ctx.children) {
         list.addAll(
-            tree.accept(
-                SimpleStatementsVisitor(
-                    this.scope
-                )
+          tree.accept(
+            SimpleStatementsVisitor(
+              this.scope
             )
+          )
         )
       }
 
@@ -59,32 +62,33 @@ class StatementVisitor(val scope: Scope) : Python3BaseVisitor<Statement>() {
 
   override fun visitFuncdef(ctx: Python3Parser.FuncdefContext): Statement {
     if (ctx.DEF() == null ||
-        ctx.NAME() == null ||
-        ctx.parameters() == null ||
-        ctx.suite() == null) {
+      ctx.NAME() == null ||
+      ctx.parameters() == null ||
+      ctx.suite() == null
+    ) {
       throw CouldNotParseException("Incorrect function definition")
     }
 
     // second is the name
     val id = ctx.NAME().accept(
-        AtomVisitor(
-            this.scope
-        )
+      AtomVisitor(
+        this.scope
+      )
     ) as Identifier
 
     // create a new scope for this function
     val functionScope = Scope(
-        this.scope,
-        ScopeType.FUNCTION
+      this.scope,
+      ScopeType.FUNCTION
     )
 
     // parse parameters
     val parameters = ctx.parameters()
-        .accept(
-            ParametersVisitor(
-                functionScope
-            )
+      .accept(
+        ParametersVisitor(
+          functionScope
         )
+      )
 
     // parse annotation
     var annotation: Expression? = null
@@ -94,9 +98,9 @@ class StatementVisitor(val scope: Scope) : Python3BaseVisitor<Statement>() {
 
     // last is the suite
     val suite = ctx.suite().accept(
-        SuiteVisitor(
-            functionScope
-        )
+      SuiteVisitor(
+        functionScope
+      )
     )
 
     // create a new function definition
@@ -107,5 +111,4 @@ class StatementVisitor(val scope: Scope) : Python3BaseVisitor<Statement>() {
 
     return def
   }
-
 }

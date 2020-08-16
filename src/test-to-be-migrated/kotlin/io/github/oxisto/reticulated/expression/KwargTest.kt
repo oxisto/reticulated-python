@@ -38,15 +38,15 @@ class KwargTest {
   @Test
   fun testKwargCallRef() {
     val file = File(
-        javaClass
-            .classLoader
-            .getResource("expressions/argument/kwarg.py")!!
-            .file
+      javaClass
+        .classLoader
+        .getResource("expressions/argument/kwarg.py")!!
+        .file
     )
 
     val input = PythonParser()
-        .parse(file.path)
-        .root
+      .parse(file.path)
+      .root
     assertNotNull(input)
 
     // print(input)
@@ -57,8 +57,8 @@ class KwargTest {
     val firstIdentifier = firstFunctionDefinition.funcName
     assertEquals(firstIdentifier.name, "func")
     val parameters = (
-        firstFunctionDefinition.parameters as Parameters
-        ).parameters
+      firstFunctionDefinition.parameters as Parameters
+      ).parameters
     assertEquals(parameters.size, 3)
     val firstParameter = parameters[0] as Identifier
     assertEquals(firstParameter.name, "param")
@@ -146,5 +146,4 @@ class KwargTest {
     val kwarg2Expression = kwarg2.expression as StringLiteral
     assertEquals(kwarg2Expression.value, "test2")
   }
-
 }

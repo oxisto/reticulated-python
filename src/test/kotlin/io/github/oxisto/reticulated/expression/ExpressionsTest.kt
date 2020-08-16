@@ -110,7 +110,7 @@ class ExpressionsTest {
 
     var starred = argumentList[1] as Starred
     assertEquals(Parameter.StarType.STAR, starred.star)
-    
+
     list = starred.expression as List
     assertEquals(2, list.count)
 

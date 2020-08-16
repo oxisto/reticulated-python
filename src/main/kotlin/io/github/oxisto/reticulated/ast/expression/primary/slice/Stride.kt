@@ -25,11 +25,11 @@ import io.github.oxisto.reticulated.ast.expression.Expression
  *        stride ::= [expression]
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-stride}]
  */
-class Stride(val expression: Expression?): Slice() {
+class Stride(val expression: Expression?) : Slice() {
   override fun toString(): String {
     var result = "Stride(" + System.lineSeparator() +
-        "\t\":\""
-    if(expression != null)
+      "\t\":\""
+    if (expression != null)
       result += " Expression=$expression"
     return result + System.lineSeparator() + ")"
   }

@@ -24,11 +24,11 @@ package io.github.oxisto.reticulated.ast.expression.booleanexpr
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#binary-bitwise-operations}]
  *
  */
-class OrExpr(val orExpr: BaseBooleanExpr, val xorExpr: BaseBooleanExpr): BaseBooleanExpr() {
+class OrExpr(val orExpr: BaseBooleanExpr, val xorExpr: BaseBooleanExpr) : BaseBooleanExpr() {
 
-    override fun toString(): String {
-        return "OrExpr(" + System.lineSeparator() +
-            "\torExpr=$orExpr \"|\" xorExpr=$xorExpr" + System.lineSeparator() +
-            ")"
-    }
+  override fun toString(): String {
+    return "OrExpr(" + System.lineSeparator() +
+      "\torExpr=$orExpr \"|\" xorExpr=$xorExpr" + System.lineSeparator() +
+      ")"
+  }
 }

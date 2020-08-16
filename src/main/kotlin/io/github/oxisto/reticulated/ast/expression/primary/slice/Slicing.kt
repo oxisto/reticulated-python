@@ -19,19 +19,17 @@ package io.github.oxisto.reticulated.ast.expression.primary.slice
 
 import io.github.oxisto.reticulated.ast.expression.primary.Primary
 
-
 /**
  * This class represents a slicing.
  * It´s EBNF representation is:
  *        slicing ::=  primary "[" slice_list "]"
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-slicing}]
  */
-class Slicing(val primary: Primary, val sliceList: Primary): Slice() {
-
+class Slicing(val primary: Primary, val sliceList: Primary) : Slice() {
 
   override fun toString(): String {
     return "Slicing(" + System.lineSeparator() +
-        "\t primary=$primary \"[\" slice_list=$sliceList  \"]\"" + System.lineSeparator() +
-        ")"
+      "\t primary=$primary \"[\" slice_list=$sliceList  \"]\"" + System.lineSeparator() +
+      ")"
   }
 }

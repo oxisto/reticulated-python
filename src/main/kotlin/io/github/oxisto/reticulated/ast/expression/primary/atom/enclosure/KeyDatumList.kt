@@ -38,8 +38,7 @@ class KeyDatumList(var keyDatums: kotlin.collections.List<KeyDatum> = ArrayList(
 
   override fun toString(): String {
     return "KeyDatumList(" + System.lineSeparator() +
-        "\tkeyDatumList=$keyDatums" + System.lineSeparator() +
-        ")"
+      "\tkeyDatumList=$keyDatums" + System.lineSeparator() +
+      ")"
   }
-
 }

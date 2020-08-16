@@ -38,7 +38,7 @@ class Arguments(private val arguments: List<Expression> = ArrayList()) : Node(),
 
   override fun toString(): String {
     return "ArgumentList(" + System.lineSeparator() +
-        "\targuments=$arguments" + System.lineSeparator() +
-        ")"
+      "\targuments=$arguments" + System.lineSeparator() +
+      ")"
   }
 }

@@ -31,87 +31,87 @@ import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
  */
 class ComprehensionVisitor(val scope: Scope) : Python3BaseVisitor<Comprehension>() {
 
-    /*override fun visitComp_for(ctx: Python3Parser.Comp_forContext): BaseComprehension {
-        val isAsync: Boolean
-        val targetList: Target
-        val orTest: Expression
-        val compIter: CompIter?
+  /*override fun visitComp_for(ctx: Python3Parser.Comp_forContext): BaseComprehension {
+      val isAsync: Boolean
+      val targetList: Target
+      val orTest: Expression
+      val compIter: CompIter?
 
-        val getTargetListByPosition = {
-            position:Int -> ctx
-                .getChild(position)
-                .accept(
-                        ExpressionVisitor(
-                                this.scope
-                        )
-                )
-        }
-        val getOrTestByPosition = {
-            position:Int -> ctx
-                .getChild(position)
-                .accept(
-                        BooleanOpVisitor(
-                                this.scope
-                        )
-                )
-        }
-        val getCompIterByPosition = {
-            position:Int -> ctx
-                .getChild(position)
-                .accept(
-                        this
-                ) as Expression
-        }
-        if ( ctx.childCount == 4 ) {
-            isAsync = false
-            targetList = getTargetListByPosition(1)
-            orTest = getOrTestByPosition(3)
-            compIter = null
-        } else if ( ctx. childCount == 5) {
-            if(ctx.getChild(0).toString() == "for") {
-                isAsync = false
-                targetList = getTargetListByPosition(1)
-                orTest = getOrTestByPosition(3)
-                compIter = getCompIterByPosition(4)
-            } else {
-                if(ctx.getChild(0).toString() != "async"){
-                    throw CouldNotParseException("The first child of the ctx=$ctx was neither 'for' nor 'async'!")
-                }
-                isAsync = true
-                targetList = getTargetListByPosition(2)
-                orTest = getOrTestByPosition(4)
-                compIter = null
-            }
-        } else {
-            isAsync = true
-            targetList = getTargetListByPosition(2)
-            orTest = getOrTestByPosition(4)
-            compIter = getCompIterByPosition(5)
-        }
+      val getTargetListByPosition = {
+          position:Int -> ctx
+              .getChild(position)
+              .accept(
+                      ExpressionVisitor(
+                              this.scope
+                      )
+              )
+      }
+      val getOrTestByPosition = {
+          position:Int -> ctx
+              .getChild(position)
+              .accept(
+                      BooleanOpVisitor(
+                              this.scope
+                      )
+              )
+      }
+      val getCompIterByPosition = {
+          position:Int -> ctx
+              .getChild(position)
+              .accept(
+                      this
+              ) as Expression
+      }
+      if ( ctx.childCount == 4 ) {
+          isAsync = false
+          targetList = getTargetListByPosition(1)
+          orTest = getOrTestByPosition(3)
+          compIter = null
+      } else if ( ctx. childCount == 5) {
+          if(ctx.getChild(0).toString() == "for") {
+              isAsync = false
+              targetList = getTargetListByPosition(1)
+              orTest = getOrTestByPosition(3)
+              compIter = getCompIterByPosition(4)
+          } else {
+              if(ctx.getChild(0).toString() != "async"){
+                  throw CouldNotParseException("The first child of the ctx=$ctx was neither 'for' nor 'async'!")
+              }
+              isAsync = true
+              targetList = getTargetListByPosition(2)
+              orTest = getOrTestByPosition(4)
+              compIter = null
+          }
+      } else {
+          isAsync = true
+          targetList = getTargetListByPosition(2)
+          orTest = getOrTestByPosition(4)
+          compIter = getCompIterByPosition(5)
+      }
 
-        return CompFor(isAsync, targetList, orTest, compIter)
-    }
+      return CompFor(isAsync, targetList, orTest, compIter)
+  }
 
-    override fun visitComp_iter(ctx: Python3Parser.Comp_iterContext): CompIter {
-        val child = ctx.getChild(0)
-        return if(ctx.getChild(0).getChild(0).text == "if")
-            child.accept(this) as CompIf
-        else child.accept(this) as CompFor
-    }
+  override fun visitComp_iter(ctx: Python3Parser.Comp_iterContext): CompIter {
+      val child = ctx.getChild(0)
+      return if(ctx.getChild(0).getChild(0).text == "if")
+          child.accept(this) as CompIf
+      else child.accept(this) as CompFor
+  }
 
-    override fun visitComp_if(ctx: Python3Parser.Comp_ifContext): CompIf {
-        val expressionNoCond = ctx
-                .getChild(1)
-                .accept(
-                        ExpressionNoCondVisitor(
-                                this.scope
-                        )
-                )
+  override fun visitComp_if(ctx: Python3Parser.Comp_ifContext): CompIf {
+      val expressionNoCond = ctx
+              .getChild(1)
+              .accept(
+                      ExpressionNoCondVisitor(
+                              this.scope
+                      )
+              )
 
-        val compIter: CompIter? = if ( ctx.childCount == 3 ) {
-            ctx.getChild(2).accept(this) as CompIter
-        } else null
+      val compIter: CompIter? = if ( ctx.childCount == 3 ) {
+          ctx.getChild(2).accept(this) as CompIter
+      } else null
 
-        return CompIf(expressionNoCond, compIter)
-    }*/
+      return CompIf(expressionNoCond, compIter)
+  }*/
 }

@@ -28,10 +28,10 @@ import io.github.oxisto.reticulated.ast.statement.parameter.Parameters
  * Reference: https://docs.python.org/3/reference/compound_stmts.html#grammar-token-funcdef
  */
 class FunctionDefinition(
-    val funcName: Identifier,
-    val parameters: Parameters,
-    body: Suite,
-    val annotation: Expression? = null
+  val funcName: Identifier,
+  val parameters: Parameters,
+  body: Suite,
+  val annotation: Expression? = null
 ) : Definition(body) {
   // TODO: decorators
 
@@ -50,13 +50,12 @@ class FunctionDefinition(
 
   override fun toString(): String {
     var result = "FunctionDefinition(" + System.lineSeparator() +
-        "\t\"def\" funcname=$funcName \"(\" "
+      "\t\"def\" funcname=$funcName \"(\" "
     result += "parameters=$parameters"
     result += " \")\""
     if (annotation != null)
       result += "\"->\" expression=$annotation"
     return "$result \":\" suite =$body" + System.lineSeparator() +
-        ")"
+      ")"
   }
-
 }

@@ -23,11 +23,11 @@ package io.github.oxisto.reticulated.ast.expression.booleanexpr
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#binary-bitwise-operations}]
  *
  */
-class AndExpr(val andExpr: BaseBooleanExpr, val shiftExpr: BaseBooleanExpr): BaseBooleanExpr() {
+class AndExpr(val andExpr: BaseBooleanExpr, val shiftExpr: BaseBooleanExpr) : BaseBooleanExpr() {
 
-    override fun toString(): String {
-        return "AndExpr(" + System.lineSeparator() +
-            "\tandExpr=$andExpr \"&\" shiftExpr=$shiftExpr" + System.lineSeparator() +
-            ")"
-    }
+  override fun toString(): String {
+    return "AndExpr(" + System.lineSeparator() +
+      "\tandExpr=$andExpr \"&\" shiftExpr=$shiftExpr" + System.lineSeparator() +
+      ")"
+  }
 }

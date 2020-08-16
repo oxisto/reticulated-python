@@ -32,18 +32,18 @@ class SliceTest {
   @Test
   fun testSlicingParseTree() {
     val file = File(
-        javaClass
-            .classLoader
-            .getResource("expressions/slice/slice.py")!!
-            .file
+      javaClass
+        .classLoader
+        .getResource("expressions/slice/slice.py")!!
+        .file
     )
     val input = PythonParser()
-        .parse(file.path)
-        .root
+      .parse(file.path)
+      .root
     assertNotNull(input)
     // print(
 //        beautifyResult(
-            // input.toString()
+    // input.toString()
 //        )
     // )
     val subscription = input.statements[0] as Subscription
@@ -65,7 +65,7 @@ class SliceTest {
     val properSlice = primary1.sliceList as ProperSlice
     assertNotNull(properSlice)
     val lowerBound2Value = properSlice.lowerBound as Integer
-    assertEquals( lowerBound2Value.value, 0)
+    assertEquals(lowerBound2Value.value, 0)
     val upperBound2Value = properSlice.upperBound as Integer
     assertEquals(upperBound2Value.value, 3)
     val stride2 = properSlice.stride as Stride

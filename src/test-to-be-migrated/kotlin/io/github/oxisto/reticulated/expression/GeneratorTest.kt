@@ -29,24 +29,23 @@ import kotlin.test.assertNotNull
 
 class GeneratorTest {
 
-
   @Test
-  fun testGeneratorExpression () {
+  fun testGeneratorExpression() {
     val file = File(
-        javaClass
-            .classLoader
-            .getResource("expressions/enclosure/generator_expression.py")!!
-            .file
+      javaClass
+        .classLoader
+        .getResource("expressions/enclosure/generator_expression.py")!!
+        .file
     )
 
     val input = PythonParser()
-        .parse(file.path)
-        .root
+      .parse(file.path)
+      .root
     assertNotNull(input)
     // print(
-        // beautifyResult(
-            // input.toString()
-        // )
+    // beautifyResult(
+    // input.toString()
+    // )
     // )
 
     val generatorExpression = input.statements[0] as GeneratorExpression

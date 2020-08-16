@@ -27,17 +27,17 @@ import io.github.oxisto.reticulated.ast.expression.booleanexpr.BaseBooleanExpr
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#unary-arithmetic-and-bitwise-operations}]
  */
 class ShiftExpr(
-        val shiftExpr: BaseBooleanExpr,
-        val binaryOperator: BinaryOperator,
-        val baseOperator: BaseOperator
-): BaseOperator() {
+  val shiftExpr: BaseBooleanExpr,
+  val binaryOperator: BinaryOperator,
+  val baseOperator: BaseOperator
+) : BaseOperator() {
 
-    override fun toString(): String {
-        return "ShiftExpr(" + System.lineSeparator() +
-            "\tshiftExpr=$shiftExpr " +
-            "binaryOperator=${binaryOperator.symbol} " +
-            "additiveExpr=$baseOperator" +
-            System.lineSeparator() +
-            ")"
-    }
+  override fun toString(): String {
+    return "ShiftExpr(" + System.lineSeparator() +
+      "\tshiftExpr=$shiftExpr " +
+      "binaryOperator=${binaryOperator.symbol} " +
+      "additiveExpr=$baseOperator" +
+      System.lineSeparator() +
+      ")"
+  }
 }

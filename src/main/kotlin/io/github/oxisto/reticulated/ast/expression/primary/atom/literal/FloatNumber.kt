@@ -30,9 +30,9 @@ package io.github.oxisto.reticulated.ast.expression.primary.atom.literal
  */
 class FloatNumber(val value: Float) : Literal<Float>() {
 
-    override fun toString(): String {
-        return "FloatNumber(" + System.lineSeparator() +
-                "\tvalue=$value" + System.lineSeparator() +
-                ")"
-    }
+  override fun toString(): String {
+    return "FloatNumber(" + System.lineSeparator() +
+      "\tvalue=$value" + System.lineSeparator() +
+      ")"
+  }
 }

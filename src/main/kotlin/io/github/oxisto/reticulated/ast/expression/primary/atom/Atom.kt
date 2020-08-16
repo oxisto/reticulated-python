@@ -23,5 +23,5 @@ import io.github.oxisto.reticulated.ast.expression.primary.Primary
  * This class is the base for all atoms.
  */
 abstract class Atom : Primary() {
-    abstract override fun toString(): String
+  abstract override fun toString(): String
 }

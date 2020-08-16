@@ -34,38 +34,38 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class AsyncComprehensionTest {
-    @Test
-    fun testAsyncArgumentComprehension() {
-        val file = File(
-                javaClass
-                        .classLoader
-                        .getResource("expressions/comprehension/async_comprehension_argument.py")!!
-            .file
+  @Test
+  fun testAsyncArgumentComprehension() {
+    val file = File(
+      javaClass
+        .classLoader
+        .getResource("expressions/comprehension/async_comprehension_argument.py")!!
+        .file
     )
 
-      val input = PythonParser()
-              .parse(file.path)
-              .root
-      assertNotNull(input)
-      // print(input)
-      val call = input.statements[0] as Call
-      assertNotNull(call)
-      val primary = call.primary as Identifier
-      assertEquals(primary.name, "fun")
-      val trailer = call.callTrailer as Comprehension
-      assertNotNull(trailer)
-      val expression = trailer.expression as Identifier
-      assertEquals(expression.name, "i")
-      val compFor = trailer.compFor
-      assertNotNull(compFor)
-      val isAsync = compFor.isAsync
-      assertTrue(isAsync)
-      val target = compFor.targetList as Identifier
-      assertEquals(target.name, "i")
-      val orTest = compFor.orTest as Call
-      val prim = orTest.primary as Identifier
-      assertEquals(prim.name, "range")
-      val callTrailer = orTest.callTrailer as Integer
-      assertEquals(callTrailer.value, 10)
-    }
+    val input = PythonParser()
+      .parse(file.path)
+      .root
+    assertNotNull(input)
+    // print(input)
+    val call = input.statements[0] as Call
+    assertNotNull(call)
+    val primary = call.primary as Identifier
+    assertEquals(primary.name, "fun")
+    val trailer = call.callTrailer as Comprehension
+    assertNotNull(trailer)
+    val expression = trailer.expression as Identifier
+    assertEquals(expression.name, "i")
+    val compFor = trailer.compFor
+    assertNotNull(compFor)
+    val isAsync = compFor.isAsync
+    assertTrue(isAsync)
+    val target = compFor.targetList as Identifier
+    assertEquals(target.name, "i")
+    val orTest = compFor.orTest as Call
+    val prim = orTest.primary as Identifier
+    assertEquals(prim.name, "range")
+    val callTrailer = orTest.callTrailer as Integer
+    assertEquals(callTrailer.value, 10)
+  }
 }

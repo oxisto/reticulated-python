@@ -107,7 +107,6 @@ class ArithmeticTest {
     assertNotNull(stringLiteralOfMETAE)
     assertEquals(stringLiteralOfMETAE.value, "Test")
 
-
     val forthAssignment = input.statements[3] as AssignmentStatement
     val forthTarget = forthAssignment.target as Identifier
     assertEquals(forthTarget.name, "d")

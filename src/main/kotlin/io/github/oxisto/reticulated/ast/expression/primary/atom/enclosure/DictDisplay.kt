@@ -27,22 +27,21 @@ import io.github.oxisto.reticulated.ast.CouldNotParseException
  *
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-dict-display}]
  */
-class DictDisplay(val keyDatumList: KeyDatumList?, var dictComprehension: DictComprehension?): Enclosure() {
+class DictDisplay(val keyDatumList: KeyDatumList?, var dictComprehension: DictComprehension?) : Enclosure() {
 
   init {
     if (keyDatumList != null && dictComprehension != null)
       throw CouldNotParseException(
-          "A DictDisplay should not contain both, a keyDatumList=$keyDatumList and a dictComprehension=$dictComprehension."
+        "A DictDisplay should not contain both, a keyDatumList=$keyDatumList and a dictComprehension=$dictComprehension."
       )
   }
 
   override fun toString(): String {
-    var result = "DictDisplay(" + System.lineSeparator() +"\t \"{\" "
+    var result = "DictDisplay(" + System.lineSeparator() + "\t \"{\" "
     if (keyDatumList != null)
       result += "keyDatumList=$keyDatumList"
     if (dictComprehension != null)
       result += "dictComprehension=$dictComprehension"
     return "$result \"}\"" + System.lineSeparator() + ")"
   }
-
 }

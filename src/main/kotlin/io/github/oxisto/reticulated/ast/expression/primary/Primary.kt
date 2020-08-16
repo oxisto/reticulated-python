@@ -18,7 +18,6 @@
 package io.github.oxisto.reticulated.ast.expression.primary
 
 import io.github.oxisto.reticulated.ast.expression.Expression
-import io.github.oxisto.reticulated.ast.expression.operator.BaseOperator
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
 
 /**
@@ -33,5 +32,4 @@ abstract class Primary : Expression() {
   }
 
   abstract override fun toString(): String
-
 }

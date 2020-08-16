@@ -20,22 +20,22 @@ package io.github.oxisto.reticulated.ast.expression.comparison
 /**
  * All comparison operators of Python.
  */
-enum class CompOperator(val symbol:String) {
-    SMALLER("<"), SMALLER_OR_EQUAL("<="), LARGER(">"), LARGER_OR_EQUAL(">="),
-    EQUAL("=="), NOT_EQUAL("!="), IS("is"), IS_NOT("is not"), IN("in"),
-    NOT_IN("not in");
+enum class CompOperator(val symbol: String) {
+  SMALLER("<"), SMALLER_OR_EQUAL("<="), LARGER(">"), LARGER_OR_EQUAL(">="),
+  EQUAL("=="), NOT_EQUAL("!="), IS("is"), IS_NOT("is not"), IN("in"),
+  NOT_IN("not in");
 
-    companion object {
-        fun getCompOperatorBySymbol(symbolToFind: String): CompOperator? {
-            val compOperators = values()
-            var result: CompOperator? = null
-            for (compOperator in compOperators) {
-                if (compOperator.symbol.replace(" ", "") == symbolToFind) {
-                    result = compOperator
-                    break
-                }
-            }
-            return result
+  companion object {
+    fun getCompOperatorBySymbol(symbolToFind: String): CompOperator? {
+      val compOperators = values()
+      var result: CompOperator? = null
+      for (compOperator in compOperators) {
+        if (compOperator.symbol.replace(" ", "") == symbolToFind) {
+          result = compOperator
+          break
         }
+      }
+      return result
     }
+  }
 }

@@ -22,6 +22,6 @@ import io.github.oxisto.reticulated.ast.expression.booleanexpr.BaseBooleanExpr
 /**
  * This class is the base for all operators, binary and unary expressions.
  */
-abstract class BaseOperator: BaseBooleanExpr() {
-    abstract override fun toString(): String
+abstract class BaseOperator : BaseBooleanExpr() {
+  abstract override fun toString(): String
 }

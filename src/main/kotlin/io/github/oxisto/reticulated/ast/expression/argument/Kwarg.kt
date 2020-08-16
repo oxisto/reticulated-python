@@ -27,9 +27,9 @@ import io.github.oxisto.reticulated.ast.expression.Expression
  */
 open class Kwarg(val expression: Expression) : KeywordArgument(expression) {
 
-    override fun toString(): String {
-        return "Kwarg(" + System.lineSeparator() +
-                "\t\"**\" Expression=$expression" + System.lineSeparator() +
-                ")"
-    }
+  override fun toString(): String {
+    return "Kwarg(" + System.lineSeparator() +
+      "\t\"**\" Expression=$expression" + System.lineSeparator() +
+      ")"
+  }
 }

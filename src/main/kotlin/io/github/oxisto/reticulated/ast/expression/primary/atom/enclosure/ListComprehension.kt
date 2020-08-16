@@ -18,10 +18,8 @@
 
 package io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure
 
-import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.comprehension.Comprehension
-import io.github.oxisto.reticulated.ast.expression.Starred
 
 /**
  * This class represents a list_display.
@@ -35,5 +33,4 @@ class ListComprehension(val elt: Expression, val generators: kotlin.collections.
   override fun toString(): String {
     return "ListComprehension(elt=$elt, generators=$generators)"
   }
-
 }

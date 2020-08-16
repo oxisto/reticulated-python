@@ -16,6 +16,7 @@
  */
 
 package io.github.oxisto.reticulated.ast.expression.operator
+
 /**
  * This class represents a u_expr.
  * It´s EBNF representations is:
@@ -24,16 +25,16 @@ package io.github.oxisto.reticulated.ast.expression.operator
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#unary-arithmetic-and-bitwise-operations}]
  */
 class UnaryExpr(
-        val unaryOperator: UnaryOperator,
-        val baseOperator: BaseOperator
-): BaseOperator() {
+  val unaryOperator: UnaryOperator,
+  val baseOperator: BaseOperator
+) : BaseOperator() {
 
-    override fun toString(): String {
-        return "UnaryExpr(" + 
-            System.lineSeparator() +
-            "\tunaryOperator=${unaryOperator} " +
-            "UnaryExpr=$baseOperator" +
-            System.lineSeparator() +
-            ")"
-    }
+  override fun toString(): String {
+    return "UnaryExpr(" +
+      System.lineSeparator() +
+      "\tunaryOperator=${unaryOperator} " +
+      "UnaryExpr=$baseOperator" +
+      System.lineSeparator() +
+      ")"
+  }
 }

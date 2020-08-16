@@ -22,4 +22,4 @@ import io.github.oxisto.reticulated.ast.expression.primary.Primary
 /**
  * This class is the base for all slices
  */
-abstract class Slice: Primary()
+abstract class Slice : Primary()

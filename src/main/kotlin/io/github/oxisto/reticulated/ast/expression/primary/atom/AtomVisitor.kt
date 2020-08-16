@@ -22,7 +22,11 @@ import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure.List
 import io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure.ListVisitor
-import io.github.oxisto.reticulated.ast.expression.primary.atom.literal.*
+import io.github.oxisto.reticulated.ast.expression.primary.atom.literal.BytesLiteral
+import io.github.oxisto.reticulated.ast.expression.primary.atom.literal.FloatNumber
+import io.github.oxisto.reticulated.ast.expression.primary.atom.literal.ImagNumber
+import io.github.oxisto.reticulated.ast.expression.primary.atom.literal.Integer
+import io.github.oxisto.reticulated.ast.expression.primary.atom.literal.StringLiteral
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 import org.antlr.v4.runtime.tree.TerminalNode
@@ -124,12 +128,12 @@ class AtomVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
     val intOrNull = text.toIntOrNull()
     val floatOrNull = text.toFloatOrNull()
     val isImagNumber = text.length > 1 && (
-        text.last() == 'J' || text.last() == 'j'
-        )
+      text.last() == 'J' || text.last() == 'j'
+      )
     val isBytesLiteral = text.length > 2 && text.substring(0, 2) == "0x"
     val byteValue = if (isBytesLiteral) {
       text.substring(2, text.length)
-          .toByteOrNull()
+        .toByteOrNull()
     } else {
       null
     }
@@ -139,8 +143,8 @@ class AtomVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
 
       text.startsWith("\"") || text.startsWith("\'") -> {
         StringLiteral(
-            text.replace("\"", "")
-                .replace("\'", "")
+          text.replace("\"", "")
+            .replace("\'", "")
         )
       }
 
@@ -161,5 +165,4 @@ class AtomVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
       else -> Identifier(node.text)
     }
   }
-
 }

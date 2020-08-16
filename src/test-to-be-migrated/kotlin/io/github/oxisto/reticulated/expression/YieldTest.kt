@@ -16,25 +16,23 @@ class YieldTest {
   @Test
   fun yieldTest() {
     val file = File(
-        javaClass
-            .classLoader
-            .getResource("expressions/yield.py")!!
-            .file
+      javaClass
+        .classLoader
+        .getResource("expressions/yield.py")!!
+        .file
     )
     val input = PythonParser()
-        .parse(file.path)
-        .root
+      .parse(file.path)
+      .root
     assertNotNull(input)
-    // print(
-        // beautifyResult(
-            // input.toString()
-        // )
-    // )
+
     val firstFunction = input.statements[0] as FunctionDefinition
     assertNull(firstFunction.returnDecorator)
+
     val firstName = firstFunction.funcName
     assertNotNull(firstName)
     assertEquals(firstName.name, "foo")
+
     val firstParameters = firstFunction.parameters as Parameters
     assertNotNull(firstParameters)
     assertTrue(firstParameters.parameters.isEmpty())

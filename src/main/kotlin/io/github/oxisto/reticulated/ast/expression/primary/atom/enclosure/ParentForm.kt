@@ -26,14 +26,14 @@ import io.github.oxisto.reticulated.ast.expression.Starred
  *
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-parenth-form}]
  */
-class ParentForm(val starred: Starred?): Enclosure(){
+class ParentForm(val starred: Starred?) : Enclosure() {
 
   override fun toString(): String {
     var result = "StarredExpression(" + System.lineSeparator() +
-        "\t \"(\" "
+      "\t \"(\" "
     if (starred != null)
       result += "starredExpression=$starred"
     return "$result \")\"" + System.lineSeparator() +
-        ")"
+      ")"
   }
 }

@@ -27,5 +27,4 @@ open class ExpressionStatement(val expression: Expression) : SimpleStatement() {
   override fun toString(): String {
     return "ExpressionStatement(expression=$expression)"
   }
-
 }

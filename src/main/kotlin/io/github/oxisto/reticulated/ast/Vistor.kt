@@ -17,8 +17,6 @@
 
 package io.github.oxisto.reticulated.ast
 
-import io.github.oxisto.reticulated.ast.statement.parameter.Parameters
-import io.github.oxisto.reticulated.ast.statement.parameter.ParametersVisitor
 import io.github.oxisto.reticulated.ast.statement.Statement
 import io.github.oxisto.reticulated.ast.statement.StatementVisitor
 import io.github.oxisto.reticulated.ast.statement.Statements
@@ -51,8 +49,6 @@ class Visitor(val scope: Scope) : Python3BaseVisitor<Node>() {
 
     return FileInput(statements)
   }
-
-
 }
 
 class SuiteVisitor(val scope: Scope) : Python3BaseVisitor<Suite>() {

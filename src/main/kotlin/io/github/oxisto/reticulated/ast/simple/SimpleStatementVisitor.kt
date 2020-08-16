@@ -43,10 +43,6 @@ class SimpleStatementsVisitor(val scope: Scope) : Python3BaseVisitor<List<Simple
 
 class SimpleStatementVisitor(val scope: Scope) : Python3BaseVisitor<SimpleStatement>() {
 
-  override fun visitSmall_stmt(ctx: Python3Parser.Small_stmtContext?): SimpleStatement {
-    return super.visitSmall_stmt(ctx)
-  }
-
   override fun visitImport_stmt(ctx: Python3Parser.Import_stmtContext): ImportStatement {
     // TODO: Define a name in the local namespace for the import statement
     return super.visitImport_stmt(ctx) as ImportStatement
@@ -56,10 +52,10 @@ class SimpleStatementVisitor(val scope: Scope) : Python3BaseVisitor<SimpleStatem
 
     // TODO: Support dotted modules
     val module = ctx
-        .getChild(1)
-        .accept(
-            AtomVisitor(this.scope)
-        ) as Identifier
+      .getChild(1)
+      .accept(
+        AtomVisitor(this.scope)
+      ) as Identifier
 
     // build a name
     val name = Name(module.name)

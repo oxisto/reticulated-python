@@ -25,10 +25,13 @@ import io.github.oxisto.reticulated.ast.expression.Expression
  *
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#displays-for-lists-sets-and-dictionaries}]
  */
-class Comprehension(val target: Expression, val iteratorClause: Expression, var ifClauses: List<Expression> = listOf()) : Node() {
+class Comprehension(
+  val target: Expression,
+  val iteratorClause: Expression,
+  var ifClauses: List<Expression> = listOf()
+) : Node() {
 
   override fun toString(): String {
     return "Comprehension(target=$target, iteratorClause=$iteratorClause, ifClauses=$ifClauses)"
   }
-
 }

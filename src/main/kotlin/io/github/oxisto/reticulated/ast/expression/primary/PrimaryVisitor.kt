@@ -25,10 +25,12 @@ import io.github.oxisto.reticulated.ast.expression.argument.ArgumentListVisitor
 import io.github.oxisto.reticulated.ast.expression.primary.atom.AtomVisitor
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
 import io.github.oxisto.reticulated.ast.expression.primary.call.Call
-import io.github.oxisto.reticulated.ast.expression.primary.slice.*
+import io.github.oxisto.reticulated.ast.expression.primary.slice.ProperSlice
+import io.github.oxisto.reticulated.ast.expression.primary.slice.SliceList
+import io.github.oxisto.reticulated.ast.expression.primary.slice.Slicing
+import io.github.oxisto.reticulated.ast.expression.primary.slice.Stride
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
-import org.antlr.v4.runtime.tree.TerminalNode
 
 /**
  * this class offers visitors for all primaries.
@@ -39,23 +41,23 @@ class PrimaryVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
     return if (ctx.childCount == 1) {
       // It is an atom
       ctx.getChild(0)
-          .accept(
-              AtomVisitor(
-                  this.scope
-              )
-          ) as Primary
+        .accept(
+          AtomVisitor(
+            this.scope
+          )
+        ) as Primary
     } else {
       // first child is the primary
       var primary = if (ctx.getChild(0) is Python3Parser.AtomContext)
         ctx.getChild(0)
-            .accept(
-                AtomVisitor(
-                    this.scope
-                )
-            ) as Primary
+          .accept(
+            AtomVisitor(
+              this.scope
+            )
+          ) as Primary
       else
         ctx.getChild(0)
-            .accept(this) as Primary
+          .accept(this) as Primary
 
       // The other children are one out of: attributeref | subscription | slicing | call
       // All of them have a primary as the first child
@@ -68,27 +70,26 @@ class PrimaryVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
           // it is a call
           for (index in 1 until ctx.childCount - 1)
             primary = AttributeRef(
-                primary,
-                ctx.getChild(index)
-                    .getChild(1)
-                    .accept(
-                        AtomVisitor(this.scope)
-                    ) as Identifier
+              primary,
+              ctx.getChild(index)
+                .getChild(1)
+                .accept(
+                  AtomVisitor(this.scope)
+                ) as Identifier
             )
           val argumentList =
-              trailer.accept(
-                  ArgumentListVisitor(
-                      this.scope
-                  )
+            trailer.accept(
+              ArgumentListVisitor(
+                this.scope
               )
+            )
           Call(primary, argumentList)
         }
         "." -> {
           // it is an attribute ref, parse the identifier
           val id = trailer.getChild(1)
-              .accept(AtomVisitor(this.scope)) as Identifier
+            .accept(AtomVisitor(this.scope)) as Identifier
           AttributeRef(primary, id)
-
         }
         else -> { // "["
           // it is s Slicing or a subscription. Parse all trailers
@@ -124,7 +125,7 @@ class PrimaryVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
   override fun visitSubscript(ctx: Python3Parser.SubscriptContext): Primary {
     return if (ctx.childCount == 1 && ctx.getChild(0) is Python3Parser.TestContext)
       ctx.getChild(0)
-          .accept(ExpressionVisitor(this.scope)) as Primary
+        .accept(ExpressionVisitor(this.scope)) as Primary
     else handleProperSlice(ctx)
   }
 
@@ -154,8 +155,9 @@ class PrimaryVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
     if (ctx.childCount >= 2 && ctx.getChild(1) is Python3Parser.TestContext)
       upperBound = ctx.getChild(1).accept(ExpressionVisitor(this.scope))
     if (ctx.childCount >= 3 &&
-        ctx.getChild(0) is Python3Parser.TestContext &&
-        ctx.getChild(2) is Python3Parser.TestContext)
+      ctx.getChild(0) is Python3Parser.TestContext &&
+      ctx.getChild(2) is Python3Parser.TestContext
+    )
       upperBound = ctx.getChild(2).accept(ExpressionVisitor(this.scope))
     return upperBound
   }

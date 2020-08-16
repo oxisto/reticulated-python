@@ -40,9 +40,9 @@ class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
       ctx.getChild(0).accept(ExpressionVisitor(this.scope))
     else {
       val orTest = ctx.getChild(0)
-          .accept(BooleanOpVisitor(this.scope))
+        .accept(BooleanOpVisitor(this.scope))
       val orTestOptional = ctx.getChild(2)
-          .accept(BooleanOpVisitor(this.scope))
+        .accept(BooleanOpVisitor(this.scope))
       val expressionOptional = ctx.getChild(4).accept(this)
       ConditionalExpression(orTest, orTestOptional, expressionOptional)
     }
@@ -52,7 +52,7 @@ class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
     val expressions = ArrayList<Expression>()
     for (index in 0 until ctx.childCount step 2)
       expressions.add(
-          ctx.getChild(index).accept(this)
+        ctx.getChild(index).accept(this)
       )
     return if (expressions.size == 1)
       expressions[0]
@@ -69,23 +69,23 @@ class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
     val expressionNoCond: Expression
     val getExpressionNoCondByPosition = { position: Int ->
       ctx
-          .getChild(position)
-          .accept(
-              ExpressionVisitor(
-                  this.scope
-              )
+        .getChild(position)
+        .accept(
+          ExpressionVisitor(
+            this.scope
           )
+        )
     }
     expressionNoCond = if (ctx.childCount == 3)
       getExpressionNoCondByPosition(2)
     else {
       parameters = ctx
-          .getChild(1)
-          .accept(
-              ParametersVisitor(
-                  this.scope
-              )
+        .getChild(1)
+        .accept(
+          ParametersVisitor(
+            this.scope
           )
+        )
       getExpressionNoCondByPosition(3)
     }
     return Lambda(parameters, expressionNoCond)

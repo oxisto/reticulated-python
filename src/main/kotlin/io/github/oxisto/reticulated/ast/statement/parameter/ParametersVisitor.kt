@@ -27,7 +27,8 @@ class ParametersVisitor(val scope: Scope) : Python3BaseVisitor<Parameters>() {
 
   override fun visitParameters(ctx: Python3Parser.ParametersContext?): Parameters {
     if (ctx?.OPEN_PAREN() == null ||
-        ctx.CLOSE_PAREN() == null) {
+      ctx.CLOSE_PAREN() == null
+    ) {
       super.visitParameters(ctx)
     }
 
@@ -55,9 +56,9 @@ class ParametersVisitor(val scope: Scope) : Python3BaseVisitor<Parameters>() {
       if (ctx.getChild(index) is TerminalNodeImpl) {
         parameter = ctx.getChild(index + 1).accept(ParameterVisitor(this.scope))
         if (ctx.getChild(index).text == "*") {
-          parameter.star = Parameter.StarType.STAR;
+          parameter.star = Parameter.StarType.STAR
         } else {
-          parameter.star = Parameter.StarType.DOUBLE_STAR;
+          parameter.star = Parameter.StarType.DOUBLE_STAR
         }
         index += 3
       } else {
@@ -70,5 +71,4 @@ class ParametersVisitor(val scope: Scope) : Python3BaseVisitor<Parameters>() {
 
     return Parameters(list)
   }
-
 }

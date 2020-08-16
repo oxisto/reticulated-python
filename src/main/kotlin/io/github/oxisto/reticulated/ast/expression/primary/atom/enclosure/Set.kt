@@ -7,5 +7,4 @@ class Set(val elts: kotlin.collections.List<Expression>) : Enclosure() {
   override fun toString(): String {
     return "Set(elts=$elts)"
   }
-
 }

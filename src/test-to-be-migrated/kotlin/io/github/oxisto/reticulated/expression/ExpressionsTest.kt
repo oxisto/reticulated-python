@@ -65,5 +65,4 @@ class ExpressionsTest {
     val id = trailer.identifier
     assertEquals(id.name, "name")
   }
-
 }

@@ -47,23 +47,23 @@ class ComprehensionTest {
   @Test
   fun testComprehensionArgument() {
     val file = File(
-        javaClass
-            .classLoader
-            .getResource("expressions/comprehension/comprehension_argument.py")!!
-            .file
+      javaClass
+        .classLoader
+        .getResource("expressions/comprehension/comprehension_argument.py")!!
+        .file
     )
 
     val input = PythonParser()
-        .parse(file.path)
-        .root
+      .parse(file.path)
+      .root
     assertNotNull(input)
 
     val call = input.statements[0] as Call
 
     // println(
-        // beautifyResult(
-            // input.toString()
-        // )
+    // beautifyResult(
+    // input.toString()
+    // )
     // )
 
     assertNotNull(call)
@@ -73,7 +73,7 @@ class ComprehensionTest {
     val comprehension = call.callTrailer as Comprehension
     assertNotNull(comprehension)
 
-    val expression = comprehension.expression  as Identifier
+    val expression = comprehension.expression as Identifier
     assertNotNull(expression)
     assertEquals(expression.name, "x")
     val compFor = comprehension.compFor
@@ -100,20 +100,20 @@ class ComprehensionTest {
   @Test
   fun testFullComprehensionArgument() {
     val file = File(
-        javaClass
-            .classLoader
-            .getResource("expressions/comprehension/full_comprehension_argument.py")!!
-            .file
+      javaClass
+        .classLoader
+        .getResource("expressions/comprehension/full_comprehension_argument.py")!!
+        .file
     )
 
     val input = PythonParser()
-        .parse(file.path)
-        .root
+      .parse(file.path)
+      .root
     assertNotNull(input)
     // print(
-        // beautifyResult(
-            // input.toString()
-        // )
+    // beautifyResult(
+    // input.toString()
+    // )
     // )
     val statements = input.statements
     assertNotNull(statements)
@@ -125,7 +125,7 @@ class ComprehensionTest {
     assertEquals(name.name, "fun")
     val comprehension = call.callTrailer as Comprehension
     assertNotNull(comprehension)
-    val expression = comprehension.expression  as Identifier
+    val expression = comprehension.expression as Identifier
     assertNotNull(expression)
     assertEquals(expression.name, "x")
     val compFor = comprehension.compFor

@@ -29,7 +29,7 @@ class Suite(val statements: List<Statement> = ArrayList()) : Node(), Container<S
 
   override fun toString(): String {
     return "Suite(" + System.lineSeparator() +
-        "\tstatements=$statements" + System.lineSeparator() +
-        ")"
+      "\tstatements=$statements" + System.lineSeparator() +
+      ")"
   }
 }

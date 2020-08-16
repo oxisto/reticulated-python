@@ -33,9 +33,9 @@ package io.github.oxisto.reticulated.ast.expression.primary.atom.literal
  *  [see: {@linktourl https://docs.python.org/3/reference/lexical_analysis.html#literals}]
  */
 class StringLiteral(val value: String) : Literal<String>() {
-    override fun toString(): String {
-        return "StringLiteral(" + System.lineSeparator() +
-                "\tvalue=$value" + System.lineSeparator() +
-                ")"
-    }
+  override fun toString(): String {
+    return "StringLiteral(" + System.lineSeparator() +
+      "\tvalue=$value" + System.lineSeparator() +
+      ")"
+  }
 }

@@ -19,7 +19,6 @@ package io.github.oxisto.reticulated.ast.expression.argument
 
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.Expression
-import io.github.oxisto.reticulated.ast.statement.parameter.Parameters
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 import org.antlr.v4.runtime.tree.TerminalNodeImpl
@@ -38,7 +37,8 @@ class ArgumentListVisitor(val scope: Scope) : Python3BaseVisitor<Arguments>() {
 
   override fun visitTrailer(ctx: Python3Parser.TrailerContext?): Arguments {
     if (ctx?.OPEN_PAREN() == null ||
-        ctx.CLOSE_PAREN() == null) {
+      ctx.CLOSE_PAREN() == null
+    ) {
       super.visitTrailer(ctx)
     }
 
@@ -54,11 +54,11 @@ class ArgumentListVisitor(val scope: Scope) : Python3BaseVisitor<Arguments>() {
     for (tree in ctx.children) {
       if (tree !is TerminalNodeImpl) {
         arguments.add(
-            tree.accept(
-                ArgumentVisitor(
-                    this.scope
-                )
+          tree.accept(
+            ArgumentVisitor(
+              this.scope
             )
+          )
         )
       }
     }

@@ -37,5 +37,4 @@ class Call(val primary: Primary, val arguments: Arguments, val keywords: List<Ke
   override fun toString(): String {
     return "Call(primary=$primary, arguments=$arguments, keywords=$keywords)"
   }
-
 }

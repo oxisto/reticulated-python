@@ -26,11 +26,9 @@ import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
  */
 class AttributeRef(val primary: Primary, val identifier: Identifier) : Primary() {
 
-
   override fun toString(): String {
     return "AttributeRef(" + System.lineSeparator() +
-            "\tprimary=$primary\".\"identifier=$identifier" + System.lineSeparator() +
-            ")"
+      "\tprimary=$primary\".\"identifier=$identifier" + System.lineSeparator() +
+      ")"
   }
-
 }

@@ -26,9 +26,9 @@ import io.github.oxisto.reticulated.ast.statement.parameter.Parameters
  *      lambda_expr_nocond ::= "lambda" [parameter_list] ":" expression_nocond
  *  [see: {@linktourl https://docs.python.org/3/reference/expressions.html#lambda}]
  */
-class Lambda(val parameters: Parameters, val body: Expression): Expression() {
+class Lambda(val parameters: Parameters, val body: Expression) : Expression() {
 
-    override fun toString(): String {
-        return "LambdaNoCond(parameters=$parameters, body=$body)"
-    }
+  override fun toString(): String {
+    return "LambdaNoCond(parameters=$parameters, body=$body)"
+  }
 }

@@ -19,7 +19,9 @@ package io.github.oxisto.reticulated.ast.expression.argument
 
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
-import io.github.oxisto.reticulated.ast.expression.*
+import io.github.oxisto.reticulated.ast.expression.Expression
+import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
+import io.github.oxisto.reticulated.ast.expression.Starred
 import io.github.oxisto.reticulated.ast.expression.primary.atom.AtomVisitor
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
 import io.github.oxisto.reticulated.ast.statement.parameter.Parameter
@@ -41,12 +43,12 @@ class ArgumentVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
   override fun visitArgument(ctx: Python3Parser.ArgumentContext): Expression {
     val getExpressionByPosition = { positionOfTheExpression: Int ->
       ctx
-          .getChild(positionOfTheExpression)
-          .accept(
-              ExpressionVisitor(
-                  this.scope
-              )
+        .getChild(positionOfTheExpression)
+        .accept(
+          ExpressionVisitor(
+            this.scope
           )
+        )
     }
 
     return when (ctx.childCount) {
@@ -65,9 +67,9 @@ class ArgumentVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
       3 -> {
         // It is a keyword_item, (parent: keyword_arguments), in the form: identifier "=" expression
         val identifier = ctx.getChild(0).accept(
-            AtomVisitor(
-                this.scope
-            )
+          AtomVisitor(
+            this.scope
+          )
         ) as Identifier
         val expression = getExpressionByPosition(2)
         KeywordItem(identifier, expression)
@@ -75,5 +77,4 @@ class ArgumentVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
       else -> throw CouldNotParseException("ctx: $ctx has ${ctx.childCount} children!")
     }
   }
-
 }

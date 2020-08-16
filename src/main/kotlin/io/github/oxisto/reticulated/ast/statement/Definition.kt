@@ -34,5 +34,4 @@ abstract class Definition(body: Suite) : CompoundStatement(body) {
   fun asClassDefinition(): ClassDefinition {
     return this as ClassDefinition
   }
-
 }

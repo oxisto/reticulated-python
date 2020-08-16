@@ -51,10 +51,9 @@ class Scope(val parent: Scope? = null, val type: ScopeType = ScopeType.GLOBAL) {
   }
 
   fun handleParameterList(parameters: Parameters) {
-      parameters.parameters.forEach { parameter ->
-        val variable = ResolvedVariable(parameter as Identifiable)
-        this.addVariable(variable)
-      }
+    parameters.parameters.forEach { parameter ->
+      val variable = ResolvedVariable(parameter as Identifiable)
+      this.addVariable(variable)
+    }
   }
-
 }

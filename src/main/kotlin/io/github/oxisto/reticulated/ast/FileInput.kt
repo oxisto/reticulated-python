@@ -18,7 +18,7 @@
 package io.github.oxisto.reticulated.ast
 
 import io.github.oxisto.reticulated.ast.statement.Statement
-import java.util.*
+import java.util.ArrayList
 
 class FileInput(val statements: ArrayList<Statement> = ArrayList()) : Node() {
 
@@ -41,6 +41,4 @@ class FileInput(val statements: ArrayList<Statement> = ArrayList()) : Node() {
 
     return null
   }
-
-
 }

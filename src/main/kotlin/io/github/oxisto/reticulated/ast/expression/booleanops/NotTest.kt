@@ -24,11 +24,11 @@ package io.github.oxisto.reticulated.ast.expression.booleanops
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#boolean-operations}]
  *
  */
-class NotTest(val notTest: BaseBooleanOp): BaseBooleanOp() {
+class NotTest(val notTest: BaseBooleanOp) : BaseBooleanOp() {
 
-    override fun toString(): String {
-        return "NotTest(" + System.lineSeparator() +
-            "\t\"not\" notTest=$notTest" + System.lineSeparator() +
-            ")"
-    }
+  override fun toString(): String {
+    return "NotTest(" + System.lineSeparator() +
+      "\t\"not\" notTest=$notTest" + System.lineSeparator() +
+      ")"
+  }
 }
