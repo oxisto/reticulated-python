@@ -28,7 +28,7 @@ import io.github.oxisto.reticulated.ast.expression.comprehension.Comprehension
  *
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-set-display}]
  */
-class SetComprehension(val elt: Expression, val generators: List<Comprehension>) : Enclosure() {
+class SetComprehension(val elt: Expression, val generators: kotlin.collections.List<Comprehension>) : Enclosure() {
 
   override fun toString(): String {
     return "SetComprehension(elt=$elt, generators=$generators)"

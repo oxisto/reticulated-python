@@ -22,9 +22,7 @@ import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
 import io.github.oxisto.reticulated.ast.expression.booleanexpr.BooleanExprVisitor
 import io.github.oxisto.reticulated.ast.expression.booleanexpr.OrExpr
-import io.github.oxisto.reticulated.ast.expression.comprehension.Comprehension
 import io.github.oxisto.reticulated.ast.expression.comprehension.ComprehensionVisitor
-import io.github.oxisto.reticulated.ast.expression.StarredExpression
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 

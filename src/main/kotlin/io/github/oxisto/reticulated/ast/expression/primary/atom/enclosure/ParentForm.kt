@@ -17,7 +17,7 @@
 
 package io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure
 
-import io.github.oxisto.reticulated.ast.expression.StarredExpression
+import io.github.oxisto.reticulated.ast.expression.Starred
 
 /**
  * This class represents the parent_form.
@@ -26,13 +26,13 @@ import io.github.oxisto.reticulated.ast.expression.StarredExpression
  *
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-parenth-form}]
  */
-class ParentForm(val starredExpression: StarredExpression?): Enclosure(){
+class ParentForm(val starred: Starred?): Enclosure(){
 
   override fun toString(): String {
     var result = "StarredExpression(" + System.lineSeparator() +
         "\t \"(\" "
-    if (starredExpression != null)
-      result += "starredExpression=$starredExpression"
+    if (starred != null)
+      result += "starredExpression=$starred"
     return "$result \")\"" + System.lineSeparator() +
         ")"
   }

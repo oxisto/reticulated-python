@@ -17,12 +17,14 @@
 
 package io.github.oxisto.reticulated.ast.expression
 
-/**
- * This class represents an expression_nocond
- * It´s EBNF representation is:
- *      expression_nocond ::= or_test | lambda_expr_nocond
- * [see: https://docs.python.org/3/reference/expressions.html#grammar-token-expression-nocond]
- */
-abstract class ExpressionNoCond: Expression(){
+import io.github.oxisto.reticulated.ast.expression.Expression
+import io.github.oxisto.reticulated.ast.statement.parameter.Parameter
 
+/**
+ * This class is the base for the starred nodes.
+ */
+class Starred(val expression: Expression, val star: Parameter.StarType = Parameter.StarType.STAR) : Expression() {
+  override fun toString(): String {
+    return "StarredExpression(expression=$expression)"
+  }
 }

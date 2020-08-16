@@ -28,7 +28,7 @@ import io.github.oxisto.reticulated.ast.expression.comprehension.Comprehension
  *
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-dict-comprehension}]
  */
-class DictComprehension(val key: Expression, val value: Expression, val generators: List<Comprehension>) : Enclosure() {
+class DictComprehension(val key: Expression, val value: Expression, val generators: kotlin.collections.List<Comprehension>) : Enclosure() {
 
   override fun toString(): String {
     return "DictComprehension(key=$key, value=$value, generators=$generators)"

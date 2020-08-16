@@ -27,7 +27,7 @@ import io.github.oxisto.reticulated.ast.CouldNotParseException
  *
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-key-datum-list}]
  */
-class KeyDatumList(var keyDatums: List<KeyDatum> = ArrayList()) : Enclosure(), Container<KeyDatum> {
+class KeyDatumList(var keyDatums: kotlin.collections.List<KeyDatum> = ArrayList()) : Enclosure(), Container<KeyDatum> {
 
   init {
     if (keyDatums.isEmpty())

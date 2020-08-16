@@ -20,11 +20,8 @@ package io.github.oxisto.reticulated.ast.expression.primary.atom
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.Expression
-import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
-import io.github.oxisto.reticulated.ast.expression.StarredExpression
-import io.github.oxisto.reticulated.ast.expression.comprehension.Comprehension
-import io.github.oxisto.reticulated.ast.expression.comprehension.ComprehensionVisitor
-import io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure.*
+import io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure.List
+import io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure.ListVisitor
 import io.github.oxisto.reticulated.ast.expression.primary.atom.literal.*
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
@@ -36,8 +33,14 @@ import org.antlr.v4.runtime.tree.TerminalNode
 class AtomVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
 
   override fun visitAtom(ctx: Python3Parser.AtomContext): Expression {
-    if(ctx.childCount == 1) {
+    if (ctx.childCount == 1) {
       return ctx.getChild(0).accept(this)
+    }
+
+    if (ctx.OPEN_BRACK() != null && ctx.CLOSE_BRACK() != null) {
+      ctx.testlist_comp()?.let { return it.accept(ListVisitor(scope)) }
+
+      return List(emptyList())
     }
 
     throw CouldNotParseException("Not supported")
@@ -124,10 +127,12 @@ class AtomVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
         text.last() == 'J' || text.last() == 'j'
         )
     val isBytesLiteral = text.length > 2 && text.substring(0, 2) == "0x"
-    val byteValue = if(isBytesLiteral) {
+    val byteValue = if (isBytesLiteral) {
       text.substring(2, text.length)
           .toByteOrNull()
-    } else { null }
+    } else {
+      null
+    }
 
     return when {
       intOrNull != null -> Integer(intOrNull)
@@ -145,7 +150,7 @@ class AtomVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
         val textWithoutLast = text.substring(0, text.lastIndex)
         val intOrNullOfImag = textWithoutLast.toIntOrNull()
         val floatOrNullOfImag = textWithoutLast.toFloatOrNull()
-        if(intOrNullOfImag != null)
+        if (intOrNullOfImag != null)
           ImagNumber(null, Integer(intOrNullOfImag))
         else
           ImagNumber(FloatNumber(floatOrNullOfImag as Float), null)

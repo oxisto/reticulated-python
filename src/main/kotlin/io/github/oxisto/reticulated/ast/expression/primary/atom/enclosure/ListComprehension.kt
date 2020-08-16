@@ -19,8 +19,9 @@
 package io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure
 
 import io.github.oxisto.reticulated.ast.CouldNotParseException
+import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.comprehension.Comprehension
-import io.github.oxisto.reticulated.ast.expression.StarredExpression
+import io.github.oxisto.reticulated.ast.expression.Starred
 
 /**
  * This class represents a list_display.
@@ -29,24 +30,10 @@ import io.github.oxisto.reticulated.ast.expression.StarredExpression
  *
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-list-display}]
  */
-class ListDisplay(val starredList: StarredExpression?, val comprehension: Comprehension?) : Enclosure() {
-
-  init {
-    if (starredList != null && comprehension != null)
-      throw CouldNotParseException(
-          "A ListDisplay should not contain a starredList=$starredList and a comprehension=$comprehension"
-      )
-  }
+class ListComprehension(val elt: Expression, val generators: kotlin.collections.List<Comprehension>) : Enclosure() {
 
   override fun toString(): String {
-    var result = "ListDisplay(" + System.lineSeparator() +
-        "\t \"[\" "
-    if (starredList != null)
-      result += "starredList=$starredList"
-    if (comprehension != null)
-      result += "comprehension=$comprehension"
-    return "$result \"]\"" + System.lineSeparator() + ")"
+    return "ListComprehension(elt=$elt, generators=$generators)"
   }
-
 
 }
