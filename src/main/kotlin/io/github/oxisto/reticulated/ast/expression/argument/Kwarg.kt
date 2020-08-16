@@ -25,7 +25,7 @@ import io.github.oxisto.reticulated.ast.expression.Expression
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#calls}]
  *
  */
-open class Kwarg(expression: Expression) : KeywordArgument(expression) {
+open class Kwarg(val expression: Expression) : KeywordArgument(expression) {
 
     override fun toString(): String {
         return "Kwarg(" + System.lineSeparator() +

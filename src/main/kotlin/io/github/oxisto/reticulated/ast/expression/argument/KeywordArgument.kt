@@ -29,6 +29,6 @@ import io.github.oxisto.reticulated.ast.expression.Expression
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#calls}]
  *
  */
-abstract class KeywordArgument(expression: Expression) : Argument(expression) {
+abstract class KeywordArgument(expression: Expression) : Expression() {
 
 }
