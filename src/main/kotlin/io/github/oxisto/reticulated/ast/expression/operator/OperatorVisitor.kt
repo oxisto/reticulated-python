@@ -125,7 +125,7 @@ class OperatorVisitor(val scope: Scope): Python3BaseVisitor<BaseOperator>() {
         var awaitExpr: AwaitExpr? = null
         var primary: Primary? = null
         val child = ctx.getChild(0)
-        if(child.childCount == 2 && child.getChild(0).text == "await"){
+        if (child.childCount == 2 && child.getChild(0).text == "await") {
             // It is an AwaitExpr
             awaitExpr = AwaitExpr(
                 child.accept(
@@ -150,9 +150,12 @@ class OperatorVisitor(val scope: Scope): Python3BaseVisitor<BaseOperator>() {
                 .getChild(2)
                 .accept(this)
         } else null
-        return if(unaryExpr == null) {
-            primary ?: awaitExpr!!
-        } else PowerExpr(awaitExpr, primary, unaryExpr)
+
+        // TODO: properly handle power expressions
+        if (unaryExpr == null) {
+            throw CouldNotParseException("Unary expression of power operator cannot be null")
+        }
+        return PowerExpr(awaitExpr, primary, unaryExpr)
     }
 
     private fun handleUnaryOperator(ctx: ParserRuleContext): UnaryExpr {

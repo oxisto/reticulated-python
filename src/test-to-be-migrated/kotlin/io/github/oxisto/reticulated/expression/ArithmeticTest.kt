@@ -24,7 +24,7 @@ import io.github.oxisto.reticulated.ast.expression.operator.PowerExpr
 import io.github.oxisto.reticulated.ast.expression.operator.UnaryExpr
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
 import io.github.oxisto.reticulated.ast.expression.primary.atom.literal.*
-import io.github.oxisto.reticulated.ast.simple.AssignmentExpression
+import io.github.oxisto.reticulated.ast.simple.AssignmentStatement
 import org.junit.Test
 import java.io.File
 import kotlin.test.assertEquals
@@ -49,7 +49,7 @@ class ArithmeticTest {
     // input.toString()
     // )
     // )
-    val firstAssignment = input.statementAsOrNull<AssignmentExpression>(0)
+    val firstAssignment = input.statementAsOrNull<AssignmentStatement>(0)
     val firstTarget = firstAssignment?.target as Identifier
     assertEquals(firstTarget.name, "a")
 
@@ -76,7 +76,7 @@ class ArithmeticTest {
     assertNotNull(valueOfFUEN4)
     assertEquals(valueOfFUEN4.value, 1)
 
-    val secondAssignment = input.statements[1] as AssignmentExpression
+    val secondAssignment = input.statements[1] as AssignmentStatement
     val secondTarget = secondAssignment.target as Identifier
     assertEquals(secondTarget.name, "b")
     val secondAdditiveExpr = secondAssignment.expression as AdditiveExpr
@@ -92,7 +92,7 @@ class ArithmeticTest {
     assertNotNull(valueOfImagNumberOfMSSAE)
     assertEquals(valueOfImagNumberOfMSSAE.value, 1)
 
-    val thirdAssignment = input.statements[2] as AssignmentExpression
+    val thirdAssignment = input.statements[2] as AssignmentStatement
     val thirdTarget = thirdAssignment.target as Identifier
     assertEquals(thirdTarget.name, "c")
     val thirdAdditiveExpr = thirdAssignment.expression as AdditiveExpr
@@ -108,7 +108,7 @@ class ArithmeticTest {
     assertEquals(stringLiteralOfMETAE.value, "Test")
 
 
-    val forthAssignment = input.statements[3] as AssignmentExpression
+    val forthAssignment = input.statements[3] as AssignmentStatement
     val forthTarget = forthAssignment.target as Identifier
     assertEquals(forthTarget.name, "d")
     val forthAdditiveExpr = forthAssignment.expression as AdditiveExpr
@@ -133,7 +133,7 @@ class ArithmeticTest {
     assertNotNull(floatNumberOfMEFAE2)
     assertEquals(floatNumberOfMEFAE2.value, "0.5".toFloat())
 
-    val fifthAssignment = input.statements[4] as AssignmentExpression
+    val fifthAssignment = input.statements[4] as AssignmentStatement
     val fifthTarget = fifthAssignment.target as Identifier
     assertEquals(fifthTarget.name, "e")
     val fifthAdditiveExpr = fifthAssignment.expression as AdditiveExpr

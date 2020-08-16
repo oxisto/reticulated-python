@@ -32,7 +32,7 @@ import io.github.oxisto.reticulated.ast.expression.primary.call.CallTrailer
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#calls}]
  *
  */
-class ArgumentList(private val arguments: List<Expression> = ArrayList()) : CallTrailer(), Container<Expression> {
+class Arguments(private val arguments: List<Expression> = ArrayList()) : CallTrailer(), Container<Expression> {
 
   override val children get() = this.arguments
 

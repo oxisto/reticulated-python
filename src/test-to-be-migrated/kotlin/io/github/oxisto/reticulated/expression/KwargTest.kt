@@ -18,22 +18,15 @@
 package io.github.oxisto.reticulated.expression
 
 import io.github.oxisto.reticulated.PythonParser
-import io.github.oxisto.reticulated.ast.expression.ConditionalExpression
-import io.github.oxisto.reticulated.ast.expression.argument.ArgumentList
+import io.github.oxisto.reticulated.ast.expression.argument.Arguments
 import io.github.oxisto.reticulated.ast.expression.argument.KeywordItem
 import io.github.oxisto.reticulated.ast.expression.argument.Kwarg
 import io.github.oxisto.reticulated.ast.expression.argument.PositionalArgument
-import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
 import io.github.oxisto.reticulated.ast.expression.primary.call.Call
-import io.github.oxisto.reticulated.ast.expression.operator.PowerExpr
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
 import io.github.oxisto.reticulated.ast.expression.primary.atom.literal.StringLiteral
-import io.github.oxisto.reticulated.ast.simple.ExpressionStatement
 import io.github.oxisto.reticulated.ast.statement.FunctionDefinition
-import io.github.oxisto.reticulated.ast.statement.StatementList
-import io.github.oxisto.reticulated.ast.statement.parameter.DoubleStarredParameter
-import io.github.oxisto.reticulated.ast.statement.parameter.ParameterList
-import io.github.oxisto.reticulated.ast.statement.parameter.StarredParameter
+import io.github.oxisto.reticulated.ast.statement.parameter.Parameters
 import org.junit.Test
 import java.io.File
 import kotlin.test.assertEquals
@@ -60,11 +53,11 @@ class KwargTest {
 
     val firstFunctionDefinition = input.statements[0] as FunctionDefinition
     assertNotNull(firstFunctionDefinition)
-    assertNull(firstFunctionDefinition.expression)
+    assertNull(firstFunctionDefinition.returnDecorator)
     val firstIdentifier = firstFunctionDefinition.funcName
     assertEquals(firstIdentifier.name, "func")
     val parameters = (
-        firstFunctionDefinition.parameterList as ParameterList
+        firstFunctionDefinition.parameters as Parameters
         ).parameters
     assertEquals(parameters.size, 3)
     val firstParameter = parameters[0] as Identifier
@@ -84,7 +77,7 @@ class KwargTest {
     assertNotNull(firstCall)
     val firstCallName = firstCall.primary as Identifier
     assertEquals(firstCallName.name, "print")
-    val firstCallArgs = firstCall.callTrailer as ArgumentList
+    val firstCallArgs = firstCall.callTrailer as Arguments
     assertNotNull(firstCallArgs)
     val firstArgument = firstCallArgs[0] as Identifier
     assertEquals(firstArgument.name, "param")
@@ -95,10 +88,10 @@ class KwargTest {
 
     val functionDefinition = input.statements[1] as FunctionDefinition
     assertNotNull(functionDefinition)
-    assertNull(functionDefinition.expression)
+    assertNull(functionDefinition.returnDecorator)
     val id = functionDefinition.funcName
     assertEquals(id.name, "fun_func")
-    val parameterList = functionDefinition.parameterList as ParameterList
+    val parameterList = functionDefinition.parameters as Parameters
     assertNotNull(parameterList)
     val param1 = parameterList.parameters[0] as StarredParameter
     assertNotNull(param1)
@@ -113,7 +106,7 @@ class KwargTest {
     assertNotNull(secondCall)
     val callName = secondCall.primary as Identifier
     assertEquals(callName.name, "func")
-    val callTrailer = secondCall.callTrailer as ArgumentList
+    val callTrailer = secondCall.callTrailer as Arguments
     assertNotNull(callTrailer)
     val secondParam1 = callTrailer[0] as StringLiteral
     assertEquals(secondParam1.value, "a")
@@ -134,7 +127,7 @@ class KwargTest {
     assertNotNull(call)
     val primary = call.primary as Identifier
     assertEquals(primary.name, "fun_func")
-    val argList = call.callTrailer as ArgumentList
+    val argList = call.callTrailer as Arguments
     assertNotNull(argList)
     val arg1 = argList[0] as StringLiteral
     assertEquals(arg1.value, "$")

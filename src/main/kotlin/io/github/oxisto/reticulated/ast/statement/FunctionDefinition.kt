@@ -20,8 +20,7 @@ package io.github.oxisto.reticulated.ast.statement
 import io.github.oxisto.reticulated.ast.Suite
 import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
-import io.github.oxisto.reticulated.ast.statement.parameter.BaseParameter
-import io.github.oxisto.reticulated.ast.statement.parameter.ParameterList
+import io.github.oxisto.reticulated.ast.statement.parameter.Parameters
 
 /**
  * A function definition
@@ -30,15 +29,15 @@ import io.github.oxisto.reticulated.ast.statement.parameter.ParameterList
  */
 class FunctionDefinition(
     val funcName: Identifier,
-    val parameterList: BaseParameter?,
-    suite: Statement,
-    val expression: Expression?
+    val parameters: Parameters,
+    suite: Suite,
+    val returnDecorator: Expression?
 ) : Definition(suite) {
   // TODO: decorators
 
   init {
     funcName.parent = this
-    parameterList?.parent = this
+    parameters.parent = this
   }
 
   override fun isFunctionDefinition(): Boolean {
@@ -52,11 +51,10 @@ class FunctionDefinition(
   override fun toString(): String {
     var result = "FunctionDefinition(" + System.lineSeparator() +
         "\t\"def\" funcname=$funcName \"(\" "
-    if (parameterList != null)
-        result += "parameters=$parameterList"
+    result += "parameters=$parameters"
     result += " \")\""
-    if (expression != null)
-      result += "\"->\" expression=$expression"
+    if (returnDecorator != null)
+      result += "\"->\" expression=$returnDecorator"
     return "$result \":\" suite =$suite" + System.lineSeparator() +
         ")"
   }

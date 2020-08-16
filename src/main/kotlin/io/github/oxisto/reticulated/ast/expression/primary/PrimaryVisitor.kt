@@ -21,7 +21,7 @@ import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.ExpressionList
 import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
-import io.github.oxisto.reticulated.ast.expression.argument.CallTrailerVisitor
+import io.github.oxisto.reticulated.ast.expression.argument.ArgumentListVisitor
 import io.github.oxisto.reticulated.ast.expression.primary.atom.AtomVisitor
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
 import io.github.oxisto.reticulated.ast.expression.primary.call.Call
@@ -33,7 +33,7 @@ import org.antlr.v4.runtime.tree.TerminalNode
 /**
  * this class offers visitors for all primaries.
  */
-class PrimaryVisitor(val scope: Scope): Python3BaseVisitor<Expression>() {
+class PrimaryVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
 
   override fun visitAtom_expr(ctx: Python3Parser.Atom_exprContext): Primary {
     return if (ctx.childCount == 1) {
@@ -64,24 +64,24 @@ class PrimaryVisitor(val scope: Scope): Python3BaseVisitor<Expression>() {
       val trailer = ctx.getChild(ctx.childCount - 1)
 
       when (trailer.getChild(0).text) {
-         "(" -> {
-           // it is a call
-           for (index in 1 until ctx.childCount-1)
-             primary = AttributeRef(
-                 primary,
-                 ctx.getChild(index)
-                     .getChild(1)
-                     .accept(
-                         AtomVisitor(this.scope)
-                     ) as Identifier
-             )
-           val argumentList =
+        "(" -> {
+          // it is a call
+          for (index in 1 until ctx.childCount - 1)
+            primary = AttributeRef(
+                primary,
+                ctx.getChild(index)
+                    .getChild(1)
+                    .accept(
+                        AtomVisitor(this.scope)
+                    ) as Identifier
+            )
+          val argumentList =
               trailer.accept(
-                  CallTrailerVisitor(
+                  ArgumentListVisitor(
                       this.scope
                   )
               )
-           Call(primary, argumentList)
+          Call(primary, argumentList)
         }
         "." -> {
           // it is an attribute ref, parse the identifier
@@ -131,7 +131,7 @@ class PrimaryVisitor(val scope: Scope): Python3BaseVisitor<Expression>() {
   override fun visitSliceop(ctx: Python3Parser.SliceopContext): Primary {
     var expression: Expression? = null
     if (ctx.childCount == 2)
-        expression = ctx.getChild(1).accept(ExpressionVisitor(this.scope))
+      expression = ctx.getChild(1).accept(ExpressionVisitor(this.scope))
     return Stride(expression)
   }
 
@@ -152,7 +152,7 @@ class PrimaryVisitor(val scope: Scope): Python3BaseVisitor<Expression>() {
   private fun getUpperBound(ctx: Python3Parser.SubscriptContext): Expression? {
     var upperBound: Expression? = null
     if (ctx.childCount >= 2 && ctx.getChild(1) is Python3Parser.TestContext)
-        upperBound = ctx.getChild(1).accept(ExpressionVisitor(this.scope))
+      upperBound = ctx.getChild(1).accept(ExpressionVisitor(this.scope))
     if (ctx.childCount >= 3 &&
         ctx.getChild(0) is Python3Parser.TestContext &&
         ctx.getChild(2) is Python3Parser.TestContext)

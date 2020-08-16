@@ -17,7 +17,7 @@
 
 package io.github.oxisto.reticulated.ast
 
-import io.github.oxisto.reticulated.ast.statement.parameter.ParameterList
+import io.github.oxisto.reticulated.ast.statement.parameter.Parameters
 import io.github.oxisto.reticulated.ast.statement.parameter.ParameterListVisitor
 import io.github.oxisto.reticulated.ast.statement.Statement
 import io.github.oxisto.reticulated.ast.statement.StatementVisitor
@@ -47,9 +47,9 @@ class Visitor(val scope: Scope) : Python3BaseVisitor<Node>() {
     return FileInput(statements)
   }
 
-  override fun visitParameters(ctx: Python3Parser.ParametersContext): Node {
+  override fun visitParameters(ctx: Python3Parser.ParametersContext): Parameters {
     if (ctx.childCount == 2) {
-      return ParameterList()
+      return Parameters()
     }
 
     // second parameter is the list of (typed) arguments

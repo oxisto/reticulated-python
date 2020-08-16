@@ -15,13 +15,15 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.expression.comprehension
+package io.github.oxisto.reticulated.ast.expression
 
-import io.github.oxisto.reticulated.ast.expression.primary.call.CallTrailer
+import io.github.oxisto.reticulated.ast.expression.Expression
 
 /**
- * This class is the base for all comprehensions.
+ * This class is the base for the starred nodes.
  */
-abstract class BaseComprehension: CallTrailer(){
-    abstract override fun toString(): String
+class StarredExpression(val expression: Expression) : Expression() {
+  override fun toString(): String {
+    return "StarredExpression(expression=$expression)"
+  }
 }

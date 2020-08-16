@@ -19,7 +19,7 @@
 package io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure
 
 import io.github.oxisto.reticulated.ast.expression.Expression
-import io.github.oxisto.reticulated.ast.expression.comprehension.CompFor
+import io.github.oxisto.reticulated.ast.expression.comprehension.Comprehension
 
 /**
  * This class represents a dict_Comprehension.
@@ -28,11 +28,10 @@ import io.github.oxisto.reticulated.ast.expression.comprehension.CompFor
  *
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-dict-comprehension}]
  */
-class DictComprehension(val key: Expression, val datum: Expression, val compFor: CompFor): Enclosure() {
+class DictComprehension(val key: Expression, val value: Expression, val generators: List<Comprehension>) : Enclosure() {
 
   override fun toString(): String {
-    return "DictComprehension(" + System.lineSeparator() +
-        "\tkey=$key \":\" datum=$datum compFor=$compFor" + System.lineSeparator() +
-        ")"
+    return "DictComprehension(key=$key, value=$value, generators=$generators)"
   }
+
 }

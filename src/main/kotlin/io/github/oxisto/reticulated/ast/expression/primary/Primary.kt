@@ -17,6 +17,7 @@
 
 package io.github.oxisto.reticulated.ast.expression.primary
 
+import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.operator.BaseOperator
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
 
@@ -25,7 +26,7 @@ import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
  *
  * Reference: https://docs.python.org/3/reference/expressions.html#primaries
  */
-abstract class Primary : BaseOperator() {
+abstract class Primary : Expression() {
 
   fun asIdentifier(): Identifier {
     return this as Identifier

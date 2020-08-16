@@ -22,8 +22,6 @@ import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
 import io.github.oxisto.reticulated.ast.expression.primary.atom.AtomVisitor
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Name
-import io.github.oxisto.reticulated.ast.expression.starred.StarredVisitor
-import io.github.oxisto.reticulated.ast.simple.target.TargetVisitor
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 
@@ -61,17 +59,18 @@ class SimpleStatementVisitor(val scope: Scope) : Python3BaseVisitor<SimpleStatem
   override fun visitExpr_stmt(ctx: Python3Parser.Expr_stmtContext): SimpleStatement {
     // need some kind of logic here how to decide what exactly this is
     return if (ctx.childCount == 1)
-      ctx.getChild(0).accept(StarredVisitor(this.scope))
+      ExpressionStatement(ctx.getChild(0).accept(ExpressionVisitor(this.scope)))
     else {
 
       // probably an assignment statement, but there are cases when an assignment has more than 3 children e.g. a = b = 123
       // for now assume that child 0 = target; child 2 = expression
       // val targetList = ctx.getChild(0).accept(TargetListVisitor(this.scope))
-      val target = ctx.getChild(0).accept(TargetVisitor(this.scope))
+      // TODO: Support multiple targets in an AssignmentExpression
+      val target = ctx.getChild(0).accept(ExpressionVisitor(this.scope))
 
       val expression = ctx.getChild(2).accept(ExpressionVisitor(this.scope))
 
-      AssignmentExpression(target, expression)
+      AssignmentStatement(listOf(target), expression)
     }
   }
 }

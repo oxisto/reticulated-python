@@ -18,17 +18,9 @@
 package io.github.oxisto.reticulated.expression
 
 import io.github.oxisto.reticulated.PythonParser
-import io.github.oxisto.reticulated.ast.expression.ConditionalExpression
-import io.github.oxisto.reticulated.ast.expression.argument.ArgumentList
-import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
-import io.github.oxisto.reticulated.ast.expression.comparison.Comparison
-import io.github.oxisto.reticulated.ast.expression.operator.PowerExpr
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
-import io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure.GeneratorExpression
 import io.github.oxisto.reticulated.ast.expression.primary.atom.literal.Integer
 import io.github.oxisto.reticulated.ast.expression.primary.call.Call
-import io.github.oxisto.reticulated.ast.simple.ExpressionStatement
-import io.github.oxisto.reticulated.ast.statement.StatementList
 import org.junit.Test
 import java.io.File
 import kotlin.test.assertEquals

@@ -17,21 +17,15 @@
 
 package io.github.oxisto.reticulated.ast.simple
 
+import io.github.oxisto.reticulated.ast.expression.Expression
 
-abstract class ExpressionStatement : SimpleStatement() {
+/**
+ * Represents a statement that contains an expression.
+ */
+open class ExpressionStatement(val expression: Expression) : SimpleStatement() {
 
-//  override fun isExpressionStatement(): Boolean {
-//    return true
-//  }
-//
-//  override fun isAssignmentStatement(): Boolean {
-//    return false
-//  }
-//
-//  override fun isImportStatement(): Boolean {
-//    return false
-//  }
-
-  abstract override fun toString(): String
+  override fun toString(): String {
+    return "ExpressionStatement(expression=$expression)"
+  }
 
 }

@@ -19,7 +19,7 @@ package io.github.oxisto.reticulated.expression
 
 import io.github.oxisto.reticulated.PythonParser
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
-import io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure.SetDisplay
+import io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure.SetComprehension
 import io.github.oxisto.reticulated.ast.expression.primary.atom.literal.Integer
 import io.github.oxisto.reticulated.ast.expression.primary.atom.literal.StringLiteral
 import io.github.oxisto.reticulated.ast.expression.primary.call.Call
@@ -30,7 +30,7 @@ import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
-class SetTest {
+class SetComprehensionTest {
 
   @Test
   fun starredSetTest() {
@@ -48,7 +48,7 @@ class SetTest {
 
     // print(input.toString())
 
-    val set = input.statements[0] as SetDisplay
+    val set = input.statements[0] as SetComprehension
     assertNotNull(set)
     assertNull(set.comprehension)
     val starredList = set.starredList
@@ -75,7 +75,7 @@ class SetTest {
 
     // print(input.toString())
 
-    val set = input.statementAsOrNull<SetDisplay>(0)
+    val set = input.statementAsOrNull<SetComprehension>(0)
     assertNotNull(set)
     assertNull(set.starredList)
     val comprehension = set.comprehension

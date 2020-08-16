@@ -17,6 +17,7 @@
 
 package io.github.oxisto.reticulated.ast.statement.parameter
 
+import io.github.oxisto.reticulated.ast.Node
 import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
 import io.github.oxisto.reticulated.solver.Identifiable
@@ -26,11 +27,17 @@ import io.github.oxisto.reticulated.solver.Identifiable
  *
  * Reference: https://docs.python.org/3/reference/compound_stmts.html#grammar-token-parameter
  */
-open class Parameter(final override val id: Identifier, val expression: Expression) : BaseParameter(), Identifiable {
+open class Parameter(final override val id: Identifier, val expression: Expression? = null, var star: StarType = StarType.NO_STAR) : Node(), Identifiable {
+
+  enum class StarType {
+    NO_STAR,
+    STAR,
+    DOUBLE_STAR
+  }
 
   init {
     id.parent = this
-    expression.parent = this
+    expression?.parent = this
   }
 
   override fun toString(): String {

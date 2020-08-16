@@ -17,19 +17,8 @@
 
 package io.github.oxisto.reticulated.ast.expression.comprehension
 
-import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
-import io.github.oxisto.reticulated.ast.expression.Expression
-import io.github.oxisto.reticulated.ast.expression.ExpressionNoCond
-import io.github.oxisto.reticulated.ast.expression.ExpressionNoCondVisitor
-import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
-import io.github.oxisto.reticulated.ast.expression.booleanops.BooleanOpVisitor
-import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
-import io.github.oxisto.reticulated.ast.simple.target.Target
-import io.github.oxisto.reticulated.ast.simple.target.TargetList
-import io.github.oxisto.reticulated.ast.simple.target.TargetListVisitor
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
-import io.github.oxisto.reticulated.grammar.Python3Parser
 
 /**
  * This class offers visitors for comp_for, conp_iter and comp_if
@@ -40,9 +29,9 @@ import io.github.oxisto.reticulated.grammar.Python3Parser
  *      comp_if ::= "if" expression_nocond [comp_iter]
  *  [see: {@linktourl https://docs.python.org/3/reference/expressions.html#displays-for-lists-sets-and-dictionaries}]
  */
-class ComprehensionVisitor(val scope: Scope) : Python3BaseVisitor<BaseComprehension>() {
+class ComprehensionVisitor(val scope: Scope) : Python3BaseVisitor<Comprehension>() {
 
-    override fun visitComp_for(ctx: Python3Parser.Comp_forContext): BaseComprehension {
+    /*override fun visitComp_for(ctx: Python3Parser.Comp_forContext): BaseComprehension {
         val isAsync: Boolean
         val targetList: Target
         val orTest: Expression
@@ -52,10 +41,10 @@ class ComprehensionVisitor(val scope: Scope) : Python3BaseVisitor<BaseComprehens
             position:Int -> ctx
                 .getChild(position)
                 .accept(
-                        TargetListVisitor(
+                        ExpressionVisitor(
                                 this.scope
                         )
-                ) as Target
+                )
         }
         val getOrTestByPosition = {
             position:Int -> ctx
@@ -71,7 +60,7 @@ class ComprehensionVisitor(val scope: Scope) : Python3BaseVisitor<BaseComprehens
                 .getChild(position)
                 .accept(
                         this
-                ) as CompIter
+                ) as Expression
         }
         if ( ctx.childCount == 4 ) {
             isAsync = false
@@ -124,5 +113,5 @@ class ComprehensionVisitor(val scope: Scope) : Python3BaseVisitor<BaseComprehens
         } else null
 
         return CompIf(expressionNoCond, compIter)
-    }
+    }*/
 }

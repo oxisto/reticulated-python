@@ -17,19 +17,18 @@
 
 package io.github.oxisto.reticulated.ast.expression.comprehension
 
+import io.github.oxisto.reticulated.ast.Node
 import io.github.oxisto.reticulated.ast.expression.Expression
 
 /**
  * This class represents a comprehension.
- * It´s EBNF definition is:
- *      comprehension ::= expression comp_for
+ *
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#displays-for-lists-sets-and-dictionaries}]
  */
-class Comprehension(val expression: Expression, val compFor: CompFor) : BaseComprehension() {
+class Comprehension(val target: Expression, val iteratorClause: Expression, var ifClauses: List<Expression> = listOf()) : Node() {
 
-    override fun toString(): String {
-        return "Comprehension(" + System.lineSeparator() +
-                "\texpression=$expression compFor=$compFor" + System.lineSeparator() +
-                ")"
-    }
+  override fun toString(): String {
+    return "Comprehension(target=$target, iteratorClause=$iteratorClause, ifClauses=$ifClauses)"
+  }
+
 }

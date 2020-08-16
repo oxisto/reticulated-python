@@ -17,23 +17,17 @@
 
 package io.github.oxisto.reticulated
 
-import io.github.oxisto.reticulated.ast.expression.ConditionalExpression
 import io.github.oxisto.reticulated.ast.expression.primary.call.Call
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
-import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
 import io.github.oxisto.reticulated.ast.expression.primary.atom.literal.Integer
-import io.github.oxisto.reticulated.ast.expression.operator.PowerExpr
 import io.github.oxisto.reticulated.ast.expression.primary.AttributeRef
-import io.github.oxisto.reticulated.ast.simple.AssignmentExpression
+import io.github.oxisto.reticulated.ast.simple.AssignmentStatement
 import io.github.oxisto.reticulated.ast.simple.ExpressionStatement
 import io.github.oxisto.reticulated.ast.simple.ImportStatement
-import io.github.oxisto.reticulated.ast.statement.StatementList
 import org.junit.Test
-import org.w3c.dom.Attr
 import java.io.File
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
-import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class SimpleStatementTest {
@@ -47,18 +41,24 @@ class SimpleStatementTest {
 
     // println(input.toString())
 
-    val assign = input.statements[0]
-    assertTrue(assign is AssignmentExpression)
-    val identifier = assign.target as Identifier
+    val assign = input.statements.firstOrNull()
+    assertTrue(assign is AssignmentStatement)
+
+    val identifier = assign.targets.firstOrNull() as Identifier
     assertEquals("i", identifier.name)
+
     val assigned = assign.expression
     assertTrue(assigned is Integer)
     assertEquals(4, assigned.value)
 
-    val call = input.statements[1]
+    val expr = input.statements.firstOrNull()
+    assertTrue(expr is ExpressionStatement)
+
+    val call = expr.expression
     assertTrue(call is Call)
     assertEquals("print", call.primary.asIdentifier().name)
-    val param = call.callTrailer as Identifier
+
+    val param = call.arguments.firstOrNull() as Identifier
     assertEquals("i", param.name)
   }
 
@@ -71,16 +71,23 @@ class SimpleStatementTest {
 
     // println(input)
 
-    val import = input.statements[0]
+    val import = input.statements.firstOrNull()
     assertTrue(import is ImportStatement)
     assertEquals("os", import.module.name)
 
-    val call = input.statements[1] as Call
+    val expr = input.statementAsOrNull<ExpressionStatement>(1)
+    assertNotNull(expr is ExpressionStatement)
+
+    val call = expr?.expression
+    assertTrue(call is Call)
+
     val callName = call.primary as Identifier
     assertEquals(callName.name, "print")
-    val attributeRef = call.callTrailer as AttributeRef
+
+    val attributeRef = call.arguments.firstOrNull() as AttributeRef
     val mod = attributeRef.primary as Identifier
     assertEquals(mod.name, "os")
+
     val id = attributeRef.identifier
     assertEquals(id.name, "name")
   }

@@ -20,7 +20,7 @@ package io.github.oxisto.reticulated.ast.expression.lambda
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.ExpressionNoCondVisitor
-import io.github.oxisto.reticulated.ast.statement.parameter.BaseParameter
+import io.github.oxisto.reticulated.ast.statement.parameter.Parameters
 import io.github.oxisto.reticulated.ast.statement.parameter.ParameterListVisitor
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
@@ -33,7 +33,7 @@ import io.github.oxisto.reticulated.grammar.Python3Parser
  */
 class LambdaNoCondVisitor(val scope: Scope): Python3BaseVisitor<LambdaNoCond>() {
     override fun visitLambdef_nocond(ctx: Python3Parser.Lambdef_nocondContext): LambdaNoCond {
-        var parameterList: BaseParameter? = null
+        var parameters: Parameters = Parameters()
         val expressionNoCond: Expression
         val getExpressionNoCondByPosition = {
             position:Int -> ctx
@@ -47,7 +47,7 @@ class LambdaNoCondVisitor(val scope: Scope): Python3BaseVisitor<LambdaNoCond>() 
         expressionNoCond = if( ctx.childCount == 3 )
             getExpressionNoCondByPosition(2)
         else {
-            parameterList = ctx
+            parameters = ctx
                 .getChild(1)
                 .accept(
                     ParameterListVisitor(
@@ -56,6 +56,6 @@ class LambdaNoCondVisitor(val scope: Scope): Python3BaseVisitor<LambdaNoCond>() 
                 )
             getExpressionNoCondByPosition(3)
         }
-        return LambdaNoCond(parameterList, expressionNoCond)
+        return LambdaNoCond(parameters, expressionNoCond)
     }
 }

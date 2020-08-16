@@ -15,13 +15,23 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.simple.target
+package io.github.oxisto.reticulated.ast.statement.parameter
 
-class TargetListElement(var targetList: TargetList): Target() {
+import io.github.oxisto.reticulated.ast.Container
+import io.github.oxisto.reticulated.ast.Node
 
-    override fun toString(): String{
-        return "TargetListElement(" + System.lineSeparator() +
-                "\ttargetList=$targetList" + System.lineSeparator() +
-                ")"
+class Parameters(val parameters: MutableList<Parameter> = ArrayList()) : Node(), Container<Parameter> {
+
+  init {
+    for (child in parameters) {
+      child.parent = this
     }
+  }
+
+  override val children get() = this.parameters
+
+  override fun toString(): String {
+    return "ParameterList(parameters=$parameters)"
+  }
+
 }

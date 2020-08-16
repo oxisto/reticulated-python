@@ -18,9 +18,10 @@
 
 package io.github.oxisto.reticulated.ast.simple
 
-import io.github.oxisto.reticulated.ast.statement.parameter.BaseParameter
+import io.github.oxisto.reticulated.ast.Node
+import io.github.oxisto.reticulated.ast.statement.Statement
 
-abstract class SimpleStatement() : BaseParameter() {
+abstract class SimpleStatement() : Statement() {
 
 //  fun asExpressionStatement(): ExpressionStatement {
 //    return this as ExpressionStatement

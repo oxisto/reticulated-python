@@ -15,22 +15,23 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.statement.parameter
 
-import io.github.oxisto.reticulated.ast.Container
+package io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure
 
-class ParameterList(val parameters: List<BaseParameter> = ArrayList()) : BaseParameter(), Container<BaseParameter> {
+import io.github.oxisto.reticulated.ast.expression.Expression
+import io.github.oxisto.reticulated.ast.expression.comprehension.Comprehension
 
-  init {
-    for (child in parameters) {
-      child.parent = this
-    }
-  }
-
-  override val children get() = this.parameters
+/**
+ * This class represents a set_display.
+ * It´s EBNF representations is:
+ *        set_display ::= "{" (starred_list | comprehension) "}"
+ *
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-set-display}]
+ */
+class SetComprehension(val elt: Expression, val generators: List<Comprehension>) : Enclosure() {
 
   override fun toString(): String {
-    return "ParameterList(parameters=$parameters)"
+    return "SetComprehension(elt=$elt, generators=$generators)"
   }
 
 }

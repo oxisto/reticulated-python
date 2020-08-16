@@ -15,16 +15,28 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.simple.target
+package io.github.oxisto.reticulated.ast.simple
 
-import io.github.oxisto.reticulated.ast.Container
+import io.github.oxisto.reticulated.ast.expression.Expression
 
-class TargetList(val targets: List<Target>) : Target(), Container<Target> {
-  override val children: List<Target>
-    get() = targets
+class AssignmentStatement(
+        val targets: List<Expression>,
+        val expression: Expression
+) : SimpleStatement() {
+
+//  override fun isExpressionStatement(): Boolean {
+//    return false
+//  }
+//
+//  override fun isAssignmentStatement(): Boolean {
+//    return false
+//  }
+//
+//  override fun isImportStatement(): Boolean {
+//    return false
+//  }
+
   override fun toString(): String {
-    return "TargetList(" + System.lineSeparator() +
-            "\ttargets=$targets" + System.lineSeparator() +
-            ")"
+    return "AssignmentExpression(targets=$targets, expression=$expression)"
   }
 }

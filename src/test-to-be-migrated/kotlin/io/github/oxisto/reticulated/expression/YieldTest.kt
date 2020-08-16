@@ -3,12 +3,11 @@ package io.github.oxisto.reticulated.expression
 import io.github.oxisto.reticulated.PythonParser
 import io.github.oxisto.reticulated.ast.expression.ExpressionList
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
-import io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure.GeneratorExpression
 import io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure.YieldAtom
 import io.github.oxisto.reticulated.ast.expression.primary.atom.literal.Integer
 import io.github.oxisto.reticulated.ast.expression.primary.call.Call
 import io.github.oxisto.reticulated.ast.statement.FunctionDefinition
-import io.github.oxisto.reticulated.ast.statement.parameter.ParameterList
+import io.github.oxisto.reticulated.ast.statement.parameter.Parameters
 import org.junit.Test
 import java.io.File
 import kotlin.test.*
@@ -32,11 +31,11 @@ class YieldTest {
         // )
     // )
     val firstFunction = input.statements[0] as FunctionDefinition
-    assertNull(firstFunction.expression)
+    assertNull(firstFunction.returnDecorator)
     val firstName = firstFunction.funcName
     assertNotNull(firstName)
     assertEquals(firstName.name, "foo")
-    val firstParameters = firstFunction.parameterList as ParameterList
+    val firstParameters = firstFunction.parameters as Parameters
     assertNotNull(firstParameters)
     assertTrue(firstParameters.parameters.isEmpty())
     val firstYieldAtom = firstFunction.suite as YieldAtom
@@ -46,10 +45,10 @@ class YieldTest {
     assertEquals(firstValue.value, 1)
 
     val secondFunction = input.statements[1] as FunctionDefinition
-    assertNull(secondFunction.expression)
+    assertNull(secondFunction.returnDecorator)
     val secondName = secondFunction.funcName
     assertEquals(secondName.name, "bar")
-    val secondParameters = secondFunction.parameterList as ParameterList
+    val secondParameters = secondFunction.parameters as Parameters
     assertTrue(secondParameters.parameters.isEmpty())
     val secondYieldAtom = secondFunction.suite as YieldAtom
     val secondYieldExpression = secondYieldAtom.yieldExpression
@@ -63,10 +62,10 @@ class YieldTest {
     assertEquals(expression3.value, 3)
 
     val thirdFunction = input.statements[2] as FunctionDefinition
-    assertNull(secondFunction.expression)
+    assertNull(secondFunction.returnDecorator)
     val thirdName = thirdFunction.funcName
     assertEquals(thirdName.name, "foo_bar")
-    val thirdParameters = thirdFunction.parameterList as ParameterList
+    val thirdParameters = thirdFunction.parameters as Parameters
     assertTrue(thirdParameters.parameters.isEmpty())
     val thirdYieldAtom = thirdFunction.suite as YieldAtom
     val thirdYieldExpression = thirdYieldAtom.yieldExpression

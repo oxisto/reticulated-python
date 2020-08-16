@@ -23,44 +23,43 @@ import io.github.oxisto.reticulated.grammar.Python3Parser
 import org.antlr.v4.runtime.ParserRuleContext
 import org.antlr.v4.runtime.tree.TerminalNodeImpl
 
-class ParameterListVisitor(val scope: Scope) : Python3BaseVisitor<BaseParameter>() {
+class ParameterListVisitor(val scope: Scope) : Python3BaseVisitor<Parameters>() {
 
-  override fun visitTypedargslist(ctx: Python3Parser.TypedargslistContext): BaseParameter {
+  override fun visitTypedargslist(ctx: Python3Parser.TypedargslistContext): Parameters {
     return handleArgList(ctx)
   }
 
 
 
-  override fun visitVarargslist(ctx: Python3Parser.VarargslistContext): BaseParameter {
+  override fun visitVarargslist(ctx: Python3Parser.VarargslistContext): Parameters {
     return handleArgList(ctx)
   }
 
-  private fun handleArgList(ctx: ParserRuleContext): BaseParameter {
-    val list = ArrayList<BaseParameter>()
+  private fun handleArgList(ctx: ParserRuleContext): Parameters {
+    val list = mutableListOf<Parameter>()
 
     // loop through the children
     var index = 0
     while (index < ctx.childCount) {
+      var parameter: Parameter
 
-      var parameter: BaseParameter
       if (ctx.getChild(index) is TerminalNodeImpl) {
         parameter = ctx.getChild(index + 1).accept(ParameterVisitor(this.scope))
-        parameter = if (ctx.getChild(index).text == "*")
-          StarredParameter(parameter)
-        else
-          DoubleStarredParameter(parameter)
+        if (ctx.getChild(index).text == "*") {
+          parameter.star = Parameter.StarType.STAR;
+        } else {
+          parameter.star = Parameter.StarType.DOUBLE_STAR;
+        }
         index += 3
       } else {
         parameter = ctx.getChild(index).accept(ParameterVisitor(this.scope))
         index += 2
       }
 
-
       list.add(parameter)
     }
 
-    return if (list.size == 1) list[0]
-    else ParameterList(list)
+    return Parameters(list)
   }
 
 }

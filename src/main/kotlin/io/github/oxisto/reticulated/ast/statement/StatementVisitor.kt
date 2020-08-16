@@ -24,7 +24,7 @@ import io.github.oxisto.reticulated.ast.expression.primary.atom.AtomVisitor
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
 import io.github.oxisto.reticulated.ast.simple.SimpleStatement
 import io.github.oxisto.reticulated.ast.simple.SimpleStatementVisitor
-import io.github.oxisto.reticulated.ast.statement.parameter.BaseParameter
+import io.github.oxisto.reticulated.ast.statement.parameter.Parameters
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 
@@ -49,8 +49,8 @@ class StatementVisitor(val scope: Scope) : Python3BaseVisitor<Statement>() {
           )
         )
       }
-      if (list.size == 1) list[0]
-      else StatementList(list)
+
+      StatementList(list)
     }
   }
 
@@ -78,7 +78,7 @@ class StatementVisitor(val scope: Scope) : Python3BaseVisitor<Statement>() {
             Visitor(
                 functionScope
             )
-        ) as BaseParameter
+        ) as Parameters
 
     // forth is ':' or '->'
     val op = ctx.getChild(3)
@@ -97,7 +97,7 @@ class StatementVisitor(val scope: Scope) : Python3BaseVisitor<Statement>() {
       Visitor(
         functionScope
       )
-    ) as Statement
+    ) as Suite
 
     // create a new function definition
     val def = FunctionDefinition(id, parameterList, suite, expression)

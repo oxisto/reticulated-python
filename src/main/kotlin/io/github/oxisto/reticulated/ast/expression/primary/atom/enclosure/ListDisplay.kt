@@ -20,7 +20,7 @@ package io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure
 
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.expression.comprehension.Comprehension
-import io.github.oxisto.reticulated.ast.expression.starred.Starred
+import io.github.oxisto.reticulated.ast.expression.StarredExpression
 
 /**
  * This class represents a list_display.
@@ -29,7 +29,7 @@ import io.github.oxisto.reticulated.ast.expression.starred.Starred
  *
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-list-display}]
  */
-class ListDisplay(val starredList: Starred?, val comprehension: Comprehension?) : Enclosure() {
+class ListDisplay(val starredList: StarredExpression?, val comprehension: Comprehension?) : Enclosure() {
 
   init {
     if (starredList != null && comprehension != null)

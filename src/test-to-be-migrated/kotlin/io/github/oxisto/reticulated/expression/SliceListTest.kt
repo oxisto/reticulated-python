@@ -10,8 +10,7 @@ import io.github.oxisto.reticulated.ast.expression.primary.slice.ProperSlice
 import io.github.oxisto.reticulated.ast.expression.primary.slice.SliceList
 import io.github.oxisto.reticulated.ast.expression.primary.slice.Slicing
 import io.github.oxisto.reticulated.ast.expression.primary.slice.Stride
-import io.github.oxisto.reticulated.ast.expression.starred.StarredList
-import io.github.oxisto.reticulated.ast.simple.AssignmentExpression
+import io.github.oxisto.reticulated.ast.simple.AssignmentStatement
 import io.github.oxisto.reticulated.ast.simple.ImportStatement
 import org.junit.Test
 import java.io.File
@@ -41,7 +40,7 @@ class SliceListTest {
     val module = import.module
     assertEquals(module.name, "numpy")
 
-    val assignment = input.statements[1] as AssignmentExpression
+    val assignment = input.statements[1] as AssignmentStatement
     val target = assignment.target as Identifier
     assertEquals(target.name, "a")
     val expr1 = assignment.expression as Call

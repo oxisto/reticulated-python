@@ -22,7 +22,6 @@ import io.github.oxisto.reticulated.ast.expression.primary.Subscription
 import io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure.ListDisplay
 import io.github.oxisto.reticulated.ast.expression.primary.atom.literal.Integer
 import io.github.oxisto.reticulated.ast.expression.primary.slice.*
-import io.github.oxisto.reticulated.ast.expression.starred.StarredList
 import org.junit.Test
 import java.io.File
 import kotlin.test.assertEquals

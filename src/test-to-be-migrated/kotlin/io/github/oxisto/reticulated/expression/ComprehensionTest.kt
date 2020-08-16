@@ -19,10 +19,9 @@ package io.github.oxisto.reticulated.expression
 
 import io.github.oxisto.reticulated.PythonParser
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
-import io.github.oxisto.reticulated.ast.expression.argument.ArgumentList
+import io.github.oxisto.reticulated.ast.expression.argument.Arguments
 import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
 import io.github.oxisto.reticulated.ast.expression.primary.call.Call
-import io.github.oxisto.reticulated.ast.expression.comprehension.CompIf
 import io.github.oxisto.reticulated.ast.expression.comprehension.Comprehension
 import io.github.oxisto.reticulated.ast.expression.primary.atom.literal.Integer
 import io.github.oxisto.reticulated.ast.expression.booleanexpr.AndExpr
@@ -32,11 +31,10 @@ import io.github.oxisto.reticulated.ast.expression.booleanops.AndTest
 import io.github.oxisto.reticulated.ast.expression.booleanops.NotTest
 import io.github.oxisto.reticulated.ast.expression.primary.call.EmptyCallTrailer
 import io.github.oxisto.reticulated.ast.expression.comparison.Comparison
-import io.github.oxisto.reticulated.ast.expression.comprehension.CompFor
 import io.github.oxisto.reticulated.ast.expression.lambda.LambdaNoCond
 import io.github.oxisto.reticulated.ast.expression.operator.ShiftExpr
 import io.github.oxisto.reticulated.ast.simple.target.TargetList
-import io.github.oxisto.reticulated.ast.statement.parameter.ParameterList
+import io.github.oxisto.reticulated.ast.statement.parameter.Parameters
 import org.junit.Test
 import java.io.File
 import kotlin.test.assertEquals
@@ -182,7 +180,7 @@ class ComprehensionTest {
     val nameCF = callCF.primary as Identifier
     assertNotNull(nameCF)
     assertEquals(nameCF.name, "range")
-    val callTrailerCF = callCF.callTrailer as ArgumentList
+    val callTrailerCF = callCF.callTrailer as Arguments
     assertNotNull(callTrailerCF)
     assertEquals(callTrailerCF.count, 2)
     val firstArgExprCF = callTrailerCF[0] as Identifier
@@ -196,16 +194,16 @@ class ComprehensionTest {
     assertNotNull(compIFCIF)
     val lambdaNoCondCIF = compIFCIF.expressionNoCond as LambdaNoCond
     assertNotNull(lambdaNoCondCIF)
-    val parameterListCIF = lambdaNoCondCIF.parameterList
+    val parameterListCIF = lambdaNoCondCIF.parameters
     assertNull(parameterListCIF)
     val lambdaNoCondCIFL = lambdaNoCondCIF.exprNoCond as LambdaNoCond
     assertNotNull(lambdaNoCondCIFL)
-    val idOfParameterCIFL = lambdaNoCondCIFL.parameterList as Identifier
+    val idOfParameterCIFL = lambdaNoCondCIFL.parameters as Identifier
     assertNotNull(idOfParameterCIFL)
     assertEquals(idOfParameterCIFL.name, "a")
     val lambdaNoCondLL = lambdaNoCondCIFL.exprNoCond as LambdaNoCond
     assertNotNull(lambdaNoCondLL)
-    val parameterListLL = lambdaNoCondLL.parameterList as ParameterList
+    val parameterListLL = lambdaNoCondLL.parameters as Parameters
     assertNotNull(parameterListLL)
     assertEquals(parameterListLL.count, 2)
     val idOfParameter1LL = parameterListLL[0] as Identifier
@@ -306,7 +304,7 @@ class ComprehensionTest {
     val nameOfFirstCallFU = firstCallFU.primary as Identifier
     assertNotNull(nameOfFirstCallFU)
     assertEquals(nameOfFirstCallFU.name, "fun")
-    val callTrailerFCFU = firstCallFU.callTrailer as ArgumentList
+    val callTrailerFCFU = firstCallFU.callTrailer as Arguments
     assertNotNull(callTrailerFCFU)
     assertEquals(callTrailerFCFU.count, 2)
     val callFFCFU = callTrailerFCFU[0] as Call
