@@ -25,6 +25,7 @@ import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
 import io.github.oxisto.reticulated.ast.simple.SimpleStatement
 import io.github.oxisto.reticulated.ast.simple.SimpleStatementVisitor
 import io.github.oxisto.reticulated.ast.statement.parameter.Parameters
+import io.github.oxisto.reticulated.ast.statement.parameter.ParametersVisitor
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 
@@ -42,25 +43,32 @@ class StatementVisitor(val scope: Scope) : Python3BaseVisitor<Statement>() {
       // loop through children
       for (tree in ctx.children) {
         list.add(
-          tree.accept(
-            SimpleStatementVisitor(
-              this.scope
+            tree.accept(
+                SimpleStatementVisitor(
+                    this.scope
+                )
             )
-          )
         )
       }
 
-      StatementList(list)
+      return if (list.size == 1) {
+        list.first()
+      } else {
+        StatementList(list)
+      }
     }
   }
 
   override fun visitFuncdef(ctx: Python3Parser.FuncdefContext): Statement {
-    // TODO: decorators
-
-    // assume that the first child is 'def'
+    if (ctx.DEF() == null ||
+        ctx.NAME() == null ||
+        ctx.parameters() == null ||
+        ctx.suite() == null) {
+      throw CouldNotParseException("Incorrect function definition")
+    }
 
     // second is the name
-    val id = ctx.getChild(1).accept(
+    val id = ctx.NAME().accept(
         AtomVisitor(
             this.scope
         )
@@ -68,42 +76,36 @@ class StatementVisitor(val scope: Scope) : Python3BaseVisitor<Statement>() {
 
     // create a new scope for this function
     val functionScope = Scope(
-      this.scope,
-      ScopeType.FUNCTION
+        this.scope,
+        ScopeType.FUNCTION
     )
 
-    // third is the parameter list
-    val parameterList = ctx.getChild(2)
+    // parse parameters
+    val parameters = ctx.parameters()
         .accept(
-            Visitor(
+            ParametersVisitor(
                 functionScope
             )
-        ) as Parameters
-
-    // forth is ':' or '->'
-    val op = ctx.getChild(3)
-    var expression: Expression? = null
-    if (op.text == "->") {
-      // fifth is the optional type hint
-      expression = ctx.getChild(4).accept(
-        ExpressionVisitor(
-          functionScope
         )
-      )
+
+    // parse annotation
+    var annotation: Expression? = null
+    if (ctx.ARROW() != null) {
+      annotation = ctx.test()?.accept(ExpressionVisitor(functionScope))
     }
 
     // last is the suite
-    val suite = ctx.getChild(ctx.childCount - 1).accept(
-      Visitor(
-        functionScope
-      )
-    ) as Suite
+    val suite = ctx.suite().accept(
+        SuiteVisitor(
+            functionScope
+        )
+    )
 
     // create a new function definition
-    val def = FunctionDefinition(id, parameterList, suite, expression)
+    val def = FunctionDefinition(id, parameters, suite, annotation)
 
     // add it to the function scope
-    functionScope.handleParameterList(parameterList)
+    functionScope.handleParameterList(parameters)
 
     return def
   }

@@ -18,7 +18,7 @@
 package io.github.oxisto.reticulated.ast
 
 import io.github.oxisto.reticulated.ast.statement.parameter.Parameters
-import io.github.oxisto.reticulated.ast.statement.parameter.ParameterListVisitor
+import io.github.oxisto.reticulated.ast.statement.parameter.ParametersVisitor
 import io.github.oxisto.reticulated.ast.statement.Statement
 import io.github.oxisto.reticulated.ast.statement.StatementVisitor
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
@@ -47,36 +47,25 @@ class Visitor(val scope: Scope) : Python3BaseVisitor<Node>() {
     return FileInput(statements)
   }
 
-  override fun visitParameters(ctx: Python3Parser.ParametersContext): Parameters {
-    if (ctx.childCount == 2) {
-      return Parameters()
+
+}
+
+class SuiteVisitor(val scope: Scope) : Python3BaseVisitor<Suite>() {
+
+  override fun visitSuite(ctx: Python3Parser.SuiteContext): Suite {
+    // a suite is either one simple statement
+    ctx.simple_stmt()?.let {
+      return Suite(listOf(it.accept(StatementVisitor(this.scope))))
     }
 
-    // second parameter is the list of (typed) arguments
-
-    return ctx.getChild(1).accept(
-        ParameterListVisitor(
-            scope
-        )
-    )
-  }
-
-  override fun visitSuite(ctx: Python3Parser.SuiteContext): Node {
+    // or a list of statement
     val list = ArrayList<Statement>()
 
-    for (tree in ctx.children) {
-      // skip commas, etc.
-      if (tree is TerminalNode) {
-        continue
-      }
-
-      val stmt = tree.accept(StatementVisitor(this.scope)) as Statement
+    for (tree in ctx.stmt()) {
+      val stmt = tree.accept(StatementVisitor(this.scope))
       list.add(stmt)
     }
 
-    return if (list.size == 1)
-      list[0]
-    else Suite(list)
+    return Suite(list)
   }
-
 }

@@ -31,7 +31,7 @@ class FunctionDefinition(
     val funcName: Identifier,
     val parameters: Parameters,
     suite: Suite,
-    val returnDecorator: Expression?
+    val annotation: Expression? = null
 ) : Definition(suite) {
   // TODO: decorators
 
@@ -53,8 +53,8 @@ class FunctionDefinition(
         "\t\"def\" funcname=$funcName \"(\" "
     result += "parameters=$parameters"
     result += " \")\""
-    if (returnDecorator != null)
-      result += "\"->\" expression=$returnDecorator"
+    if (annotation != null)
+      result += "\"->\" expression=$annotation"
     return "$result \":\" suite =$suite" + System.lineSeparator() +
         ")"
   }

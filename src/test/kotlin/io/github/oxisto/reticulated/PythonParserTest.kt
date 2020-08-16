@@ -19,12 +19,12 @@
  */
 package io.github.oxisto.reticulated
 
-import io.github.oxisto.reticulated.ast.Suite
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
 import io.github.oxisto.reticulated.ast.expression.primary.atom.literal.StringLiteral
 import io.github.oxisto.reticulated.ast.expression.primary.call.Call
 import io.github.oxisto.reticulated.ast.simple.ExpressionStatement
 import io.github.oxisto.reticulated.ast.statement.FunctionDefinition
+import io.github.oxisto.reticulated.ast.statement.parameter.Parameter
 import io.github.oxisto.reticulated.ast.statement.parameter.Parameters
 import java.io.File
 import kotlin.test.*
@@ -49,59 +49,66 @@ class PythonParserTest {
     // first function without arguments
     val func1 = input.statements[0]
     assertTrue(func1 is FunctionDefinition)
-    assertNull(func1.returnDecorator)
+    assertNull(func1.annotation)
     assertEquals("func_no_arguments", func1.funcName.name)
     assertEquals(0, (func1.parameters as Parameters).count)
-    var suite1 = func1.suite
+    var suite = func1.suite
 
-    val expr = suite1.first()
+    var expr = suite.first()
     assertTrue(expr is ExpressionStatement)
 
-    val call = expr.expression
+    var call = expr.expression
     assertTrue(call is Call)
 
     val callName = call.primary as Identifier
     assertEquals(callName.name, "print")
 
-    val param = call as StringLiteral
-    assertEquals(param.value, "test")
+    val arg = call.arguments.firstOrNull() as StringLiteral
+    assertEquals(arg.value, "test")
 
     // second function with one argument
     val func2 = input.statements[1]
     assertTrue(func2 is FunctionDefinition)
-    assertNull(func2.returnDecorator)
+    assertNull(func2.annotation)
     assertEquals("func_one_argument", func2.funcName.name)
-    val parameter2 = func2.parameters as Identifier
-    assertEquals(parameter2.name, "i")
-    val call2 = func2.suite as Call
-    val callName2 = call2.primary as Identifier
+
+    val param = func2.parameters.firstOrNull() as Parameter
+    assertEquals(param.id.name, "i")
+
+    suite = func2.suite
+    expr = suite.first()
+    assertTrue(expr is ExpressionStatement)
+
+    call = expr.expression as Call
+
+    val callName2 = call.primary as Identifier
     assertEquals(callName2.name, "print")
-    val param2 = call2.arguments.first() as Identifier
+
+    val param2 = call.arguments.first() as Identifier
     assertEquals(param2.name, "i")
 
     // third function wit two arguments
     val func3 = input.statements[2]
     assertTrue(func3 is FunctionDefinition)
-    assertNull(func3.returnDecorator)
+    assertNull(func3.annotation)
     assertEquals("func_two_arguments", func3.funcName.name)
     val parameter3 = func3.parameters
     val firstParameter = parameter3[0]
     assertEquals(firstParameter.id.name, "i")
     val secondParameter = parameter3[1]
     assertEquals(secondParameter.id.name, "j")
-    val suite = func3.suite
+    suite = func3.suite
 
-    val firstCall = suite[0] as Call
+    val firstCall = (suite[0] as ExpressionStatement).expression as Call
     val firstCallName = firstCall.primary as Identifier
     assertEquals(firstCallName.name, "print")
-    val firstCallParam = firstCall.arguments.first() as Identifier
+    val firstCallParam = firstCall.arguments.firstOrNull() as Identifier
     assertEquals(firstCallParam.name, "i")
-    val secondCall = suite[1] as Call
+    val secondCall = (suite[1] as ExpressionStatement).expression as Call
     val secondCallName = secondCall.primary as Identifier
     assertEquals(secondCallName.name, "print")
-    val secondCallParam = secondCall.arguments[1] as Identifier
+    val secondCallParam = secondCall.arguments.firstOrNull() as Identifier
     assertEquals(secondCallParam.name, "j")
-
   }
 
   @Test
@@ -110,9 +117,9 @@ class PythonParserTest {
     val classUnderTest = PythonParser()
     val file = File(
         javaClass
-        .classLoader
-        .getResource("hint.py")!!
-        .file
+            .classLoader
+            .getResource("hint.py")!!
+            .file
     )
 
     val input = classUnderTest.parse(file.path)
@@ -125,9 +132,9 @@ class PythonParserTest {
     val classUnderTest = PythonParser()
     val file = File(
         javaClass
-        .classLoader
-        .getResource("solve.py")!!
-        .file
+            .classLoader
+            .getResource("solve.py")!!
+            .file
     )
 
     val input = classUnderTest.parse(file.path).root
@@ -137,11 +144,13 @@ class PythonParserTest {
     val func = input.statements[0]
     assertTrue(func is FunctionDefinition)
     assertEquals(func.funcName.name, "func")
-    val param = func.parameters as Identifier
-    assertEquals(param.name, "i")
+
+    val param = func.parameters.firstOrNull() as Parameter
+    assertEquals(param.id.name, "i")
+
     // get the first statement of the suite
     val suite = func.suite
-    val call = suite.statements.first() as Call
+    val call = (suite.statements.first() as ExpressionStatement).expression as Call
 
     val callName = call.primary as Identifier
     assertEquals(callName.name, "print")

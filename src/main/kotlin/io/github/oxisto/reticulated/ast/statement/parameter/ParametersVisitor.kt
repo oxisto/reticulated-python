@@ -23,13 +23,22 @@ import io.github.oxisto.reticulated.grammar.Python3Parser
 import org.antlr.v4.runtime.ParserRuleContext
 import org.antlr.v4.runtime.tree.TerminalNodeImpl
 
-class ParameterListVisitor(val scope: Scope) : Python3BaseVisitor<Parameters>() {
+class ParametersVisitor(val scope: Scope) : Python3BaseVisitor<Parameters>() {
+
+  override fun visitParameters(ctx: Python3Parser.ParametersContext?): Parameters {
+    if (ctx?.OPEN_PAREN() == null ||
+        ctx.CLOSE_PAREN() == null) {
+      super.visitParameters(ctx)
+    }
+
+    ctx?.typedargslist()?.let { return it.accept(this) }
+
+    return Parameters()
+  }
 
   override fun visitTypedargslist(ctx: Python3Parser.TypedargslistContext): Parameters {
     return handleArgList(ctx)
   }
-
-
 
   override fun visitVarargslist(ctx: Python3Parser.VarargslistContext): Parameters {
     return handleArgList(ctx)

@@ -18,8 +18,8 @@
 package io.github.oxisto.reticulated.ast.expression.argument
 
 import io.github.oxisto.reticulated.ast.Container
+import io.github.oxisto.reticulated.ast.Node
 import io.github.oxisto.reticulated.ast.expression.Expression
-import io.github.oxisto.reticulated.ast.expression.primary.call.CallTrailer
 
 /**
  * This class represents the argument_list.
@@ -32,7 +32,7 @@ import io.github.oxisto.reticulated.ast.expression.primary.call.CallTrailer
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#calls}]
  *
  */
-class Arguments(private val arguments: List<Expression> = ArrayList()) : CallTrailer(), Container<Expression> {
+class Arguments(private val arguments: List<Expression> = ArrayList()) : Node(), Container<Expression> {
 
   override val children get() = this.arguments
 

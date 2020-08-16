@@ -19,6 +19,7 @@ package io.github.oxisto.reticulated.ast.expression
 
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.booleanops.BooleanOpVisitor
+import io.github.oxisto.reticulated.ast.expression.primary.PrimaryVisitor
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 
@@ -29,7 +30,8 @@ class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
 
   override fun visitTest(ctx: Python3Parser.TestContext): Expression {
     return if (ctx.childCount == 1)
-      ctx.getChild(0).accept(BooleanOpVisitor(this.scope))
+    // just a wrapper, pass it down
+      ctx.getChild(0).accept(ExpressionVisitor(this.scope))
     else {
       val orTest = ctx.getChild(0)
           .accept(BooleanOpVisitor(this.scope))
@@ -50,5 +52,9 @@ class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
       expressions[0]
     else
       ExpressionList(expressions)
+  }
+
+  override fun visitAtom_expr(ctx: Python3Parser.Atom_exprContext): Expression {
+    return ctx.accept(PrimaryVisitor(scope))
   }
 }

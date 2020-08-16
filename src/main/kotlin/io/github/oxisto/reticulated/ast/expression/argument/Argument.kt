@@ -17,15 +17,14 @@
 
 package io.github.oxisto.reticulated.ast.expression.argument
 
+import io.github.oxisto.reticulated.ast.Node
 import io.github.oxisto.reticulated.ast.expression.Expression
-import io.github.oxisto.reticulated.ast.expression.primary.call.CallTrailer
 
 /**
- * This class represents the argument.
- * It has the EBNF representation: argument ::= expression
- * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#calls}]
+ * This class represents an argument.
  *
+ * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#calls}]
  */
-abstract class Argument(val expression: Expression) : CallTrailer() {
+abstract class Argument(val expression: Expression) : Expression() {
     abstract override fun toString(): String
 }

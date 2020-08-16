@@ -21,7 +21,7 @@ import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.ExpressionNoCondVisitor
 import io.github.oxisto.reticulated.ast.statement.parameter.Parameters
-import io.github.oxisto.reticulated.ast.statement.parameter.ParameterListVisitor
+import io.github.oxisto.reticulated.ast.statement.parameter.ParametersVisitor
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 
@@ -50,7 +50,7 @@ class LambdaNoCondVisitor(val scope: Scope): Python3BaseVisitor<LambdaNoCond>() 
             parameters = ctx
                 .getChild(1)
                 .accept(
-                    ParameterListVisitor(
+                    ParametersVisitor(
                         this.scope
                     )
                 )

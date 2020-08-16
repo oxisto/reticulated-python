@@ -19,6 +19,7 @@ package io.github.oxisto.reticulated.ast.expression.argument
 
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.Expression
+import io.github.oxisto.reticulated.ast.statement.parameter.Parameters
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 import org.antlr.v4.runtime.tree.TerminalNodeImpl
@@ -34,6 +35,17 @@ import org.antlr.v4.runtime.tree.TerminalNodeImpl
  *
  */
 class ArgumentListVisitor(val scope: Scope) : Python3BaseVisitor<Arguments>() {
+
+  override fun visitTrailer(ctx: Python3Parser.TrailerContext?): Arguments {
+    if (ctx?.OPEN_PAREN() == null ||
+        ctx.CLOSE_PAREN() == null) {
+      super.visitTrailer(ctx)
+    }
+
+    ctx?.arglist()?.let { return it.accept(this) }
+
+    return Arguments()
+  }
 
   override fun visitArglist(ctx: Python3Parser.ArglistContext): Arguments {
     val arguments = mutableListOf<Expression>()

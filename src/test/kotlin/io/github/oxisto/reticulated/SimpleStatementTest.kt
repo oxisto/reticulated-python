@@ -51,7 +51,7 @@ class SimpleStatementTest {
     assertTrue(assigned is Integer)
     assertEquals(4, assigned.value)
 
-    val expr = input.statements.firstOrNull()
+    val expr = input.statements[1]
     assertTrue(expr is ExpressionStatement)
 
     val call = expr.expression

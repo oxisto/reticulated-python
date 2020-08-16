@@ -17,6 +17,7 @@
 
 package io.github.oxisto.reticulated.ast.expression.primary.atom
 
+import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
@@ -32,9 +33,14 @@ import org.antlr.v4.runtime.tree.TerminalNode
 /**
  * This class offers visitors for all atoms (Identifier, Literal and Enclosure)
  */
-class AtomVisitor(val scope: Scope) : Python3BaseVisitor<Atom>() {
+class AtomVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
 
-  override fun visitAtom(ctx: Python3Parser.AtomContext): Atom? {
+  override fun visitAtom(ctx: Python3Parser.AtomContext): Expression {
+    if(ctx.childCount == 1) {
+      return ctx.getChild(0).accept(this)
+    }
+
+    throw CouldNotParseException("Not supported")
     /*return when (ctx.childCount) {
       1 -> ctx.getChild(0).accept(this)
       2 -> when (ctx.getChild(0).text) { // it is a enclosure
@@ -102,16 +108,10 @@ class AtomVisitor(val scope: Scope) : Python3BaseVisitor<Atom>() {
         }
 
         else -> { //  "{"
-          when (val elem = ctx.getChild(1).accept(SetMakerVisitor(this.scope))) {
-            is DictComprehension -> DictDisplay(null, elem )
-            is KeyDatumList ->  DictDisplay( elem,null)
-            //is StarredList -> SetDisplay(elem, null)
-            else -> SetDisplay(null, elem as Comprehension)
-          }
+          return ctx.getChild(1).accept(SetMakerVisitor(this.scope))
         }
       }
     }*/
-    return null
   }
 
   override fun visitTerminal(node: TerminalNode): Atom {

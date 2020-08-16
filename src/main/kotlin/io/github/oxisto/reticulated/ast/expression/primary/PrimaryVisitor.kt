@@ -43,7 +43,7 @@ class PrimaryVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
               AtomVisitor(
                   this.scope
               )
-          )
+          ) as Primary
     } else {
       // first child is the primary
       var primary = if (ctx.getChild(0) is Python3Parser.AtomContext)
