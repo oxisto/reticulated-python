@@ -20,8 +20,6 @@ package io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
-import io.github.oxisto.reticulated.ast.expression.booleanexpr.BooleanExprVisitor
-import io.github.oxisto.reticulated.ast.expression.booleanexpr.OrExpr
 import io.github.oxisto.reticulated.ast.expression.comprehension.ComprehensionVisitor
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
@@ -99,8 +97,8 @@ class SetMakerVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
             null, null,
             ctx.getChild(index + 1)
               .accept(
-                BooleanExprVisitor(this.scope)
-              ) as OrExpr
+                ExpressionVisitor(this.scope)
+              )
           )
         )
         index += 3

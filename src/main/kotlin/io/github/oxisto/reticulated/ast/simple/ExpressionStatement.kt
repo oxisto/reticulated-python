@@ -24,6 +24,14 @@ import io.github.oxisto.reticulated.ast.expression.Expression
  */
 open class ExpressionStatement(val expression: Expression) : SimpleStatement() {
 
+  inline fun <reified T : Expression> asExpression(): T? {
+    if (expression is T) {
+      return expression
+    }
+
+    return null
+  }
+
   override fun toString(): String {
     return "ExpressionStatement(expression=$expression)"
   }

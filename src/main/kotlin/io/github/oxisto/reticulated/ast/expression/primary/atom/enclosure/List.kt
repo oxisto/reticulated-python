@@ -9,6 +9,6 @@ class List(val elts: kotlin.collections.List<Expression>) : Enclosure(), Contain
     return "List(elts=$elts)"
   }
 
-  override val children: List<Expression>
+  override val children: kotlin.collections.List<Expression>
     get() = elts
 }

@@ -20,7 +20,6 @@ package io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure
 
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.expression.Expression
-import io.github.oxisto.reticulated.ast.expression.booleanexpr.OrExpr
 
 /**
  * This class represents a key_datum pair.
@@ -29,7 +28,7 @@ import io.github.oxisto.reticulated.ast.expression.booleanexpr.OrExpr
  *
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-key-datum}]
  */
-class KeyDatum(val key: Expression?, val datum: Expression?, val orExpr: OrExpr?) : Enclosure() {
+class KeyDatum(val key: Expression?, val datum: Expression?, val orExpr: Expression?) : Enclosure() {
 
   init {
     if (orExpr == null) {

@@ -17,30 +17,27 @@
 
 package io.github.oxisto.reticulated.ast.expression
 
-import io.github.oxisto.reticulated.ast.expression.booleanops.BaseBooleanOp
-
 /**
  * This class represents a conditional_expression
- * It´s EBNF representation is:
- *        conditional_expression ::= or_test ["if" or_test "else" expression]
+ *
  * [see: https://docs.python.org/3/reference/expressions.html#conditional-expressions]
  */
 class ConditionalExpression(
-  val orTest: BaseBooleanOp,
-  val orTestOptional: BaseBooleanOp,
-  val expressionOptional: Expression
+  /**
+   * The expression this condition is tested against
+   */
+  val test: Expression,
+  /**
+   * The expression that is returned if the condition is true
+   */
+  val body: Expression,
+  /**
+   * The expression that is returned if the condition is not true
+   */
+  val orElse: Expression
 ) : Expression() {
 
   override fun toString(): String {
-    var result = "ConditionalExpression(" + System.lineSeparator() +
-      "\torTest=$orTest"
-    result += " if orTest=$orTestOptional else expression=$expressionOptional"
-    result += System.lineSeparator() + ")"
-    return "ConditionalExpression(" + System.lineSeparator() +
-      "\torTest=$orTest \"if\" " +
-      "orTest=$orTestOptional \"else\" " +
-      "expression=$expressionOptional" +
-      System.lineSeparator() +
-      ")"
+    return "IfExpression(test=$test, body=$body, orElse=$orElse)"
   }
 }

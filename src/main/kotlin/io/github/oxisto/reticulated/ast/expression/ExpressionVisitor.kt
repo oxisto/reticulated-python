@@ -17,8 +17,11 @@
 
 package io.github.oxisto.reticulated.ast.expression
 
+import io.github.oxisto.reticulated.Pair
+import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
-import io.github.oxisto.reticulated.ast.expression.booleanops.BooleanOpVisitor
+import io.github.oxisto.reticulated.ast.expression.comparison.CompOperator
+import io.github.oxisto.reticulated.ast.expression.comparison.Comparison
 import io.github.oxisto.reticulated.ast.expression.lambda.Lambda
 import io.github.oxisto.reticulated.ast.expression.primary.PrimaryVisitor
 import io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure.Enclosure
@@ -34,17 +37,19 @@ import io.github.oxisto.reticulated.grammar.Python3Parser
  */
 class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
 
+  // test: or_test ('if' or_test 'else' test)? | lambdef;
   override fun visitTest(ctx: Python3Parser.TestContext): Expression {
     return if (ctx.childCount == 1)
     // just a wrapper, pass it down
       ctx.getChild(0).accept(ExpressionVisitor(this.scope))
-    else {
-      val orTest = ctx.getChild(0)
-        .accept(BooleanOpVisitor(this.scope))
-      val orTestOptional = ctx.getChild(2)
-        .accept(BooleanOpVisitor(this.scope))
-      val expressionOptional = ctx.getChild(4).accept(this)
-      ConditionalExpression(orTest, orTestOptional, expressionOptional)
+    else if (ctx.or_test() != null && ctx.or_test().size == 2) {
+      val body = ctx.or_test(0).accept(ExpressionVisitor(this.scope))
+      val test = ctx.or_test(1).accept(ExpressionVisitor(this.scope))
+      val orElse = ctx.test().accept(ExpressionVisitor(this.scope))
+
+      ConditionalExpression(test, body, orElse)
+    } else {
+      super.visitTest(ctx)
     }
   }
 
@@ -115,5 +120,27 @@ class ExpressionVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
     }
 
     return Starred(ctx.expr().accept(ExpressionVisitor(scope)), star)
+  }
+
+  override fun visitComparison(ctx: Python3Parser.ComparisonContext): Expression {
+    if (ctx.comp_op().size == 0) {
+      return super.visitComparison(ctx)
+    }
+
+    val comparisons = mutableListOf<Pair<CompOperator, Expression>>()
+
+    val left = ctx.expr(0).accept(ExpressionVisitor(this.scope))
+
+    for (i in 0..ctx.comp_op().lastIndex) {
+      val symbol = ctx.comp_op(i).text
+      val op: CompOperator = CompOperator.getCompOperatorBySymbol(symbol)
+        ?: throw CouldNotParseException("Operator $symbol not supported")
+
+      val expr = ctx.expr(i + 1).accept(ExpressionVisitor(this.scope))
+
+      comparisons.add(Pair(op, expr))
+    }
+
+    return Comparison(left, comparisons)
   }
 }
