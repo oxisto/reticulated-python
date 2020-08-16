@@ -25,12 +25,26 @@ import io.github.oxisto.reticulated.ast.expression.primary.atom.Name
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 
+/**
+ * Multiple simple statements can be on the same line
+ */
+class SimpleStatementsVisitor(val scope: Scope) : Python3BaseVisitor<List<SimpleStatement>>() {
+  override fun visitSimple_stmt(ctx: Python3Parser.Simple_stmtContext): List<SimpleStatement> {
+    val list = mutableListOf<SimpleStatement>()
+
+    // loop through all possible children
+    for (small in ctx.small_stmt()) {
+      list.add(small.accept(SimpleStatementVisitor(scope)))
+    }
+
+    return list
+  }
+}
+
 class SimpleStatementVisitor(val scope: Scope) : Python3BaseVisitor<SimpleStatement>() {
 
-  override fun visitSimple_stmt(ctx: Python3Parser.Simple_stmtContext): SimpleStatement {
-    // TODO: Visit TerminalNode: \"\r\n\" and multiple children
-    // not sure how to handle this. are there cases with more than 1 child? Yes, e.g.: a = 1 + 1
-    return ctx.getChild(0).accept(this)
+  override fun visitSmall_stmt(ctx: Python3Parser.Small_stmtContext?): SimpleStatement {
+    return super.visitSmall_stmt(ctx)
   }
 
   override fun visitImport_stmt(ctx: Python3Parser.Import_stmtContext): ImportStatement {
@@ -45,7 +59,7 @@ class SimpleStatementVisitor(val scope: Scope) : Python3BaseVisitor<SimpleStatem
         .getChild(1)
         .accept(
             AtomVisitor(this.scope)
-    ) as Identifier
+        ) as Identifier
 
     // build a name
     val name = Name(module.name)

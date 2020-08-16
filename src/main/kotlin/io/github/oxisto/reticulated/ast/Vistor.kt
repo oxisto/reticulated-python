@@ -21,6 +21,7 @@ import io.github.oxisto.reticulated.ast.statement.parameter.Parameters
 import io.github.oxisto.reticulated.ast.statement.parameter.ParametersVisitor
 import io.github.oxisto.reticulated.ast.statement.Statement
 import io.github.oxisto.reticulated.ast.statement.StatementVisitor
+import io.github.oxisto.reticulated.ast.statement.Statements
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 import org.antlr.v4.runtime.tree.TerminalNode
@@ -40,8 +41,12 @@ class Visitor(val scope: Scope) : Python3BaseVisitor<Node>() {
         continue
       }
 
-      val stmt = tree.accept(StatementVisitor(this.scope)) as Statement
-      statements.add(stmt)
+      val stmt = tree.accept(StatementVisitor(this.scope))
+      if (stmt is Statements) {
+        statements.addAll(stmt)
+      } else {
+        statements.add(stmt)
+      }
     }
 
     return FileInput(statements)
@@ -63,7 +68,11 @@ class SuiteVisitor(val scope: Scope) : Python3BaseVisitor<Suite>() {
 
     for (tree in ctx.stmt()) {
       val stmt = tree.accept(StatementVisitor(this.scope))
-      list.add(stmt)
+      if (stmt is Statements) {
+        list.addAll(stmt)
+      } else {
+        list.add(stmt)
+      }
     }
 
     return Suite(list)

@@ -37,9 +37,7 @@ class SimpleStatementTest {
 
     val input = PythonParser().parse(file.path).root
     assertNotNull(input)
-    assertEquals(2, input.statements.size)
-
-    // println(input.toString())
+    assertEquals(4, input.statements.size)
 
     val assign = input.statements.firstOrNull()
     assertTrue(assign is AssignmentStatement)
@@ -51,10 +49,24 @@ class SimpleStatementTest {
     assertTrue(assigned is Integer)
     assertEquals(4, assigned.value)
 
-    val expr = input.statements[1]
+    var expr = input.statements[1]
     assertTrue(expr is ExpressionStatement)
 
-    val call = expr.expression
+    var call = expr.expression
+    assertTrue(call is Call)
+    assertEquals("a", call.primary.asIdentifier().name)
+
+    expr = input.statements[2]
+    assertTrue(expr is ExpressionStatement)
+
+    call = expr.expression
+    assertTrue(call is Call)
+    assertEquals("b", call.primary.asIdentifier().name)
+
+    expr = input.statements[3]
+    assertTrue(expr is ExpressionStatement)
+
+    call = expr.expression
     assertTrue(call is Call)
     assertEquals("print", call.primary.asIdentifier().name)
 

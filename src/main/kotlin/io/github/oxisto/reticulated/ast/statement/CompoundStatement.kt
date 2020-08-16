@@ -24,10 +24,10 @@ import io.github.oxisto.reticulated.ast.Suite
  *
  * Reference: https://docs.python.org/3/reference/compound_stmts.html
  */
-abstract class CompoundStatement(val suite: Suite) : Statement() {
+abstract class CompoundStatement(val body: Suite) : Statement() {
 
   init {
-    suite.parent = this
+    body.parent = this
   }
 
   /*

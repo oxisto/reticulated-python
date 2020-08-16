@@ -25,8 +25,6 @@ class ClassDefinition(suite: Suite) : Definition(suite) {
     return false
   }
 
-
-
   override fun isClassDefinition(): Boolean {
     return true
   }

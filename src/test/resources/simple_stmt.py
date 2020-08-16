@@ -2,6 +2,8 @@
 
 i = 4
 
+a(); b()
+
 # x = y = 42    # has 5 children#
 # x = y = z = 42    # has 7 children
 # x = lambda y=72, z=2: y**7    # has 3 children

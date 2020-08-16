@@ -23,8 +23,7 @@ import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
 import io.github.oxisto.reticulated.ast.expression.primary.atom.AtomVisitor
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
 import io.github.oxisto.reticulated.ast.simple.SimpleStatement
-import io.github.oxisto.reticulated.ast.simple.SimpleStatementVisitor
-import io.github.oxisto.reticulated.ast.statement.parameter.Parameters
+import io.github.oxisto.reticulated.ast.simple.SimpleStatementsVisitor
 import io.github.oxisto.reticulated.ast.statement.parameter.ParametersVisitor
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
@@ -32,19 +31,18 @@ import io.github.oxisto.reticulated.grammar.Python3Parser
 class StatementVisitor(val scope: Scope) : Python3BaseVisitor<Statement>() {
 
   override fun visitStmt(ctx: Python3Parser.StmtContext): Statement {
-
     return if (ctx.childCount == 1 && ctx.getChild(0) is Python3Parser.Compound_stmtContext) {
       // its a compound statement
       ctx.getChild(0).accept(this)
     } else {
       // create a statement list
-      val list = ArrayList<SimpleStatement>()
+      val list = mutableListOf<SimpleStatement>()
 
       // loop through children
       for (tree in ctx.children) {
-        list.add(
+        list.addAll(
             tree.accept(
-                SimpleStatementVisitor(
+                SimpleStatementsVisitor(
                     this.scope
                 )
             )
@@ -54,7 +52,7 @@ class StatementVisitor(val scope: Scope) : Python3BaseVisitor<Statement>() {
       return if (list.size == 1) {
         list.first()
       } else {
-        StatementList(list)
+        Statements(list)
       }
     }
   }

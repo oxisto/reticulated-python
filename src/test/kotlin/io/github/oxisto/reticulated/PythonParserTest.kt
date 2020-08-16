@@ -29,7 +29,6 @@ import io.github.oxisto.reticulated.ast.statement.parameter.Parameters
 import java.io.File
 import kotlin.test.*
 
-
 class PythonParserTest {
   @Test
   fun testMain() {
@@ -51,10 +50,9 @@ class PythonParserTest {
     assertTrue(func1 is FunctionDefinition)
     assertNull(func1.annotation)
     assertEquals("func_no_arguments", func1.funcName.name)
-    assertEquals(0, (func1.parameters as Parameters).count)
-    var suite = func1.suite
+    assertEquals(0, func1.parameters.count)
 
-    var expr = suite.first()
+    var expr = func1.body.first()
     assertTrue(expr is ExpressionStatement)
 
     var call = expr.expression
@@ -75,8 +73,7 @@ class PythonParserTest {
     val param = func2.parameters.firstOrNull() as Parameter
     assertEquals(param.id.name, "i")
 
-    suite = func2.suite
-    expr = suite.first()
+    expr = func2.body.first()
     assertTrue(expr is ExpressionStatement)
 
     call = expr.expression as Call
@@ -97,14 +94,13 @@ class PythonParserTest {
     assertEquals(firstParameter.id.name, "i")
     val secondParameter = parameter3[1]
     assertEquals(secondParameter.id.name, "j")
-    suite = func3.suite
 
-    val firstCall = (suite[0] as ExpressionStatement).expression as Call
+    val firstCall = (func3.body[0] as ExpressionStatement).expression as Call
     val firstCallName = firstCall.primary as Identifier
     assertEquals(firstCallName.name, "print")
     val firstCallParam = firstCall.arguments.firstOrNull() as Identifier
     assertEquals(firstCallParam.name, "i")
-    val secondCall = (suite[1] as ExpressionStatement).expression as Call
+    val secondCall = (func3.body[1] as ExpressionStatement).expression as Call
     val secondCallName = secondCall.primary as Identifier
     assertEquals(secondCallName.name, "print")
     val secondCallParam = secondCall.arguments.firstOrNull() as Identifier
@@ -149,7 +145,7 @@ class PythonParserTest {
     assertEquals(param.id.name, "i")
 
     // get the first statement of the suite
-    val suite = func.suite
+    val suite = func.body
     val call = (suite.statements.first() as ExpressionStatement).expression as Call
 
     val callName = call.primary as Identifier

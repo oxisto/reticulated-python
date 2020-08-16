@@ -30,9 +30,9 @@ import io.github.oxisto.reticulated.ast.statement.parameter.Parameters
 class FunctionDefinition(
     val funcName: Identifier,
     val parameters: Parameters,
-    suite: Suite,
+    body: Suite,
     val annotation: Expression? = null
-) : Definition(suite) {
+) : Definition(body) {
   // TODO: decorators
 
   init {
@@ -55,7 +55,7 @@ class FunctionDefinition(
     result += " \")\""
     if (annotation != null)
       result += "\"->\" expression=$annotation"
-    return "$result \":\" suite =$suite" + System.lineSeparator() +
+    return "$result \":\" suite =$body" + System.lineSeparator() +
         ")"
   }
 
