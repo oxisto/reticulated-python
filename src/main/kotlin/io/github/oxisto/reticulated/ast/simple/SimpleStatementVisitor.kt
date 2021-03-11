@@ -22,18 +22,26 @@ import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
 import io.github.oxisto.reticulated.ast.expression.primary.atom.AtomVisitor
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Name
-import io.github.oxisto.reticulated.ast.expression.starred.StarredVisitor
-import io.github.oxisto.reticulated.ast.simple.target.TargetVisitor
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 
-class SimpleStatementVisitor(val scope: Scope) : Python3BaseVisitor<SimpleStatement>() {
+/**
+ * Multiple simple statements can be on the same line
+ */
+class SimpleStatementsVisitor(val scope: Scope) : Python3BaseVisitor<List<SimpleStatement>>() {
+  override fun visitSimple_stmt(ctx: Python3Parser.Simple_stmtContext): List<SimpleStatement> {
+    val list = mutableListOf<SimpleStatement>()
 
-  override fun visitSimple_stmt(ctx: Python3Parser.Simple_stmtContext): SimpleStatement {
-    // TODO: Visit TerminalNode: \"\r\n\" and multiple children
-    // not sure how to handle this. are there cases with more than 1 child? Yes, e.g.: a = 1 + 1
-    return ctx.getChild(0).accept(this)
+    // loop through all possible children
+    for (small in ctx.small_stmt()) {
+      list.add(small.accept(SimpleStatementVisitor(scope)))
+    }
+
+    return list
   }
+}
+
+class SimpleStatementVisitor(val scope: Scope) : Python3BaseVisitor<SimpleStatement>() {
 
   override fun visitImport_stmt(ctx: Python3Parser.Import_stmtContext): ImportStatement {
     // TODO: Define a name in the local namespace for the import statement
@@ -44,10 +52,10 @@ class SimpleStatementVisitor(val scope: Scope) : Python3BaseVisitor<SimpleStatem
 
     // TODO: Support dotted modules
     val module = ctx
-        .getChild(1)
-        .accept(
-            AtomVisitor(this.scope)
-    ) as Identifier
+      .getChild(1)
+      .accept(
+        AtomVisitor(this.scope)
+      ) as Identifier
 
     // build a name
     val name = Name(module.name)
@@ -61,17 +69,18 @@ class SimpleStatementVisitor(val scope: Scope) : Python3BaseVisitor<SimpleStatem
   override fun visitExpr_stmt(ctx: Python3Parser.Expr_stmtContext): SimpleStatement {
     // need some kind of logic here how to decide what exactly this is
     return if (ctx.childCount == 1)
-      ctx.getChild(0).accept(StarredVisitor(this.scope))
+      ExpressionStatement(ctx.getChild(0).accept(ExpressionVisitor(this.scope)))
     else {
 
       // probably an assignment statement, but there are cases when an assignment has more than 3 children e.g. a = b = 123
       // for now assume that child 0 = target; child 2 = expression
       // val targetList = ctx.getChild(0).accept(TargetListVisitor(this.scope))
-      val target = ctx.getChild(0).accept(TargetVisitor(this.scope))
+      // TODO: Support multiple targets in an AssignmentExpression
+      val target = ctx.getChild(0).accept(ExpressionVisitor(this.scope))
 
       val expression = ctx.getChild(2).accept(ExpressionVisitor(this.scope))
 
-      AssignmentExpression(target, expression)
+      AssignmentStatement(listOf(target), expression)
     }
   }
 }

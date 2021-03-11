@@ -17,11 +17,11 @@
 
 package io.github.oxisto.reticulated.ast.expression.operator
 
-import io.github.oxisto.reticulated.ast.expression.booleanexpr.BaseBooleanExpr
+import io.github.oxisto.reticulated.ast.expression.Expression
 
 /**
  * This class is the base for all operators, binary and unary expressions.
  */
-abstract class BaseOperator: BaseBooleanExpr() {
-    abstract override fun toString(): String
+abstract class BaseOperator : Expression() {
+  abstract override fun toString(): String
 }

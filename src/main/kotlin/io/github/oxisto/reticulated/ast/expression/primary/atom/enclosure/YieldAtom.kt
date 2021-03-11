@@ -25,11 +25,11 @@ package io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure
  *
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-yield-atom}]
  */
-class YieldAtom(val yieldExpression: YieldExpression): Enclosure() {
+class YieldAtom(val yieldExpression: YieldExpression) : Enclosure() {
 
   override fun toString(): String {
     return "YieldAtom(" + System.lineSeparator() +
-        "\t \"(\" yieldExpression=$yieldExpression \")\"" + System.lineSeparator() +
-        ")"
+      "\t \"(\" yieldExpression=$yieldExpression \")\"" + System.lineSeparator() +
+      ")"
   }
 }

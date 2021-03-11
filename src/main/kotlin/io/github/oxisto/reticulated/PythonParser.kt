@@ -26,6 +26,8 @@ import io.github.oxisto.reticulated.grammar.Python3Lexer
 import io.github.oxisto.reticulated.grammar.Python3Parser
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
+import org.antlr.v4.runtime.ParserRuleContext
+import org.antlr.v4.runtime.tree.ParseTree
 
 class PythonParser {
 
@@ -38,11 +40,25 @@ class PythonParser {
 
     val ctx = parser.file_input()
 
+    explore(ctx, 0)
+
     // new global scope
     val global = Scope()
 
     val fileInput = ctx.accept(Visitor(global)) as FileInput
 
     return ParserResult(fileInput, global)
+  }
+
+  private fun explore(node: ParseTree, indent: Int) {
+    println("%s%s -> %s".format(" ".repeat(indent), node.javaClass.simpleName, node.text))
+
+    if (node is ParserRuleContext) {
+      node.children?.let {
+        for (child in it) {
+          explore(child, indent + 2)
+        }
+      }
+    }
   }
 }

@@ -25,8 +25,6 @@ class ClassDefinition(suite: Suite) : Definition(suite) {
     return false
   }
 
-
-
   override fun isClassDefinition(): Boolean {
     return true
   }
@@ -34,5 +32,4 @@ class ClassDefinition(suite: Suite) : Definition(suite) {
   override fun toString(): String {
     TODO("Not yet implemented")
   }
-
 }

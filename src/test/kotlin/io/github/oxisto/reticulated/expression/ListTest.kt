@@ -18,30 +18,19 @@
 package io.github.oxisto.reticulated.expression
 
 import io.github.oxisto.reticulated.PythonParser
-import io.github.oxisto.reticulated.ast.expression.ConditionalExpression
-import io.github.oxisto.reticulated.ast.expression.argument.ArgumentList
-import io.github.oxisto.reticulated.ast.expression.booleanops.OrTest
-import io.github.oxisto.reticulated.ast.expression.comparison.Comparison
-import io.github.oxisto.reticulated.ast.expression.operator.PowerExpr
-import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
-import io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure.ListDisplay
+import io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure.List
 import io.github.oxisto.reticulated.ast.expression.primary.atom.literal.Integer
 import io.github.oxisto.reticulated.ast.expression.primary.atom.literal.StringLiteral
-import io.github.oxisto.reticulated.ast.expression.primary.call.Call
-import io.github.oxisto.reticulated.ast.expression.starred.StarredList
 import io.github.oxisto.reticulated.ast.simple.ExpressionStatement
-import io.github.oxisto.reticulated.ast.statement.StatementList
 import org.junit.Test
 import java.io.File
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
-import kotlin.test.assertNull
 
 class ListTest {
 
   @Test
-  fun emptyListTest () {
+  fun emptyListTest() {
     val file = File(
         javaClass
             .classLoader
@@ -55,18 +44,20 @@ class ListTest {
     assertNotNull(input)
     // print(input.toString())
 
-    val list = input.statements[0] as ListDisplay
+    val expr = input.statements.firstOrNull() as ExpressionStatement
+
+    val list = expr.expression as List
+
     assertNotNull(list)
-    assertNull(list.starredList)
-    assertNull(list.comprehension)
+    assertEquals(0, list.elts.size)
   }
 
   @Test
-  fun starredListTest () {
+  fun listTest() {
     val file = File(
         javaClass
             .classLoader
-            .getResource("expressions/enclosure/display/starred_list.py")!!
+            .getResource("expressions/enclosure/display/list.py")!!
             .file
     )
 
@@ -74,23 +65,26 @@ class ListTest {
         .parse(file.path)
         .root
     assertNotNull(input)
-    // print(input.toString())
-    val list = input.statements[0] as ListDisplay
-    assertNotNull(list)
-    assertNull(list.comprehension)
-    val starredList = list.starredList as StarredList
-    assertNotNull(starredList)
-    val firstElement = starredList[0] as Integer
-    assertEquals(firstElement.value, 1)
-    val secondElement = starredList[1] as ListDisplay
-    assertNotNull(secondElement)
-    val valueOfSecondElement = secondElement.starredList as StringLiteral
-    assertEquals(valueOfSecondElement.value, "a")
 
+    val expr = input.statements.firstOrNull() as ExpressionStatement
+
+    val list = expr.expression as List
+
+    assertNotNull(list)
+    assertEquals(2, list.elts.size)
+
+    val firstElement = list[0] as Integer
+    assertEquals(firstElement.value, 1)
+
+    val secondElement = list[1] as List
+    assertNotNull(secondElement)
+
+    val valueOfSecondElement = secondElement[0] as StringLiteral
+    assertEquals(valueOfSecondElement.value, "a")
   }
 
-  @Test
-  fun comprehensionListTest () {
+  /*@Test
+  fun comprehensionListTest() {
     val file = File(
         javaClass
             .classLoader
@@ -103,7 +97,7 @@ class ListTest {
         .root
     assertNotNull(input)
     // print(input.toString())
-    val list = input.statements[0] as ListDisplay
+    val list = input.statements[0] as ListComprehension
     assertNotNull(list)
     assertNull(list.starredList)
     val comprehension = list.comprehension
@@ -120,6 +114,6 @@ class ListTest {
     assertEquals(callName.name, "range")
     val callArgument = call.callTrailer as Integer
     assertEquals(callArgument.value, 10)
-  }
+  }*/
 
 }

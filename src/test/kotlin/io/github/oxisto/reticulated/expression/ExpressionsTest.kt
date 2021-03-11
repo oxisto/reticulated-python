@@ -18,10 +18,17 @@
 package io.github.oxisto.reticulated.expression
 
 import io.github.oxisto.reticulated.PythonParser
+import io.github.oxisto.reticulated.ast.expression.ConditionalExpression
+import io.github.oxisto.reticulated.ast.expression.Starred
+import io.github.oxisto.reticulated.ast.expression.comparison.Comparison
 import io.github.oxisto.reticulated.ast.expression.primary.AttributeRef
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
+import io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure.List
+import io.github.oxisto.reticulated.ast.expression.primary.atom.literal.Integer
 import io.github.oxisto.reticulated.ast.expression.primary.call.Call
+import io.github.oxisto.reticulated.ast.simple.ExpressionStatement
 import io.github.oxisto.reticulated.ast.simple.ImportStatement
+import io.github.oxisto.reticulated.ast.statement.parameter.Parameter
 import org.junit.Test
 import java.io.File
 import kotlin.test.assertEquals
@@ -50,13 +57,16 @@ class ExpressionsTest {
     val module = importStatement.module
     assertEquals(module.name, "os")
 
-    val call = input.statementAsOrNull(1) as Call?
+    val expr = input.statementAsOrNull(1) as ExpressionStatement?
+    assertNotNull(expr)
+
+    val call = expr.expression as Call
     assertNotNull(call)
 
     val prim = call.primary as Identifier
     assertEquals(prim.name, "print")
 
-    val trailer = call.callTrailer as AttributeRef
+    val trailer = call.arguments.firstOrNull() as AttributeRef
     assertNotNull(call)
 
     val primary = trailer.primary as Identifier
@@ -66,4 +76,91 @@ class ExpressionsTest {
     assertEquals(id.name, "name")
   }
 
+  @Test
+  fun starredTest() {
+    val file = File(
+      javaClass
+        .classLoader
+        .getResource("expressions/starred.py")!!
+        .file
+    )
+    val input = PythonParser()
+      .parse(file.path)
+      .root
+    assertNotNull(input)
+    // print(
+    // beautifyResult(
+    // input.toString()
+    // )
+    // )
+    val expr = input.statements[0] as ExpressionStatement
+    val call = expr.expression as Call
+
+    val callName = call.primary as Identifier
+    assertEquals("print", callName.name)
+
+    val argumentList = call.arguments
+    val firstArgument = argumentList[0] as Starred
+    var list = firstArgument.expression as List
+    assertEquals(1, list.count)
+
+    val firstValue = list[0] as Integer
+    assertEquals(1, firstValue.value,)
+
+    var starred = argumentList[1] as Starred
+    assertEquals(Parameter.StarType.STAR, starred.star)
+
+    list = starred.expression as List
+    assertEquals(2, list.count)
+
+    val secondValue = list[0] as Integer
+    assertEquals(2, secondValue.value,)
+
+    starred = list[1] as Starred
+    list = starred.expression as List
+
+    val thirdValue = list[0] as Integer
+    assertEquals(3, thirdValue.value,)
+  }
+
+  @Test
+  fun testConditionalExpression() {
+    val file = File(
+      javaClass
+        .classLoader
+        .getResource("expressions/conditional.py")!!
+        .file
+    )
+    val input = PythonParser()
+      .parse(file.path)
+      .root
+    assertNotNull(input)
+
+    val expr = input.statements[0] as ExpressionStatement
+    assertNotNull(expr)
+
+    val call = expr.asExpression<Call>()
+    assertNotNull(call)
+
+    val callName = call.primary as Identifier
+    assertEquals(callName.name, "print")
+
+    val conditionalExpression = call.arguments.firstOrNull() as ConditionalExpression
+    assertNotNull(conditionalExpression)
+
+    val body = conditionalExpression.body as Integer
+    assertEquals(body.value, 1)
+
+    val comparison = conditionalExpression.test as Comparison
+
+    val pair = comparison.comparisons[0]
+    val compOperator = pair.getFirst()
+    assertEquals(compOperator.symbol, "<")
+
+    val second = pair.getSecond() as Integer
+    assertEquals(second.value, 2)
+
+    val expressionOptional = conditionalExpression.orElse as Integer
+    assertEquals(expressionOptional.value, 2)
+  }
 }

@@ -22,5 +22,4 @@ import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
 interface Identifiable {
 
   val id: Identifier
-
 }

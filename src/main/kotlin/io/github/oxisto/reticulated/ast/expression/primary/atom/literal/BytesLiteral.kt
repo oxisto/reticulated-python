@@ -32,10 +32,9 @@ package io.github.oxisto.reticulated.ast.expression.primary.atom.literal
  *  [see: {@linktourl https://docs.python.org/3/reference/lexical_analysis.html#literals}]
  */
 class BytesLiteral(val value: Byte) : Literal<Byte>() {
-    override fun toString(): String {
-        return "BytesLiteral(" + System.lineSeparator() +
-                "\tvalue=$value" + System.lineSeparator() +
-                ")"
-    }
-
+  override fun toString(): String {
+    return "BytesLiteral(" + System.lineSeparator() +
+      "\tvalue=$value" + System.lineSeparator() +
+      ")"
+  }
 }

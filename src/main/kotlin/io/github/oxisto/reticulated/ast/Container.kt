@@ -30,5 +30,4 @@ interface Container<T> : Iterable<T> {
   override fun iterator(): Iterator<T> {
     return this.children.iterator()
   }
-
 }

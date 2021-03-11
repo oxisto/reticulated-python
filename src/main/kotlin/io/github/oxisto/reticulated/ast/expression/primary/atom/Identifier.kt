@@ -23,8 +23,8 @@ open class Identifier(val name: String) : Atom(), Identifiable {
 
   override fun toString(): String {
     return "Identifier(" + System.lineSeparator() +
-            "\tname='$name'" + System.lineSeparator() +
-            ")"
+      "\tname='$name'" + System.lineSeparator() +
+      ")"
   }
 
   override val id: Identifier
@@ -44,5 +44,4 @@ open class Identifier(val name: String) : Atom(), Identifiable {
   override fun hashCode(): Int {
     return name.hashCode()
   }
-
 }

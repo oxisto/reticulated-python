@@ -19,7 +19,7 @@ package io.github.oxisto.reticulated.ast.statement
 
 import io.github.oxisto.reticulated.ast.Node
 
-abstract class Statement() : Node() {
+abstract class Statement : Node() {
 
   /*
 

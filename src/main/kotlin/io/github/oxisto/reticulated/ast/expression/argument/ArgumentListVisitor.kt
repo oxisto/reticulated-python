@@ -33,26 +33,36 @@ import org.antlr.v4.runtime.tree.TerminalNodeImpl
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#calls}]
  *
  */
-class ArgumentListVisitor(val scope: Scope): Python3BaseVisitor<Expression>() {
+class ArgumentListVisitor(val scope: Scope) : Python3BaseVisitor<Arguments>() {
 
-    override fun visitArglist(ctx: Python3Parser.ArglistContext): Expression {
-
-        val arguments = ArrayList<Expression>()
-
-        // loop through children
-        for (tree in ctx.children) {
-            if(tree !is TerminalNodeImpl) {
-                arguments.add(
-                        tree.accept(
-                                ArgumentVisitor(
-                                        this.scope
-                                )
-                        )
-                )
-            }
-        }
-
-        return if (arguments.size == 1) arguments[0]
-        else ArgumentList(arguments)
+  override fun visitTrailer(ctx: Python3Parser.TrailerContext?): Arguments {
+    if (ctx?.OPEN_PAREN() == null ||
+      ctx.CLOSE_PAREN() == null
+    ) {
+      super.visitTrailer(ctx)
     }
+
+    ctx?.arglist()?.let { return it.accept(this) }
+
+    return Arguments()
+  }
+
+  override fun visitArglist(ctx: Python3Parser.ArglistContext): Arguments {
+    val arguments = mutableListOf<Expression>()
+
+    // loop through children
+    for (tree in ctx.children) {
+      if (tree !is TerminalNodeImpl) {
+        arguments.add(
+          tree.accept(
+            ArgumentVisitor(
+              this.scope
+            )
+          )
+        )
+      }
+    }
+
+    return Arguments(arguments)
+  }
 }

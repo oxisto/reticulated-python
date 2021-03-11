@@ -26,11 +26,10 @@ import io.github.oxisto.reticulated.ast.expression.Expression
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#grammar-token-proper-slice}]
  */
 class ProperSlice(
-    val lowerBound: Expression?,
-    val upperBound: Expression?,
-    val stride: Expression?
-): Slice() {
-
+  val lowerBound: Expression?,
+  val upperBound: Expression?,
+  val stride: Expression?
+) : Slice() {
 
   override fun toString(): String {
     var result = "ProperSlice(" + System.lineSeparator() + "\t"
@@ -43,5 +42,4 @@ class ProperSlice(
       result += " $stride"
     return result + System.lineSeparator() + ")"
   }
-
 }

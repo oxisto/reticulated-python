@@ -18,10 +18,11 @@
 package io.github.oxisto.reticulated
 
 class Pair<T, U>(private val first: T, private val second: U) {
-    fun getFirst(): T {
-        return first
-    }
-    fun getSecond(): U {
-        return second
-    }
+  fun getFirst(): T {
+    return first
+  }
+
+  fun getSecond(): U {
+    return second
+  }
 }

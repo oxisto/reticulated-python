@@ -19,7 +19,6 @@ package io.github.oxisto.reticulated.ast.statement.parameter
 
 import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
-import io.github.oxisto.reticulated.ast.statement.parameter.Parameter
 
 /**
  * A parameter with a default value.

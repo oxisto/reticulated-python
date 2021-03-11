@@ -28,30 +28,30 @@ import io.github.oxisto.reticulated.ast.expression.primary.Primary
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#unary-arithmetic-and-bitwise-operations}]
  */
 class PowerExpr(
-    val awaitExpr: AwaitExpr?,
-    val primary: Primary?,
-    val baseOperator: BaseOperator
-): BaseOperator() {
-    init {
-        if(awaitExpr == null) {
-            if(primary == null){
-                throw CouldNotParseException()
-            }
-        }else {
-            if(primary != null) {
-                throw CouldNotParseException()
-            }
-        }
+  val awaitExpr: AwaitExpr?,
+  val primary: Primary?,
+  val baseOperator: BaseOperator
+) : BaseOperator() {
+  init {
+    if (awaitExpr == null) {
+      if (primary == null) {
+        throw CouldNotParseException()
+      }
+    } else {
+      if (primary != null) {
+        throw CouldNotParseException()
+      }
     }
+  }
 
-    override fun toString(): String {
-        var result = "PowerExpr(" + System.lineSeparator() + "\t"
-        result += if(awaitExpr == null) "primary=$primary"
-        else "awaitExpr=$awaitExpr"
-        return "$result " +
-            "power=${BinaryOperator.POWER.symbol} " +
-            "unaryExpr=$baseOperator" +
-            System.lineSeparator() +
-            ")"
-    }
+  override fun toString(): String {
+    var result = "PowerExpr(" + System.lineSeparator() + "\t"
+    result += if (awaitExpr == null) "primary=$primary"
+    else "awaitExpr=$awaitExpr"
+    return "$result " +
+      "power=${BinaryOperator.POWER.symbol} " +
+      "unaryExpr=$baseOperator" +
+      System.lineSeparator() +
+      ")"
+  }
 }

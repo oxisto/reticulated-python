@@ -18,4 +18,7 @@
 package io.github.oxisto.reticulated.solver
 
 class ResolvedType {
+  override fun toString(): String {
+    return "ResolvedType()"
+  }
 }

@@ -1,5 +1,3 @@
-#/usr/bin/env python3
-
 def func_no_arguments():
     print("test")
 

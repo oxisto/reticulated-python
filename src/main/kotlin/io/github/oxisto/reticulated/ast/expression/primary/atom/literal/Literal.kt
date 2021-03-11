@@ -22,7 +22,7 @@ import io.github.oxisto.reticulated.ast.expression.primary.atom.Atom
 /**
  * This class is the base for all literals
  */
-abstract class Literal<T>() : Atom() {
+abstract class Literal<T> : Atom() {
 
   abstract override fun toString(): String
 }

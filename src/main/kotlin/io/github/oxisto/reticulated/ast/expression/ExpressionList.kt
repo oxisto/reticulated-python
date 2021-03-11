@@ -20,7 +20,7 @@ package io.github.oxisto.reticulated.ast.expression
 import io.github.oxisto.reticulated.ast.Container
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 
-class ExpressionList(val expressions: List<Expression>): Expression(), Container<Expression> {
+class ExpressionList(val expressions: List<Expression>) : Expression(), Container<Expression> {
 
   init {
     if (expressions.isEmpty())
@@ -31,7 +31,7 @@ class ExpressionList(val expressions: List<Expression>): Expression(), Container
 
   override fun toString(): String {
     return "ExpressionList(" + System.lineSeparator() +
-        "\tExpressions=$expressions" + System.lineSeparator() +
-        ")"
+      "\tExpressions=$expressions" + System.lineSeparator() +
+      ")"
   }
 }

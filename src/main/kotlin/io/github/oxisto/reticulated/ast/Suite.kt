@@ -19,14 +19,17 @@ package io.github.oxisto.reticulated.ast
 
 import io.github.oxisto.reticulated.ast.statement.Statement
 
-class Suite(val statements: List<Statement> = ArrayList()) : Statement(), Container<Statement> {
+/**
+ * A suite is basically a collection of statements.
+ */
+class Suite(val statements: List<Statement> = ArrayList()) : Node(), Container<Statement> {
 
   override val children: List<Statement>
     get() = statements
 
   override fun toString(): String {
     return "Suite(" + System.lineSeparator() +
-        "\tstatements=$statements" + System.lineSeparator() +
-        ")"
+      "\tstatements=$statements" + System.lineSeparator() +
+      ")"
   }
 }

@@ -17,53 +17,63 @@
 
 package io.github.oxisto.reticulated.ast.statement
 
-import io.github.oxisto.reticulated.ast.*
+import io.github.oxisto.reticulated.ast.CouldNotParseException
+import io.github.oxisto.reticulated.ast.Scope
+import io.github.oxisto.reticulated.ast.ScopeType
+import io.github.oxisto.reticulated.ast.SuiteVisitor
 import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
 import io.github.oxisto.reticulated.ast.expression.primary.atom.AtomVisitor
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
 import io.github.oxisto.reticulated.ast.simple.SimpleStatement
-import io.github.oxisto.reticulated.ast.simple.SimpleStatementVisitor
-import io.github.oxisto.reticulated.ast.statement.parameter.BaseParameter
+import io.github.oxisto.reticulated.ast.simple.SimpleStatementsVisitor
+import io.github.oxisto.reticulated.ast.statement.parameter.ParametersVisitor
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 
 class StatementVisitor(val scope: Scope) : Python3BaseVisitor<Statement>() {
 
   override fun visitStmt(ctx: Python3Parser.StmtContext): Statement {
-
     return if (ctx.childCount == 1 && ctx.getChild(0) is Python3Parser.Compound_stmtContext) {
       // its a compound statement
       ctx.getChild(0).accept(this)
     } else {
       // create a statement list
-      val list = ArrayList<SimpleStatement>()
+      val list = mutableListOf<SimpleStatement>()
 
       // loop through children
       for (tree in ctx.children) {
-        list.add(
+        list.addAll(
           tree.accept(
-            SimpleStatementVisitor(
+            SimpleStatementsVisitor(
               this.scope
             )
           )
         )
       }
-      if (list.size == 1) list[0]
-      else StatementList(list)
+
+      return if (list.size == 1) {
+        list.first()
+      } else {
+        Statements(list)
+      }
     }
   }
 
   override fun visitFuncdef(ctx: Python3Parser.FuncdefContext): Statement {
-    // TODO: decorators
-
-    // assume that the first child is 'def'
+    if (ctx.DEF() == null ||
+      ctx.NAME() == null ||
+      ctx.parameters() == null ||
+      ctx.suite() == null
+    ) {
+      throw CouldNotParseException("Incorrect function definition")
+    }
 
     // second is the name
-    val id = ctx.getChild(1).accept(
-        AtomVisitor(
-            this.scope
-        )
+    val id = ctx.NAME().accept(
+      AtomVisitor(
+        this.scope
+      )
     ) as Identifier
 
     // create a new scope for this function
@@ -72,40 +82,33 @@ class StatementVisitor(val scope: Scope) : Python3BaseVisitor<Statement>() {
       ScopeType.FUNCTION
     )
 
-    // third is the parameter list
-    val parameterList = ctx.getChild(2)
-        .accept(
-            Visitor(
-                functionScope
-            )
-        ) as BaseParameter
-
-    // forth is ':' or '->'
-    val op = ctx.getChild(3)
-    var expression: Expression? = null
-    if (op.text == "->") {
-      // fifth is the optional type hint
-      expression = ctx.getChild(4).accept(
-        ExpressionVisitor(
+    // parse parameters
+    val parameters = ctx.parameters()
+      .accept(
+        ParametersVisitor(
           functionScope
         )
       )
+
+    // parse annotation
+    var annotation: Expression? = null
+    if (ctx.ARROW() != null) {
+      annotation = ctx.test()?.accept(ExpressionVisitor(functionScope))
     }
 
     // last is the suite
-    val suite = ctx.getChild(ctx.childCount - 1).accept(
-      Visitor(
+    val suite = ctx.suite().accept(
+      SuiteVisitor(
         functionScope
       )
-    ) as Statement
+    )
 
     // create a new function definition
-    val def = FunctionDefinition(id, parameterList, suite, expression)
+    val def = FunctionDefinition(id, parameters, suite, annotation)
 
     // add it to the function scope
-    functionScope.handleParameterList(parameterList)
+    functionScope.handleParameterList(parameters)
 
     return def
   }
-
 }

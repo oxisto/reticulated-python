@@ -1,4 +1,3 @@
-
 /*
  * Copyright (c) 2020, Christian Banse and Andreas Hager. All rights reserved.
  *
@@ -18,9 +17,9 @@
 
 package io.github.oxisto.reticulated.ast.simple
 
-import io.github.oxisto.reticulated.ast.statement.parameter.BaseParameter
+import io.github.oxisto.reticulated.ast.statement.Statement
 
-abstract class SimpleStatement() : BaseParameter() {
+abstract class SimpleStatement : Statement() {
 
 //  fun asExpressionStatement(): ExpressionStatement {
 //    return this as ExpressionStatement
@@ -34,11 +33,9 @@ abstract class SimpleStatement() : BaseParameter() {
 //    return this as ImportStatement
 //  }
 
-
 //  abstract fun isExpressionStatement(): Boolean
 //  abstract fun isAssignmentStatement(): Boolean
 //  abstract fun isImportStatement(): Boolean
 
   abstract override fun toString(): String
-
 }

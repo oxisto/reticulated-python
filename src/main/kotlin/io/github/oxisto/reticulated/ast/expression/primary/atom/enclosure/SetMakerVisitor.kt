@@ -20,58 +20,53 @@ package io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.expression.Expression
 import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
-import io.github.oxisto.reticulated.ast.expression.booleanexpr.BooleanExprVisitor
-import io.github.oxisto.reticulated.ast.expression.booleanexpr.OrExpr
-import io.github.oxisto.reticulated.ast.expression.comprehension.CompFor
-import io.github.oxisto.reticulated.ast.expression.comprehension.Comprehension
 import io.github.oxisto.reticulated.ast.expression.comprehension.ComprehensionVisitor
-import io.github.oxisto.reticulated.ast.expression.starred.Starred
-import io.github.oxisto.reticulated.ast.expression.starred.StarredItem
-import io.github.oxisto.reticulated.ast.expression.starred.StarredList
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 
 /**
  * This class offers a visitor for a set_display and a dict_display
  */
-class SetMakerVisitor (val scope: Scope) : Python3BaseVisitor<Expression>() {
+class SetMakerVisitor(val scope: Scope) : Python3BaseVisitor<Expression>() {
 
   override fun visitDictorsetmaker(ctx: Python3Parser.DictorsetmakerContext): Expression {
     return if (ctx.childCount == 4 &&
-        ctx.getChild(3) is Python3Parser.Comp_forContext) {
+      ctx.getChild(3) is Python3Parser.Comp_forContext
+    ) {
       // It is a DictComprehension
       DictComprehension(
-          ctx.getChild(0).accept(ExpressionVisitor(this.scope)),
-          ctx.getChild(2).accept(ExpressionVisitor(this.scope)),
-          ctx.getChild(3).accept(ComprehensionVisitor(this.scope)) as CompFor
+        ctx.getChild(0).accept(ExpressionVisitor(this.scope)),
+        ctx.getChild(2).accept(ExpressionVisitor(this.scope)),
+        listOf(ctx.getChild(3).accept(ComprehensionVisitor(this.scope)))
       )
     } else if (
-        ctx.childCount >= 2 &&
-        (
-            ctx.getChild(0).text == "**" &&
-                ctx.getChild(1) is Python3Parser.TestContext ||
-                ctx.getChild(0) is Python3Parser.TestContext &&
-                ctx.getChild(1).text == ":"
-            )
+      ctx.childCount >= 2 &&
+      (
+        ctx.getChild(0).text == "**" &&
+          ctx.getChild(1) is Python3Parser.TestContext ||
+          ctx.getChild(0) is Python3Parser.TestContext &&
+          ctx.getChild(1).text == ":"
+        )
     ) {
       // it is a KeyDatumList
       handleKeyDatumList(ctx)
     } else if (ctx.childCount == 2 &&
-        ctx.getChild(1) is Python3Parser.Comp_forContext)  {
+      ctx.getChild(1) is Python3Parser.Comp_forContext
+    ) {
       // it is a Comprehension for a set
-       Comprehension(
-          ctx.getChild(0).accept(ExpressionVisitor(this.scope)),
-          ctx.getChild(1).accept(ComprehensionVisitor(this.scope)) as CompFor
+      SetComprehension(
+        ctx.getChild(0).accept(ExpressionVisitor(this.scope)),
+        listOf(ctx.getChild(1).accept(ComprehensionVisitor(this.scope)))
       )
     } else {
       // it is a StarredList for a set
-      val starredItems = ArrayList<Starred>()
-      for(index in 0 until ctx.childCount step 2)
-        starredItems.add(
-            ctx.getChild(index)
-                .accept(ExpressionVisitor(this.scope))
+      val elts = mutableListOf<Expression>()
+      for (index in 0 until ctx.childCount step 2)
+        elts.add(
+          ctx.getChild(index)
+            .accept(ExpressionVisitor(this.scope))
         )
-      StarredList(starredItems)
+      Set(elts)
     }
   }
 
@@ -82,29 +77,29 @@ class SetMakerVisitor (val scope: Scope) : Python3BaseVisitor<Expression>() {
       if (ctx.getChild(index) is Python3Parser.TestContext) {
         // it is a KeyDatum : Expr ":" Expr
         keyDatums.add(
-            KeyDatum(
-                ctx.getChild(index)
-                    .accept(
-                        ExpressionVisitor(this.scope)
-                    ),
-                ctx.getChild(index + 2)
-                    .accept(
-                        ExpressionVisitor(this.scope)
-                    ),
-                null
-            )
+          KeyDatum(
+            ctx.getChild(index)
+              .accept(
+                ExpressionVisitor(this.scope)
+              ),
+            ctx.getChild(index + 2)
+              .accept(
+                ExpressionVisitor(this.scope)
+              ),
+            null
+          )
         )
         index += 4
       } else {
         // it is a KeyDatum : "**" OrExpr
         keyDatums.add(
-            KeyDatum(
-                null, null,
-                ctx.getChild(index + 1)
-                    .accept(
-                        BooleanExprVisitor(this.scope)
-                    ) as OrExpr
-            )
+          KeyDatum(
+            null, null,
+            ctx.getChild(index + 1)
+              .accept(
+                ExpressionVisitor(this.scope)
+              )
+          )
         )
         index += 3
       }

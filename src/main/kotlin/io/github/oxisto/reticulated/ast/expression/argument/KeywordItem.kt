@@ -26,16 +26,15 @@ import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
  * [see: {@linktourl https://docs.python.org/3/reference/expressions.html#calls}]
  *
  */
-class KeywordItem(val identifier: Identifier, expression: Expression): KeywordArgument(expression) {
+class KeywordItem(val identifier: Identifier, val expression: Expression) : KeywordArgument(expression) {
 
-    init {
-        identifier.parent = this
-        super.expression.parent = this
-    }
+  init {
+    identifier.parent = this
+  }
 
-    override fun toString(): String{
-        return "KeywordItem(" + System.lineSeparator() +
-                "\t Identifier=$identifier \"=\" Expression=$expression " + System.lineSeparator() +
-                ")"
-    }
+  override fun toString(): String {
+    return "KeywordItem(" + System.lineSeparator() +
+      "\t Identifier=$identifier \"=\" Expression=$expression " + System.lineSeparator() +
+      ")"
+  }
 }

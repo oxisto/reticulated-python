@@ -28,8 +28,7 @@ class Subscription(val primary: Primary, val expressionList: Expression) : Prima
 
   override fun toString(): String {
     return "Subscription(" + System.lineSeparator() +
-            "\tprimary=$primary [ expressionList=$expressionList ] " + System.lineSeparator() +
-            ")"
+      "\tprimary=$primary [ expressionList=$expressionList ] " + System.lineSeparator() +
+      ")"
   }
-
 }

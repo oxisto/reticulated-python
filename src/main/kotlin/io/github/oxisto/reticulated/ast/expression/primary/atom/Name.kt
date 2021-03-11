@@ -65,8 +65,7 @@ class Name(name: String) : Identifier(name), Identifiable {
 
   override fun toString(): String {
     return "Name(" + System.lineSeparator() +
-            "\tname=$name" + System.lineSeparator() +
-            ")"
+      "\tname=$name" + System.lineSeparator() +
+      ")"
   }
-
 }
