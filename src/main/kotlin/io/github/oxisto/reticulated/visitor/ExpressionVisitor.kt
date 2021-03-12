@@ -15,11 +15,15 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.expression
+package io.github.oxisto.reticulated.visitor
 
 import io.github.oxisto.reticulated.Pair
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
+import io.github.oxisto.reticulated.ast.expression.ConditionalExpression
+import io.github.oxisto.reticulated.ast.expression.Expression
+import io.github.oxisto.reticulated.ast.expression.ExpressionList
+import io.github.oxisto.reticulated.ast.expression.Starred
 import io.github.oxisto.reticulated.ast.expression.comparison.CompOperator
 import io.github.oxisto.reticulated.ast.expression.comparison.Comparison
 import io.github.oxisto.reticulated.ast.expression.lambda.Lambda
@@ -28,7 +32,6 @@ import io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure.Enclos
 import io.github.oxisto.reticulated.ast.expression.primary.atom.enclosure.YieldExpression
 import io.github.oxisto.reticulated.ast.statement.parameter.Parameter
 import io.github.oxisto.reticulated.ast.statement.parameter.Parameters
-import io.github.oxisto.reticulated.ast.statement.parameter.ParametersVisitor
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 

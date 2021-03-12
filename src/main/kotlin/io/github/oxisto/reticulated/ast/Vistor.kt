@@ -18,7 +18,7 @@
 package io.github.oxisto.reticulated.ast
 
 import io.github.oxisto.reticulated.ast.statement.Statement
-import io.github.oxisto.reticulated.ast.statement.StatementVisitor
+import io.github.oxisto.reticulated.visitor.StatementVisitor
 import io.github.oxisto.reticulated.ast.statement.Statements
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser

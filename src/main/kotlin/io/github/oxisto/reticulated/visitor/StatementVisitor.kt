@@ -15,19 +15,21 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.statement
+package io.github.oxisto.reticulated.visitor
 
 import io.github.oxisto.reticulated.ast.CouldNotParseException
 import io.github.oxisto.reticulated.ast.Scope
 import io.github.oxisto.reticulated.ast.ScopeType
 import io.github.oxisto.reticulated.ast.SuiteVisitor
 import io.github.oxisto.reticulated.ast.expression.Expression
-import io.github.oxisto.reticulated.ast.expression.ExpressionVisitor
 import io.github.oxisto.reticulated.ast.expression.primary.atom.AtomVisitor
 import io.github.oxisto.reticulated.ast.expression.primary.atom.Identifier
 import io.github.oxisto.reticulated.ast.simple.SimpleStatement
 import io.github.oxisto.reticulated.ast.simple.SimpleStatementsVisitor
-import io.github.oxisto.reticulated.ast.statement.parameter.ParametersVisitor
+import io.github.oxisto.reticulated.ast.statement.FunctionDefinition
+import io.github.oxisto.reticulated.ast.statement.IfStatement
+import io.github.oxisto.reticulated.ast.statement.Statement
+import io.github.oxisto.reticulated.ast.statement.Statements
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 import io.github.oxisto.reticulated.grammar.Python3Parser
 
@@ -58,6 +60,35 @@ class StatementVisitor(val scope: Scope) : Python3BaseVisitor<Statement>() {
         Statements(list)
       }
     }
+  }
+
+  override fun visitCompound_stmt(ctx: Python3Parser.Compound_stmtContext?): Statement {
+    return super.visitCompound_stmt(ctx)
+  }
+
+  override fun visitIf_stmt(ctx: Python3Parser.If_stmtContext): Statement {
+    if (ctx.IF() == null) {
+      throw CouldNotParseException("Incorrect if statement")
+    }
+
+    // the list of suites, this depends on whether we have elif's and else
+    val suites = ctx.suite()
+
+    // the list of condition expressions
+    val conditions = ctx.test()
+
+    // first one should be the normal body
+    val body = SuiteVisitor(this.scope).visit(suites.firstOrNull() ?: throw CouldNotParseException("Incorrect if statement"))
+
+    // first one should be the
+
+    val condition = ExpressionVisitor(this.scope).visit(conditions.firstOrNull() ?: throw CouldNotParseException("Incorrect if statement"))
+
+    // TODO: Parse else and elif
+
+    val ifStatement = IfStatement(condition, body, null, null, null, null)
+
+    return ifStatement
   }
 
   override fun visitFuncdef(ctx: Python3Parser.FuncdefContext): Statement {

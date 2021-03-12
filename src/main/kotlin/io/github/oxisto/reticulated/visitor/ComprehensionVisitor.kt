@@ -15,9 +15,10 @@
  *
  */
 
-package io.github.oxisto.reticulated.ast.expression.comprehension
+package io.github.oxisto.reticulated.visitor
 
 import io.github.oxisto.reticulated.ast.Scope
+import io.github.oxisto.reticulated.ast.expression.comprehension.Comprehension
 import io.github.oxisto.reticulated.grammar.Python3BaseVisitor
 
 /**
