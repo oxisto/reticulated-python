@@ -18,7 +18,7 @@ plugins {
   jacoco
   idea
 
-  id("org.sonarqube") version "3.0"
+  id("org.sonarqube") version "3.3"
   id("net.researchgate.release") version "2.8.1"
 }
 
